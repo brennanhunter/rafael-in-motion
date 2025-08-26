@@ -7,6 +7,7 @@ import { Artwork } from '@/types/artwork';
 interface ArtGalleryProps {
   category?: 'art-deco' | 'abstracts' | 'portraits' | 'other';
   artworks?: Artwork[];
+  images?: string[]; // Array of image paths for direct loading
   title?: string;
   subtitle?: string;
   className?: string;
@@ -19,17 +20,53 @@ interface ArtworkWithDimensions extends Artwork {
 export default function ArtGallery({ 
   category = 'art-deco', 
   artworks, 
+  images,
   title = 'Infinite Scroll Gallery',
   subtitle = 'Scroll up & down or use arrow keys',
   className = '' 
 }: ArtGalleryProps) {
   const [selectedArtwork, setSelectedArtwork] = useState<ArtworkWithDimensions | null>(null);
+  const [showFloatingHelp, setShowFloatingHelp] = useState(false);
   const categoryArtworks = useArtworkByCategory(category);
   const { artwork: allArtworks } = useArtwork();
   const [artworksWithDimensions, setArtworksWithDimensions] = useState<ArtworkWithDimensions[]>([]);
   
-  // Use provided artworks or fall back to category/all artworks
-  const displayArtworks = artworks || categoryArtworks || allArtworks;
+  // Use provided images, artworks, or fall back to category/all artworks
+  let displayArtworks: Artwork[] = [];
+  
+  if (images) {
+    // Convert image paths to artwork objects
+    displayArtworks = images.map((imagePath, index) => {
+      const filename = imagePath.split('/').pop() || '';
+      
+      // Clean up title generation for professionalism
+      const cleanTitle = filename
+        .replace(/\.(jpg|jpeg|png|gif|webp)+$/i, '') // Remove file extensions (including multiple)
+        .replace(/\.(jpg|jpeg|png|gif|webp)/gi, '') // Remove any remaining extensions in the middle
+        .replace(/[-_]/g, ' ') // Replace hyphens and underscores with spaces
+        .replace(/([a-z])([A-Z])/g, '$1 $2') // Add space before capital letters
+        .replace(/\s+/g, ' ') // Replace multiple spaces with single space
+        .replace(/\b\w/g, l => l.toUpperCase()) // Capitalize first letter of each word
+        .trim();
+      
+      return {
+        id: `img-${index}`,
+        title: cleanTitle,
+        filename,
+        imagePath,
+        year: undefined,
+        medium: '',
+        dimensions: '',
+        description: 'Coming soon',
+        caption: 'Coming soon',
+        tags: [],
+        category: 'art-deco' as const
+      };
+    });
+  } else {
+    displayArtworks = artworks || categoryArtworks || allArtworks;
+  }
+  
   const n = displayArtworks.length;
 
   // Load image dimensions
@@ -64,6 +101,8 @@ export default function ArtGallery({
     const itemCount = artworksWithDimensions.length;
     if (itemCount === 0) return;
     
+    console.log('Setting up scroll with', itemCount, 'items'); // Debug log
+    
     // Set CSS custom property for number of items on HTML element (not body!)
     document.documentElement.style.setProperty('--n', itemCount.toString());
     
@@ -71,32 +110,55 @@ export default function ArtGallery({
     document.documentElement.classList.add('gallery-html');
     document.body.classList.add('gallery-body');
     
-    // Improved scroll wheel functionality
-    function f(k: number) {
-      if (Math.abs(k) > 0.5) {
-        scrollTo(0, 0.5 * (k - Math.sign(k) + 1) * (document.documentElement.offsetHeight - window.innerHeight));
-      }
-    }
-
-    // Initial position
-    f(-1);
-
-    // Handle scroll events
-    const handleScroll = () => {
-      const k = +getComputedStyle(document.body).getPropertyValue('--k');
-      f(k);
+    // Show floating help after 3 seconds if user hasn't scrolled
+    const helpTimer = setTimeout(() => {
+      setShowFloatingHelp(true);
+    }, 3000);
+    
+    // Hide floating help when user scrolls
+    const hideHelpOnScroll = () => {
+      setShowFloatingHelp(false);
+      clearTimeout(helpTimer);
     };
+    
+    // Small delay to ensure DOM is ready
+    setTimeout(() => {
+      // Improved scroll wheel functionality
+      function f(k: number) {
+        if (Math.abs(k) > 0.5) {
+          scrollTo(0, 0.5 * (k - Math.sign(k) + 1) * (document.documentElement.offsetHeight - window.innerHeight));
+        }
+      }
 
-    addEventListener('scroll', handleScroll);
+      // Initial position
+      f(-1);
+
+      // Handle scroll events
+      const handleScroll = () => {
+        const k = +getComputedStyle(document.body).getPropertyValue('--k');
+        f(k);
+        hideHelpOnScroll();
+      };
+
+      addEventListener('scroll', handleScroll);
+      addEventListener('wheel', hideHelpOnScroll);
+      
+      // Store cleanup function
+      return () => {
+        removeEventListener('scroll', handleScroll);
+        removeEventListener('wheel', hideHelpOnScroll);
+        clearTimeout(helpTimer);
+      };
+    }, 100);
     
     return () => {
-      removeEventListener('scroll', handleScroll);
       // Reset styles when component unmounts
       document.documentElement.style.removeProperty('--n');
       document.documentElement.classList.remove('gallery-html');
       document.body.classList.remove('gallery-body');
+      clearTimeout(helpTimer);
     };
-  }, [artworksWithDimensions]);
+  }, [artworksWithDimensions.length]); // Only depend on length, not the entire array
 
   if (!artworksWithDimensions || artworksWithDimensions.length === 0) {
     return (
@@ -126,9 +188,33 @@ export default function ArtGallery({
       {/* Header */}
       <header className="gallery-header">
         <h1 className="gallery-h2 text-3xl font-bold mb-2">{title}</h1>
-        <strong className="gallery-em text-lg mb-1">{subtitle}</strong>
-        <em className="gallery-em text-sm opacity-80">
-          3D circular gallery with scroll-driven animations
+        
+        {/* More prominent instructions */}
+        <div className="bg-gradient-to-r from-amber-900/30 to-amber-800/20 backdrop-blur-sm rounded-lg p-4 mb-4 border border-amber-700/30 max-w-lg mx-auto">
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <div className="w-6 h-6 bg-amber-400/20 rounded-full flex items-center justify-center">
+              <span className="text-amber-400 text-sm">ℹ</span>
+            </div>
+            <strong className="text-amber-200 text-base font-semibold">How to Navigate</strong>
+          </div>
+          <div className="space-y-1 text-sm text-amber-100/90">
+            <p className="flex items-center gap-2">
+              <span className="text-amber-400">🖱️</span>
+              <span>Scroll with mouse wheel to rotate gallery</span>
+            </p>
+            <p className="flex items-center gap-2">
+              <span className="text-amber-400">⌨️</span>
+              <span>Use ↑↓ arrow keys for precise navigation</span>
+            </p>
+            <p className="flex items-center gap-2">
+              <span className="text-amber-400">👆</span>
+              <span>Click any artwork to view details</span>
+            </p>
+          </div>
+        </div>
+        
+        <em className="gallery-em text-sm opacity-70">
+          3D circular gallery • {artworksWithDimensions.length} artworks
         </em>
       </header>
 
@@ -154,9 +240,11 @@ export default function ArtGallery({
                   <h2 className="gallery-h2 font-bold mb-2">
                     {artwork.title}
                   </h2>
-                  <em className="gallery-em text-sm opacity-80">
-                    {artwork.year} • {artwork.medium}
-                  </em>
+                  {artwork.medium && (
+                    <em className="gallery-em text-sm opacity-80">
+                      {artwork.medium}
+                    </em>
+                  )}
                 </div>
               </header>
 
@@ -181,8 +269,29 @@ export default function ArtGallery({
 
       {/* Footer */}
       <footer className="p-4 text-center text-xs opacity-60">
-        <p>Use scroll wheel or arrow keys to navigate • {artworksWithDimensions.length} artworks</p>
+        <p>© Rafael Acevedo • Interactive 3D Gallery Experience</p>
       </footer>
+
+      {/* Floating Help Indicator */}
+      {showFloatingHelp && (
+        <div className="fixed bottom-6 right-6 z-40 animate-in slide-in-from-bottom-4 fade-in duration-500">
+          <div className="bg-gradient-to-r from-amber-500/90 to-amber-600/90 backdrop-blur-sm rounded-full px-6 py-3 shadow-2xl border border-amber-400/30 flex items-center gap-3 max-w-xs">
+            <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center animate-pulse">
+              <span className="text-white text-lg">👆</span>
+            </div>
+            <div className="text-white">
+              <p className="font-semibold text-sm">Try scrolling!</p>
+              <p className="text-xs opacity-90">Use mouse wheel to explore</p>
+            </div>
+            <button 
+              onClick={() => setShowFloatingHelp(false)}
+              className="text-white/70 hover:text-white transition-colors"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Browser Support Notice */}
       <aside className="gallery-aside">
@@ -235,12 +344,6 @@ export default function ArtGallery({
               
               {/* Metadata cards */}
               <div className="space-y-4 mb-8">
-                {selectedArtwork.year && (
-                  <div className="bg-gray-800/40 backdrop-blur-sm rounded-lg p-4 border border-gray-700/50">
-                    <span className="text-amber-400 font-semibold text-sm uppercase tracking-wide">Year</span>
-                    <p className="text-white text-lg font-medium">{selectedArtwork.year}</p>
-                  </div>
-                )}
                 {selectedArtwork.dimensions && (
                   <div className="bg-gray-800/40 backdrop-blur-sm rounded-lg p-4 border border-gray-700/50">
                     <span className="text-amber-400 font-semibold text-sm uppercase tracking-wide">Dimensions</span>
@@ -250,12 +353,12 @@ export default function ArtGallery({
               </div>
               
               {/* Story section */}
-              {selectedArtwork.description && (
+              {selectedArtwork.story && (
                 <div className="mb-8">
-                  <h3 className="text-amber-400 font-semibold text-sm uppercase tracking-wide mb-3">Story</h3>
+                  <h3 className="text-amber-400 font-semibold text-sm uppercase tracking-wide mb-3">Artist's Story</h3>
                   <div className="bg-gray-800/20 backdrop-blur-sm rounded-lg p-6 border border-gray-700/30">
-                    <p className="text-gray-200 leading-relaxed text-base">
-                      {selectedArtwork.description}
+                    <p className="text-gray-200 leading-relaxed text-base italic">
+                      "{selectedArtwork.story}"
                     </p>
                   </div>
                 </div>

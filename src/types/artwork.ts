@@ -9,6 +9,7 @@ export interface Artwork {
   medium?: string;
   dimensions?: string;
   description?: string;
+  story?: string;
   featured?: boolean;
   tags?: string[];
 }

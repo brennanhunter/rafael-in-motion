@@ -208,15 +208,9 @@ export default function ArtDeco({ className = '' }: ArtDecoProps) {
             {/* Artwork Info */}
             <div className="bg-black/30 backdrop-blur-sm text-white p-6 rounded-xl max-w-lg border border-white/10">
               <h2 className="text-3xl font-bold mb-3 font-cinzel leading-tight">{currentArtwork?.title}</h2>
-              <div className="space-y-2">
-                <p className="text-sm opacity-80">{currentArtwork?.year && `${currentArtwork?.year} • `}{currentArtwork?.medium}</p>
-                {currentArtwork?.caption && (
-                  <p className="text-sm opacity-75 mt-4 leading-relaxed max-w-md">{currentArtwork?.caption}</p>
-                )}
-                {currentArtwork?.description && (
-                  <p className="text-sm opacity-75 mt-3 leading-relaxed max-w-md">{currentArtwork?.description}</p>
-                )}
-              </div>
+              {currentArtwork?.story && (
+                <p className="text-sm opacity-75 mt-4 leading-relaxed max-w-md italic">"{currentArtwork?.story}"</p>
+              )}
             </div>
 
             {/* Auto-play Control with Visual State */}
