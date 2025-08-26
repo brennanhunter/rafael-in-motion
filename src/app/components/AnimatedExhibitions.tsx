@@ -156,8 +156,9 @@ const AnimatedExhibitions: React.FC = () => {
       // Create scroll trigger
       ScrollTrigger.create({
         trigger: exhibitionElement,
-        start: 'top 85%',
-        end: 'bottom 15%',
+        start: 'top 80%',
+        end: 'bottom 20%',
+        toggleActions: 'play none none reverse',
         onEnter: () => {
           setVisibleExhibitions(prev => new Set([...prev, index]));
           setCurrentExhibition(index);
@@ -168,20 +169,15 @@ const AnimatedExhibitions: React.FC = () => {
             opacity: 1,
             scale: 1,
             rotation: 0,
-            duration: 1.5,
-            ease: 'power3.out',
-            delay: 0.1
+            duration: 1.2,
+            ease: 'power2.out'
           });
         },
         onLeave: () => {
-          // Fly out animation
-          gsap.to(exhibitionElement, {
-            x: `${toDirection}vw`,
-            opacity: 0,
-            scale: 0.9,
-            rotation: fromLeft ? 15 : -15,
-            duration: 1.2,
-            ease: 'power3.in'
+          setVisibleExhibitions(prev => {
+            const newSet = new Set(prev);
+            newSet.delete(index);
+            return newSet;
           });
         },
         onEnterBack: () => {
@@ -194,34 +190,54 @@ const AnimatedExhibitions: React.FC = () => {
             opacity: 1,
             scale: 1,
             rotation: 0,
-            duration: 1.5,
-            ease: 'power3.out'
-          });
-        },
-        onLeaveBack: () => {
-          // Fly back out
-          gsap.to(exhibitionElement, {
-            x: `${fromDirection}vw`,
-            opacity: 0,
-            scale: 0.8,
-            rotation: fromLeft ? -15 : 15,
             duration: 1.2,
-            ease: 'power3.in'
+            ease: 'power2.out'
           });
         },
-        markers: false, // Set to true for debugging
-        refreshPriority: -1 // Ensure this runs after layout
+        markers: false,
+        refreshPriority: -1,
+        invalidateOnRefresh: true // Important for preventing stuck scrolls
       });
     });
 
-    // Refresh ScrollTrigger after a short delay to ensure proper layout calculation
+    // Refresh ScrollTrigger and normalize scroll behavior
     const refreshTimeout = setTimeout(() => {
       ScrollTrigger.refresh();
+      // Ensure scroll position is not stuck
+      window.scrollTo({
+        top: window.pageYOffset,
+        behavior: 'auto'
+      });
     }, 100);
+
+    // Add scroll listener to prevent getting stuck
+    const handleScroll = () => {
+      // If scroll gets stuck, gently nudge it
+      const scrollTop = window.pageYOffset;
+      if (scrollTop > 0) {
+        requestAnimationFrame(() => {
+          // Small scroll adjustment if needed
+          if (Math.abs(window.pageYOffset - scrollTop) < 1) {
+            window.scrollTo({
+              top: scrollTop,
+              behavior: 'auto'
+            });
+          }
+        });
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => {
       clearTimeout(refreshTimeout);
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      window.removeEventListener('scroll', handleScroll);
+      // Kill all scroll triggers to prevent conflicts
+      ScrollTrigger.getAll().forEach(trigger => {
+        if (trigger.trigger?.closest('[data-exhibition]')) {
+          trigger.kill(true);
+        }
+      });
     };
   }, []);
 
@@ -325,13 +341,35 @@ const AnimatedExhibitions: React.FC = () => {
                   transition={{ type: "spring", stiffness: 200 }}
                 >
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10"></div>
-                  <Image
-                    src={exhibition.image || '/images/artista.jpg'}
-                    alt={`${exhibition.title} Exhibition`}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
+                  
+                  {/* Check if this is a generic image (and not the first one) */}
+                  {exhibition.image?.includes('Generic.jpg') && index !== 2 ? (
+                    // Custom gradient for unavailable images
+                    <div className="w-full h-full bg-gradient-to-br from-gray-800 via-gray-700 to-gray-900 flex items-center justify-center">
+                      <div className="text-center">
+                        <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-amber-400/20 to-orange-500/20 rounded-full flex items-center justify-center border border-amber-400/30">
+                          <svg className="w-8 h-8 text-amber-400/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          </svg>
+                        </div>
+                        <h4 className="text-amber-300/80 text-lg font-medium font-playfair mb-2">
+                          Image Unavailable
+                        </h4>
+                        <p className="text-gray-400 text-sm font-playfair">
+                          {exhibition.title}
+                        </p>
+                      </div>
+                    </div>
+                  ) : (
+                    // Regular image
+                    <Image
+                      src={exhibition.image || '/images/artista.jpg'}
+                      alt={`${exhibition.title} Exhibition`}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                    />
+                  )}
                   
                   {/* Floating location tag */}
                   <div className="absolute top-4 left-4 z-20">

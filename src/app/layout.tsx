@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Cinzel } from "next/font/google";
 import "./globals.css";
 import Header from "./components/Header";
+import PageWrapper from "./components/PageWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,7 +36,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${cinzel.variable} antialiased`}
       >
         <Header />
-        {children}
+        <PageWrapper>
+          {children}
+        </PageWrapper>
       </body>
     </html>
   );

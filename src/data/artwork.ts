@@ -497,8 +497,11 @@ export const artworkData: ArtworkCollection = [
 ];
 
 // Helper function to get artwork by category
+// Helper function to get artwork by category (shuffled to avoid alphabetical order)
 export const getArtworkByCategory = (category: Artwork['category']): Artwork[] => {
-  return artworkData.filter(artwork => artwork.category === category);
+  const filtered = artworkData.filter(artwork => artwork.category === category);
+  // Shuffle the array to avoid alphabetical ordering
+  return filtered.sort(() => Math.random() - 0.5);
 };
 
 // Helper function to get featured artwork

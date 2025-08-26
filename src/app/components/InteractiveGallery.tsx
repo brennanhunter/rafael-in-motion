@@ -5,10 +5,17 @@ import { useGLTF, Environment, PointerLockControls, OrbitControls } from '@react
 import { Suspense, useState, useRef, useEffect } from 'react';
 import * as THREE from 'three';
 
-function GalleryModel({ onPaintingClick }: { onPaintingClick: (paintingIndex: number) => void }) {
+function GalleryModel({ 
+  onPaintingClick, 
+  onLoadProgress 
+}: { 
+  onPaintingClick: (paintingIndex: number) => void;
+  onLoadProgress: (progress: number) => void;
+}) {
   const gltf = useGLTF('/models/gallery.glb');
+  const [texturesLoaded, setTexturesLoaded] = useState(0);
   
-  // Load different painting textures
+  // Load different painting textures with progress tracking
   const paintingTextures = [
     useLoader(THREE.TextureLoader, '/images/art-deco/Tea House.jpg'),
     useLoader(THREE.TextureLoader, '/images/art-deco/TheChase.jpg'),
@@ -17,6 +24,35 @@ function GalleryModel({ onPaintingClick }: { onPaintingClick: (paintingIndex: nu
     useLoader(THREE.TextureLoader, '/images/art-deco/Bath Behind Doors.jpg'),
     useLoader(THREE.TextureLoader, '/images/art-deco/HorsesFromHeaven.png'),
   ];
+
+  useEffect(() => {
+    // Simulate loading progress and mark as complete when everything is ready
+    const totalAssets = paintingTextures.length + 1; // textures + 3D model
+    let loadedAssets = 1; // 3D model is loaded when this component renders
+
+    // Check if all textures are loaded
+    const checkTexturesLoaded = () => {
+      const loaded = paintingTextures.filter(texture => texture.image).length;
+      if (loaded > texturesLoaded) {
+        setTexturesLoaded(loaded);
+        loadedAssets = loaded + 1; // +1 for the 3D model
+        const progress = (loadedAssets / totalAssets) * 100;
+        onLoadProgress(progress);
+        
+        // When everything is loaded, wait a moment then show the gallery
+        if (loaded === paintingTextures.length) {
+          setTimeout(() => {
+            onLoadProgress(100);
+          }, 500);
+        }
+      }
+    };
+
+    checkTexturesLoaded();
+    const interval = setInterval(checkTexturesLoaded, 100);
+    
+    return () => clearInterval(interval);
+  }, [paintingTextures, texturesLoaded, onLoadProgress]);
   
   // Get all painting points from the Blender model
   const paintingPoints = [
@@ -169,6 +205,38 @@ function LoadingFallback() {
   );
 }
 
+// Enhanced loading component with progress tracking
+function GalleryLoadingScreen({ progress }: { progress: number }) {
+  return (
+    <div className="fixed inset-0 z-50 bg-black flex items-center justify-center">
+      <div className="text-center text-white">
+        <div className="mb-8">
+          <h2 className="text-4xl font-cinzel font-light mb-4">RAFAEL ACEVEDO</h2>
+          <p className="text-lg tracking-wider">Interactive Gallery</p>
+        </div>
+        
+        {/* Progress Bar */}
+        <div className="w-80 mx-auto mb-4">
+          <div className="h-1 bg-gray-800 rounded-full overflow-hidden">
+            <div 
+              className="h-full bg-gradient-to-r from-amber-600 to-amber-400 rounded-full transition-all duration-300 ease-out"
+              style={{ width: `${progress}%` }}
+            ></div>
+          </div>
+          <p className="text-sm text-gray-400 mt-2">
+            Loading 3D Gallery... {Math.round(progress)}%
+          </p>
+        </div>
+
+        {/* Loading Animation */}
+        <div className="w-16 h-16 mx-auto border-2 border-amber-400/20 rounded-full flex justify-center items-center">
+          <div className="w-12 h-12 border-2 border-transparent border-t-amber-400 border-r-amber-400/50 rounded-full animate-spin"></div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function CameraDebug({ setCameraInfo }: { setCameraInfo: (info: string) => void }) {
   const { camera } = useThree();
   
@@ -268,6 +336,8 @@ export default function InteractiveGallery() {
   } | null>(null);
 
   const [isMobile, setIsMobile] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadingProgress, setLoadingProgress] = useState(0);
 
   // Detect mobile device
   useEffect(() => {
@@ -333,6 +403,16 @@ export default function InteractiveGallery() {
     setSelectedPainting(null);
   };
 
+  // Handle loading completion
+  useEffect(() => {
+    if (loadingProgress >= 100) {
+      const timer = setTimeout(() => {
+        setIsLoading(false);
+      }, 800); // Small delay to ensure smooth transition
+      return () => clearTimeout(timer);
+    }
+  }, [loadingProgress]);
+
   // Handle keyboard shortcuts for modal
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
@@ -347,14 +427,21 @@ export default function InteractiveGallery() {
   }, [selectedPainting]);
 
   return (
-    <div className="w-full h-screen bg-black relative" id="canvas-container">
-      <Canvas
-        camera={{ 
-          position: [0, 1.7, -4.2], 
-          fov: 50 
-        }}
-        style={{ width: '100%', height: '100%' }}
-      >
+    <>
+      {/* Loading Screen */}
+      {isLoading && (
+        <GalleryLoadingScreen progress={loadingProgress} />
+      )}
+
+      {/* Main Gallery */}
+      <div className={`w-full h-screen bg-black relative transition-opacity duration-700 ${isLoading ? 'opacity-0' : 'opacity-100'}`} id="canvas-container">
+        <Canvas
+          camera={{ 
+            position: [0, 1.7, -4.2], 
+            fov: 50 
+          }}
+          style={{ width: '100%', height: '100%' }}
+        >
         {/* Bright Kitchen-style Lighting */}
         <ambientLight intensity={3.5} color="#FFFFFF" />
         <directionalLight 
@@ -417,16 +504,20 @@ export default function InteractiveGallery() {
         
         {/* 3D Model */}
         <Suspense fallback={null}>
-          <GalleryModel onPaintingClick={handlePaintingClick} />
+          <GalleryModel 
+            onPaintingClick={handlePaintingClick} 
+            onLoadProgress={(progress) => setLoadingProgress(progress)}
+          />
         </Suspense>
-      </Canvas>
-      
-      {/* Instructions */}
-      <div className="absolute top-4 left-4 text-white text-sm">
-        {isMobile ? 
-          'Use touch to look around • Tap paintings to view details' : 
-          'Click and drag to look around • Click paintings to view details'
-        }
+        </Canvas>
+        
+        {/* Instructions */}
+        <div className="absolute top-4 left-4 text-white text-sm">
+          {isMobile ? 
+            'Use touch to look around • Tap paintings to view details' : 
+            'Click and drag to look around • Click paintings to view details'
+          }
+        </div>
       </div>
 
       {/* Modal */}
@@ -466,6 +557,6 @@ export default function InteractiveGallery() {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }
