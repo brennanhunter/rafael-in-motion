@@ -35,8 +35,8 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${cinzel.variable} antialiased`}
       >
-        <Header />
         <PageWrapper>
+          <Header />
           {children}
         </PageWrapper>
       </body>
