@@ -26,7 +26,7 @@ const Stairs: React.FC<StairsProps> = ({ isOpen, onClose }) => {
     { text: 'ABSTRACT', href: '/abstract' },
     { text: 'SHOWCASE', href: '/interactive-gallery' },
     { text: 'INTERIORS', href: '/interiors' },
-    { text: 'CONTACT', href: '#contact' }
+    { text: 'CONTACT', href: '/contact' }
   ];
 
   const handleMenuClick = (href: string) => {
