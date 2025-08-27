@@ -89,6 +89,51 @@ body {
   }
 }
 
+/* Mobile-specific gallery improvements */
+@media (max-width: 768px) {
+  .gallery-main {
+    overflow: hidden;
+    perspective: 50em; /* Increased perspective for larger wheel effect */
+    touch-action: pan-y; /* Allow vertical panning */
+  }
+  
+  .gallery-section {
+    --f: 1.5; /* Increased factor for bigger wheel */
+    --w: clamp(4em, min(55vh, 35vw), 20em); /* Larger artworks for bigger wheel */
+    /* Push the gallery lower on mobile */
+    transform: translateY(20vh); /* Move gallery down by 20% of viewport height */
+  }
+  
+  .gallery-article {
+    --lim: 0.4; /* Slightly more tolerant selection on mobile */
+  }
+  
+  .gallery-article:active {
+    --hov: round(var(--sel));
+    transform: scale(1.02); /* Slight scale on tap */
+  }
+  
+  /* Improve touch targets */
+  .gallery-h2,
+  .gallery-em,
+  .gallery-img,
+  .gallery-a {
+    pointer-events: auto;
+    touch-action: manipulation;
+  }
+  
+  /* Better mobile modal */
+  .gallery-modal {
+    max-width: 95vw;
+    max-height: 95vh;
+  }
+  
+  /* Adjust header positioning for lower gallery */
+  .gallery-header {
+    padding-bottom: 2em; /* More space before the lowered gallery */
+  }
+}
+
 @keyframes k {
   to {
     --k: 1;
