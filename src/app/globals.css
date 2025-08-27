@@ -434,3 +434,32 @@ body {
 .loading-spinner-glow {
   animation: pulseGlow 2s ease-in-out infinite;
 }
+
+/* Mobile Exhibition Images Fix */
+@media (max-width: 768px) {
+  .aspect-video {
+    aspect-ratio: 16/9 !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 200px !important;
+  }
+  
+  .aspect-video img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center !important;
+  }
+  
+  /* Ensure Next.js Image component works on mobile */
+  .aspect-video > span {
+    width: 100% !important;
+    height: 100% !important;
+  }
+  
+  /* Force proper image display */
+  [data-exhibition] .relative {
+    display: block !important;
+    overflow: hidden !important;
+  }
+}

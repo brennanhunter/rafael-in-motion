@@ -334,9 +334,9 @@ const AnimatedExhibitions: React.FC = () => {
               </div>
 
               {/* Image Side */}
-              <div className="flex-1">
+              <div className="flex-1 w-full">
                 <motion.div
-                  className="relative aspect-video rounded-2xl overflow-hidden shadow-2xl"
+                  className="relative aspect-video w-full rounded-2xl overflow-hidden shadow-2xl bg-gray-900 min-h-[200px] md:min-h-[250px]"
                   whileHover={{ 
                     scale: 1.05,
                     rotateY: isEven ? 5 : -5,
@@ -370,8 +370,11 @@ const AnimatedExhibitions: React.FC = () => {
                       src={exhibition.image || '/images/artista.jpg'}
                       alt={`${exhibition.title} Exhibition`}
                       fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 100vw, 50vw"
+                      className="object-cover w-full h-full"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 50vw"
+                      priority={index < 3}
+                      placeholder="blur"
+                      blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
                     />
                   )}
                   
@@ -388,27 +391,6 @@ const AnimatedExhibitions: React.FC = () => {
             </div>
           );
         })}
-      </div>
-
-      {/* Progress indicator */}
-      <div className="fixed right-8 top-1/2 transform -translate-y-1/2 z-50">
-        <div className="bg-black/60 backdrop-blur-sm p-4 rounded-lg border border-white/10">
-          <div className="flex flex-col space-y-1 max-h-96 overflow-y-auto">
-            {exhibitions.map((_, index) => (
-              <div
-                key={index}
-                className={`w-2 h-6 rounded-full transition-all duration-300 ${
-                  visibleExhibitions.has(index)
-                    ? 'bg-amber-400'
-                    : 'bg-gray-600'
-                }`}
-              />
-            ))}
-          </div>
-          <div className="text-white text-xs mt-3 font-playfair text-center">
-            {currentExhibition + 1}/{exhibitions.length}
-          </div>
-        </div>
       </div>
 
       {/* Bottom decorative line */}
