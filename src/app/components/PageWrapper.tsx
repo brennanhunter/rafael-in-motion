@@ -8,32 +8,32 @@ interface PageWrapperProps {
   children: React.ReactNode;
 }
 
+// Array of painting paths for random selection
+const paintings = [
+  '/images/art-deco/Tea House.jpg',
+  '/images/art-deco/TheChase.jpg',
+  '/images/art-deco/FlyingKitesRunningCats.jpg',
+  '/images/art-deco/101OrigamiBirds.jpg',
+  '/images/art-deco/Bath Behind Doors.jpg',
+  '/images/art-deco/HorsesFromHeaven.png',
+  '/images/art-deco/The Great Wave.jpg',
+  '/images/art-deco/The Kiss.jpg',
+  '/images/art-deco/BlueLotus.jpg',
+  '/images/art-deco/Soleil.jpg',
+  '/images/abstracts/A-Hundred-Bells-and-One-Flute.jpg',
+  '/images/abstracts/The-Abstract-Forest.jpg',
+  '/images/abstracts/Dancing-in-the-Shadows.jpg',
+  '/images/abstracts/Lost-in-the-Red-Garden.jpg',
+  '/images/abstracts/The-Duel.jpg',
+  '/images/abstracts/Sunrise.jpg.webp'
+];
+
 export default function PageWrapper({ children }: PageWrapperProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [randomPainting, setRandomPainting] = useState('');
   const pathname = usePathname();
   const previousPathname = useRef<string>('');
   const isFirstRender = useRef(true);
-
-  // Array of painting paths for random selection
-  const paintings = [
-    '/images/art-deco/Tea House.jpg',
-    '/images/art-deco/TheChase.jpg',
-    '/images/art-deco/FlyingKitesRunningCats.jpg',
-    '/images/art-deco/101OrigamiBirds.jpg',
-    '/images/art-deco/Bath Behind Doors.jpg',
-    '/images/art-deco/HorsesFromHeaven.png',
-    '/images/art-deco/The Great Wave.jpg',
-    '/images/art-deco/The Kiss.jpg',
-    '/images/art-deco/BlueLotus.jpg',
-    '/images/art-deco/Soleil.jpg',
-    '/images/abstracts/A-Hundred-Bells-and-One-Flute.jpg',
-    '/images/abstracts/The-Abstract-Forest.jpg',
-    '/images/abstracts/Dancing-in-the-Shadows.jpg',
-    '/images/abstracts/Lost-in-the-Red-Garden.jpg',
-    '/images/abstracts/The-Duel.jpg',
-    '/images/abstracts/Sunrise.jpg.webp'
-  ];
 
   useEffect(() => {
     // Skip on first render
@@ -52,8 +52,40 @@ export default function PageWrapper({ children }: PageWrapperProps) {
       // Show loading
       setIsLoading(true);
 
-      // Scroll to top
+      // Clean up any gallery scroll behavior and reset to top
+      (window as typeof window & { __activeGallery?: boolean }).__activeGallery = false;
+      document.body.style.removeProperty('--k');
+      document.documentElement.style.removeProperty('--k');
+      document.documentElement.style.removeProperty('--n');
+      document.documentElement.classList.remove('gallery-html');
+      document.body.classList.remove('gallery-body');
+      
+      // Stop the CSS animation that drives the --k value
+      document.body.style.animation = 'none';
+      (document.body.style as CSSStyleDeclaration & { animationTimeline?: string }).animationTimeline = 'none';
+      
+      // Force the --k value to 0 explicitly
+      document.body.style.setProperty('--k', '0');
+      document.documentElement.style.setProperty('--k', '0');
+      
+      // Force scroll to top
       window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      
+      // Force repaint
+      void document.body.offsetHeight;
+      
+      // Remove the forced values after repaint
+      setTimeout(() => {
+        document.body.style.removeProperty('--k');
+        document.documentElement.style.removeProperty('--k');
+        document.body.style.removeProperty('animation');
+        (document.body.style as CSSStyleDeclaration & { animationTimeline?: string }).animationTimeline = '';
+      }, 10);
+      
+      // Additional cleanup for any lingering scroll locks
+      setTimeout(() => {
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      }, 50);
 
       // Hide loading after short delay
       const timer = setTimeout(() => {

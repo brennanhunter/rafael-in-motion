@@ -1,8 +1,20 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
+import NextImage from 'next/image';
 import { useArtworkByCategory, useArtwork } from '@/hooks/useArtwork';
 import { Artwork } from '@/types/artwork';
+
+// Extend Window interface to include our gallery flag
+declare global {
+  interface Window {
+    __activeGallery?: boolean;
+  }
+  
+  interface CSSStyleDeclaration {
+    animationTimeline?: string;
+  }
+}
 
 interface ArtGalleryProps {
   category?: 'art-deco' | 'abstracts' | 'portraits' | 'other';
@@ -22,7 +34,6 @@ export default function ArtGallery({
   artworks, 
   images,
   title = 'Infinite Scroll Gallery',
-  subtitle = 'Scroll up & down or use arrow keys',
   className = '' 
 }: ArtGalleryProps) {
   const [selectedArtwork, setSelectedArtwork] = useState<ArtworkWithDimensions | null>(null);
@@ -32,42 +43,41 @@ export default function ArtGallery({
   const [artworksWithDimensions, setArtworksWithDimensions] = useState<ArtworkWithDimensions[]>([]);
   
   // Use provided images, artworks, or fall back to category/all artworks
-  let displayArtworks: Artwork[] = [];
+  const displayArtworks = useMemo(() => {
+    if (images) {
+      // Convert image paths to artwork objects
+      return images.map((imagePath, index) => {
+        const filename = imagePath.split('/').pop() || '';
+        
+        // Clean up title generation for professionalism
+        const cleanTitle = filename
+          .replace(/\.(jpg|jpeg|png|gif|webp)+$/i, '') // Remove file extensions (including multiple)
+          .replace(/\.(jpg|jpeg|png|gif|webp)/gi, '') // Remove any remaining extensions in the middle
+          .replace(/[-_]/g, ' ') // Replace hyphens and underscores with spaces
+          .replace(/([a-z])([A-Z])/g, '$1 $2') // Add space before capital letters
+          .replace(/\s+/g, ' ') // Replace multiple spaces with single space
+          .replace(/\b\w/g, l => l.toUpperCase()) // Capitalize first letter of each word
+          .trim();
+        
+        return {
+          id: `img-${index}`,
+          title: cleanTitle,
+          filename,
+          imagePath,
+          year: undefined,
+          medium: '',
+          dimensions: '',
+          description: 'Coming soon',
+          caption: 'Coming soon',
+          tags: [],
+          category: 'art-deco' as const
+        };
+      });
+    } else {
+      return artworks || categoryArtworks || allArtworks;
+    }
+  }, [images, artworks, categoryArtworks, allArtworks]);
   
-  if (images) {
-    // Convert image paths to artwork objects
-    displayArtworks = images.map((imagePath, index) => {
-      const filename = imagePath.split('/').pop() || '';
-      
-      // Clean up title generation for professionalism
-      const cleanTitle = filename
-        .replace(/\.(jpg|jpeg|png|gif|webp)+$/i, '') // Remove file extensions (including multiple)
-        .replace(/\.(jpg|jpeg|png|gif|webp)/gi, '') // Remove any remaining extensions in the middle
-        .replace(/[-_]/g, ' ') // Replace hyphens and underscores with spaces
-        .replace(/([a-z])([A-Z])/g, '$1 $2') // Add space before capital letters
-        .replace(/\s+/g, ' ') // Replace multiple spaces with single space
-        .replace(/\b\w/g, l => l.toUpperCase()) // Capitalize first letter of each word
-        .trim();
-      
-      return {
-        id: `img-${index}`,
-        title: cleanTitle,
-        filename,
-        imagePath,
-        year: undefined,
-        medium: '',
-        dimensions: '',
-        description: 'Coming soon',
-        caption: 'Coming soon',
-        tags: [],
-        category: 'art-deco' as const
-      };
-    });
-  } else {
-    displayArtworks = artworks || categoryArtworks || allArtworks;
-  }
-  
-  const n = displayArtworks.length;
 
   // Load image dimensions
   useEffect(() => {
@@ -101,7 +111,8 @@ export default function ArtGallery({
     const itemCount = artworksWithDimensions.length;
     if (itemCount === 0) return;
     
-    console.log('Setting up scroll with', itemCount, 'items'); // Debug log
+    // Set a flag to indicate this gallery is active
+    window.__activeGallery = true;
     
     // Set CSS custom property for number of items on HTML element (not body!)
     document.documentElement.style.setProperty('--n', itemCount.toString());
@@ -122,41 +133,82 @@ export default function ArtGallery({
     };
     
     // Small delay to ensure DOM is ready
-    setTimeout(() => {
+    let cleanupFunction: (() => void) | null = null;
+    
+    const setupTimer = setTimeout(() => {
       // Improved scroll wheel functionality
       function f(k: number) {
         if (Math.abs(k) > 0.5) {
-          scrollTo(0, 0.5 * (k - Math.sign(k) + 1) * (document.documentElement.offsetHeight - window.innerHeight));
+          const scrollTop = 0.5 * (k - Math.sign(k) + 1) * (document.documentElement.offsetHeight - window.innerHeight);
+          scrollTo(0, scrollTop);
         }
       }
 
       // Initial position
       f(-1);
 
-      // Handle scroll events
+      // Handle scroll events with proper cleanup
       const handleScroll = () => {
+        // Only handle scroll if this gallery is still active
+        if (!window.__activeGallery) {
+          return;
+        }
+        
         const k = +getComputedStyle(document.body).getPropertyValue('--k');
         f(k);
         hideHelpOnScroll();
       };
 
-      addEventListener('scroll', handleScroll);
-      addEventListener('wheel', hideHelpOnScroll);
-      
-      // Store cleanup function
-      return () => {
+      // Store the handler for cleanup
+      cleanupFunction = () => {
         removeEventListener('scroll', handleScroll);
         removeEventListener('wheel', hideHelpOnScroll);
-        clearTimeout(helpTimer);
       };
+
+      addEventListener('scroll', handleScroll, { passive: true });
+      addEventListener('wheel', hideHelpOnScroll, { passive: true });
     }, 100);
     
+    // Return comprehensive cleanup
     return () => {
-      // Reset styles when component unmounts
+      // Mark gallery as inactive
+      window.__activeGallery = false;
+      
+      // Call the scroll cleanup first
+      clearTimeout(setupTimer);
+      if (cleanupFunction) {
+        cleanupFunction();
+      }
+      clearTimeout(helpTimer);
+      
+      // Reset scroll state
+      document.body.style.removeProperty('--k');
+      document.documentElement.style.removeProperty('--k');
       document.documentElement.style.removeProperty('--n');
       document.documentElement.classList.remove('gallery-html');
       document.body.classList.remove('gallery-body');
-      clearTimeout(helpTimer);
+      
+      // Stop the CSS animation that drives the --k value
+      document.body.style.animation = 'none';
+      document.body.style.animationTimeline = 'none';
+      
+      // Force the --k value to 0 explicitly
+      document.body.style.setProperty('--k', '0');
+      document.documentElement.style.setProperty('--k', '0');
+      
+      // Reset scroll position
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      
+      // Force repaint
+      void document.body.offsetHeight;
+      
+      // Remove the forced values after repaint
+      setTimeout(() => {
+        document.body.style.removeProperty('--k');
+        document.documentElement.style.removeProperty('--k');
+        document.body.style.removeProperty('animation');
+        document.body.style.animationTimeline = '';
+      }, 10);
     };
   }, [artworksWithDimensions.length]); // Only depend on length, not the entire array
 
@@ -250,10 +302,13 @@ export default function ArtGallery({
 
               {/* Front face - Image */}
               <figure className="gallery-figure">
-                <img
+                <NextImage
                   src={artwork.imagePath}
                   alt={artwork.title}
                   className="gallery-img"
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  style={{ objectFit: 'cover' }}
                   loading="lazy"
                 />
                 {artwork.caption && (
@@ -314,10 +369,13 @@ export default function ArtGallery({
             {/* Left side - Image */}
             <div className="flex-1 relative min-h-[500px] bg-gradient-to-br from-black to-gray-900 flex items-center justify-center">
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-black/20"></div>
-              <img
+              <NextImage
                 src={selectedArtwork.imagePath}
                 alt={selectedArtwork.title}
                 className="max-w-full max-h-full object-contain drop-shadow-2xl relative z-10"
+                fill
+                sizes="(max-width: 768px) 90vw, 60vw"
+                style={{ objectFit: 'contain' }}
               />
               
               {/* Subtle frame effect */}
@@ -355,10 +413,10 @@ export default function ArtGallery({
               {/* Story section */}
               {selectedArtwork.story && (
                 <div className="mb-8">
-                  <h3 className="text-amber-400 font-semibold text-sm uppercase tracking-wide mb-3">Artist's Story</h3>
+                  <h3 className="text-amber-400 font-semibold text-sm uppercase tracking-wide mb-3">Artist&apos;s Story</h3>
                   <div className="bg-gray-800/20 backdrop-blur-sm rounded-lg p-6 border border-gray-700/30">
                     <p className="text-gray-200 leading-relaxed text-base italic">
-                      "{selectedArtwork.story}"
+                      &quot;{selectedArtwork.story}&quot;
                     </p>
                   </div>
                 </div>
@@ -367,10 +425,10 @@ export default function ArtGallery({
               {/* Painting's Story */}
               {selectedArtwork.caption && (
                 <div className="mb-8">
-                  <h3 className="text-amber-400 font-semibold text-sm uppercase tracking-wide mb-3">Painting's Story</h3>
+                  <h3 className="text-amber-400 font-semibold text-sm uppercase tracking-wide mb-3">Painting&apos;s Story</h3>
                   <div className="bg-gradient-to-r from-amber-900/20 to-amber-800/20 backdrop-blur-sm rounded-lg p-6 border border-amber-700/30">
                     <p className="text-amber-100 italic leading-relaxed text-base">
-                      "{selectedArtwork.caption}"
+                      &quot;{selectedArtwork.caption}&quot;
                     </p>
                   </div>
                 </div>

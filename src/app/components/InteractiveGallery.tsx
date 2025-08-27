@@ -1,9 +1,10 @@
 'use client';
 
-import { Canvas, useLoader, useThree, useFrame } from '@react-three/fiber';
-import { useGLTF, Environment, PointerLockControls, OrbitControls } from '@react-three/drei';
-import { Suspense, useState, useRef, useEffect } from 'react';
+import { Canvas, useLoader } from '@react-three/fiber';
+import { useGLTF, Environment, OrbitControls } from '@react-three/drei';
+import { Suspense, useState, useEffect, useMemo } from 'react';
 import * as THREE from 'three';
+import Image from 'next/image';
 
 function GalleryModel({ 
   onPaintingClick, 
@@ -16,14 +17,21 @@ function GalleryModel({
   const [texturesLoaded, setTexturesLoaded] = useState(0);
   
   // Load different painting textures with progress tracking
-  const paintingTextures = [
-    useLoader(THREE.TextureLoader, '/images/art-deco/Tea House.jpg'),
-    useLoader(THREE.TextureLoader, '/images/art-deco/TheChase.jpg'),
-    useLoader(THREE.TextureLoader, '/images/art-deco/FlyingKitesRunningCats.jpg'),
-    useLoader(THREE.TextureLoader, '/images/art-deco/101OrigamiBirds.jpg'),
-    useLoader(THREE.TextureLoader, '/images/art-deco/Bath Behind Doors.jpg'),
-    useLoader(THREE.TextureLoader, '/images/art-deco/HorsesFromHeaven.png'),
-  ];
+  const texture1 = useLoader(THREE.TextureLoader, '/images/art-deco/Tea House.jpg');
+  const texture2 = useLoader(THREE.TextureLoader, '/images/art-deco/TheChase.jpg');
+  const texture3 = useLoader(THREE.TextureLoader, '/images/art-deco/FlyingKitesRunningCats.jpg');
+  const texture4 = useLoader(THREE.TextureLoader, '/images/art-deco/101OrigamiBirds.jpg');
+  const texture5 = useLoader(THREE.TextureLoader, '/images/art-deco/Bath Behind Doors.jpg');
+  const texture6 = useLoader(THREE.TextureLoader, '/images/art-deco/HorsesFromHeaven.png');
+  
+  const paintingTextures = useMemo(() => [
+    texture1,
+    texture2,
+    texture3,
+    texture4,
+    texture5,
+    texture6,
+  ], [texture1, texture2, texture3, texture4, texture5, texture6]);
 
   useEffect(() => {
     // Simulate loading progress and mark as complete when everything is ready
@@ -64,7 +72,7 @@ function GalleryModel({
     gltf.scene.getObjectByName('Painting6'),
   ];
   
-  const renderPainting = (paintingPoint: any, texture: any, index: number) => {
+  const renderPainting = (paintingPoint: THREE.Object3D, texture: THREE.Texture, index: number) => {
     if (!paintingPoint) return null;
     
     // Calculate aspect ratio and dimensions based on the texture
@@ -191,17 +199,9 @@ function GalleryModel({
       
       {/* Render all paintings */}
       {paintingPoints.map((paintingPoint, index) => 
-        renderPainting(paintingPoint, paintingTextures[index], index)
+        paintingPoint ? renderPainting(paintingPoint, paintingTextures[index], index) : null
       )}
     </>
-  );
-}
-
-function LoadingFallback() {
-  return (
-    <div className="flex items-center justify-center h-full">
-      <div className="text-white text-xl">Loading gallery...</div>
-    </div>
   );
 }
 
@@ -235,95 +235,6 @@ function GalleryLoadingScreen({ progress }: { progress: number }) {
       </div>
     </div>
   );
-}
-
-function CameraDebug({ setCameraInfo }: { setCameraInfo: (info: string) => void }) {
-  const { camera } = useThree();
-  
-  useFrame(() => {
-    const pos = camera.position;
-    const rot = camera.rotation;
-    const info = `Position: [${pos.x.toFixed(2)}, ${pos.y.toFixed(2)}, ${pos.z.toFixed(2)}]\nRotation: [${rot.x.toFixed(2)}, ${rot.y.toFixed(2)}, ${rot.z.toFixed(2)}]`;
-    setCameraInfo(info);
-  });
-  
-  return null;
-}
-
-// Component to handle looking at paintings with raycasting
-function PaintingRaycaster({ 
-  onPaintingLookAt, 
-  isPointerLocked,
-  setLookingAt
-}: { 
-  onPaintingLookAt: (painting: any) => void;
-  isPointerLocked: boolean;
-  setLookingAt: (painting: string | null) => void;
-}) {
-  const { camera, scene } = useThree();
-  
-  useFrame(() => {
-    if (!isPointerLocked) return;
-    
-    // Create raycaster from camera center (where user is looking)
-    const raycaster = new THREE.Raycaster();
-    raycaster.setFromCamera(new THREE.Vector2(0, 0), camera);
-    
-    // Find all mesh objects in scene
-    const meshes: THREE.Mesh[] = [];
-    scene.traverse((object) => {
-      if (object instanceof THREE.Mesh && object.material && 'map' in object.material && object.material.map) {
-        meshes.push(object);
-      }
-    });
-    
-    const intersects = raycaster.intersectObjects(meshes);
-    
-    if (intersects.length > 0) {
-      const paintingMesh = intersects[0].object;
-      setLookingAt(paintingMesh.name || 'painting');
-    } else {
-      setLookingAt(null);
-    }
-  });
-  
-  useEffect(() => {
-    const handleKeyPress = (event: KeyboardEvent) => {
-      if (event.code === 'Space' && isPointerLocked) {
-        event.preventDefault();
-        onPaintingLookAt({ name: 'painting' });
-      }
-    };
-    
-    window.addEventListener('keydown', handleKeyPress);
-    return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [isPointerLocked, onPaintingLookAt]);
-  
-  return null;
-}
-
-// Camera position preset component
-function CameraControls({ orbitControlsRef }: { orbitControlsRef: React.RefObject<any> }) {
-  const { camera } = useThree();
-
-  const cameraPositions = [
-    { name: "Front View", position: [0, 2, 5], target: [0, 1, 0] },
-    { name: "Side View", position: [5, 2, 0], target: [0, 1, 0] },
-    { name: "Corner View", position: [3, 3, 3], target: [0, 1, 0] },
-    { name: "Close to Painting", position: [1, 1.5, 2], target: [0, 1.5, 0] },
-    { name: "Overview", position: [0, 8, 8], target: [0, 0, 0] }
-  ];
-
-  const moveToPosition = (position: number[], target: number[]) => {
-    if (orbitControlsRef.current) {
-      // Animate camera position
-      camera.position.set(position[0], position[1], position[2]);
-      orbitControlsRef.current.target.set(target[0], target[1], target[2]);
-      orbitControlsRef.current.update();
-    }
-  };
-
-  return null; // This component doesn't render anything, just provides the function
 }
 
 export default function InteractiveGallery() {
@@ -531,9 +442,11 @@ export default function InteractiveGallery() {
             onClick={closeModal}
           >
             <div className="md:w-1/2 p-6 flex items-center justify-center bg-gray-100">
-              <img 
+              <Image 
                 src={selectedPainting.image} 
                 alt={selectedPainting.title}
+                width={800}
+                height={600}
                 className="max-w-full max-h-full object-contain rounded"
               />
             </div>

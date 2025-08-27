@@ -75,7 +75,7 @@ const About: React.FC = () => {
           >
             <div className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm p-8 rounded-2xl border border-gray-700/30 shadow-2xl">
               <p className="text-lg text-gray-300 leading-relaxed mb-6">
-                Meet Rafael, an internationally acclaimed artist born in Buenos Aires, Argentina, whose artistic journey began with a passion for fine art. Trained in Buenos Aires and Oxford, England, Rafael's distinctive style captures figurative shapes, characters, and diverse cultural elements.
+                Meet Rafael, an internationally acclaimed artist born in Buenos Aires, Argentina, whose artistic journey began with a passion for fine art. Trained in Buenos Aires and Oxford, England, Rafael&apos;s distinctive style captures figurative shapes, characters, and diverse cultural elements.
               </p>
               <p className="text-lg text-gray-300 leading-relaxed">
                 His paintings, rendered through a unique mixed media technique of acrylics on canvas or treated paper, exude sensuality, exoticism, and a touch of mysticism.
@@ -84,7 +84,7 @@ const About: React.FC = () => {
 
             <div className="bg-gradient-to-br from-amber-900/20 to-orange-900/20 backdrop-blur-sm p-8 rounded-2xl border border-amber-700/30 shadow-2xl">
               <p className="text-lg text-gray-300 leading-relaxed">
-                Each stroke on the canvas tells a tale of playfulness, nostalgia, drama, or mystique, creating an intriguing visual challenge that transcends cultural boundaries. Explore Rafael's world where abstract and graphic elements converge, offering a captivating blend of ancient aesthetics and contemporary expression.
+                Each stroke on the canvas tells a tale of playfulness, nostalgia, drama, or mystique, creating an intriguing visual challenge that transcends cultural boundaries. Explore Rafael&apos;s world where abstract and graphic elements converge, offering a captivating blend of ancient aesthetics and contemporary expression.
               </p>
             </div>
           </div>

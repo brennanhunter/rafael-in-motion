@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import Image from 'next/image';
 import { useArtworkByCategory } from '@/hooks/useArtwork';
 
 interface ArtDecoProps {
@@ -94,24 +95,24 @@ export default function ArtDeco({ className = '' }: ArtDecoProps) {
     }, 3000);
   };
 
-  const navigateToNext = () => {
+  const navigateToNext = useCallback(() => {
     setImageLoaded(false);
     setCurrentIndex((prev) => (prev + 1) % artDecoPieces.length);
-  };
+  }, [artDecoPieces.length]);
 
-  const navigateToPrevious = () => {
+  const navigateToPrevious = useCallback(() => {
     setImageLoaded(false);
     setCurrentIndex((prev) => (prev - 1 + artDecoPieces.length) % artDecoPieces.length);
-  };
+  }, [artDecoPieces.length]);
 
-  const navigateToIndex = (index: number) => {
+  const navigateToIndex = useCallback((index: number) => {
     setImageLoaded(false);
     setCurrentIndex(index);
-  };
+  }, []);
 
-  const toggleAutoPlay = () => {
+  const toggleAutoPlay = useCallback(() => {
     setIsAutoPlay(!isAutoPlay);
-  };
+  }, [isAutoPlay]);
 
   const handleImageLoad = () => {
     setImageLoaded(true);
@@ -159,9 +160,11 @@ export default function ArtDeco({ className = '' }: ArtDecoProps) {
           )}
           
           {/* Main Artwork Image */}
-          <img
-            src={currentArtwork?.imagePath}
-            alt={currentArtwork?.title}
+          <Image
+            src={currentArtwork?.imagePath || ''}
+            alt={currentArtwork?.title || ''}
+            width={800}
+            height={600}
             className={`w-full h-full object-contain transition-all duration-1000 ${
               imageLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
             }`}
@@ -209,7 +212,7 @@ export default function ArtDeco({ className = '' }: ArtDecoProps) {
             <div className="bg-black/30 backdrop-blur-sm text-white p-6 rounded-xl max-w-lg border border-white/10">
               <h2 className="text-3xl font-bold mb-3 font-cinzel leading-tight">{currentArtwork?.title}</h2>
               {currentArtwork?.story && (
-                <p className="text-sm opacity-75 mt-4 leading-relaxed max-w-md italic">"{currentArtwork?.story}"</p>
+                <p className="text-sm opacity-75 mt-4 leading-relaxed max-w-md italic">&quot;{currentArtwork?.story}&quot;</p>
               )}
             </div>
 

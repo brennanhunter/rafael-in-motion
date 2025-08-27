@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { motion, useInView, useAnimation } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Image from 'next/image';
@@ -135,111 +135,115 @@ const AnimatedExhibitions: React.FC = () => {
     const container = containerRef.current;
     if (!container) return;
 
-    // GSAP ScrollTrigger for each exhibition
-    exhibitions.forEach((_, index) => {
-      const exhibitionElement = container.querySelector(`[data-exhibition="${index}"]`);
-      if (!exhibitionElement) return;
+    // Force scroll to top and reset any scroll-related CSS properties
+    document.body.style.removeProperty('--k');
+    document.documentElement.style.removeProperty('--k');
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    
+    // Ensure no gallery classes are applied
+    document.documentElement.classList.remove('gallery-html');
+    document.body.classList.remove('gallery-body');
 
-      // Determine animation direction (alternating left/right)
-      const fromLeft = index % 2 === 0;
-      const fromDirection = fromLeft ? -100 : 100;
-      const toDirection = fromLeft ? 100 : -100;
-
-      // Set initial state
-      gsap.set(exhibitionElement, {
-        x: `${fromDirection}vw`,
-        opacity: 0,
-        scale: 0.8,
-        rotation: fromLeft ? -15 : 15
-      });
-
-      // Create scroll trigger
-      ScrollTrigger.create({
-        trigger: exhibitionElement,
-        start: 'top 80%',
-        end: 'bottom 20%',
-        toggleActions: 'play none none reverse',
-        onEnter: () => {
-          setVisibleExhibitions(prev => new Set([...prev, index]));
-          setCurrentExhibition(index);
-          
-          // Fly in animation
-          gsap.to(exhibitionElement, {
-            x: 0,
-            opacity: 1,
-            scale: 1,
-            rotation: 0,
-            duration: 1.2,
-            ease: 'power2.out'
-          });
-        },
-        onLeave: () => {
-          setVisibleExhibitions(prev => {
-            const newSet = new Set(prev);
-            newSet.delete(index);
-            return newSet;
-          });
-        },
-        onEnterBack: () => {
-          setVisibleExhibitions(prev => new Set([...prev, index]));
-          setCurrentExhibition(index);
-          
-          // Fly back in
-          gsap.to(exhibitionElement, {
-            x: 0,
-            opacity: 1,
-            scale: 1,
-            rotation: 0,
-            duration: 1.2,
-            ease: 'power2.out'
-          });
-        },
-        markers: false,
-        refreshPriority: -1,
-        invalidateOnRefresh: true // Important for preventing stuck scrolls
-      });
+    // Clear any existing ScrollTriggers first
+    ScrollTrigger.getAll().forEach(trigger => {
+      if (trigger.trigger?.closest('[data-exhibition]')) {
+        trigger.kill(true);
+      }
     });
 
-    // Refresh ScrollTrigger and normalize scroll behavior
-    const refreshTimeout = setTimeout(() => {
-      ScrollTrigger.refresh();
-      // Ensure scroll position is not stuck
-      window.scrollTo({
-        top: window.pageYOffset,
-        behavior: 'auto'
+    // Small delay to ensure cleanup is complete
+    setTimeout(() => {
+      // GSAP ScrollTrigger for each exhibition
+      exhibitions.forEach((_, index) => {
+        const exhibitionElement = container.querySelector(`[data-exhibition="${index}"]`);
+        if (!exhibitionElement) return;
+
+        // Determine animation direction (alternating left/right)
+        const fromLeft = index % 2 === 0;
+        const fromDirection = fromLeft ? -100 : 100;
+
+        // Set initial state
+        gsap.set(exhibitionElement, {
+          x: `${fromDirection}vw`,
+          opacity: 0,
+          scale: 0.8,
+          rotation: fromLeft ? -15 : 15
+        });
+
+        // Create scroll trigger
+        ScrollTrigger.create({
+          trigger: exhibitionElement,
+          start: 'top 80%',
+          end: 'bottom 20%',
+          toggleActions: 'play none none reverse',
+          onEnter: () => {
+            setVisibleExhibitions(prev => new Set([...prev, index]));
+            setCurrentExhibition(index);
+            
+            // Fly in animation
+            gsap.to(exhibitionElement, {
+              x: 0,
+              opacity: 1,
+              scale: 1,
+              rotation: 0,
+              duration: 1.2,
+              ease: 'power2.out'
+            });
+          },
+          onLeave: () => {
+            setVisibleExhibitions(prev => {
+              const newSet = new Set(prev);
+              newSet.delete(index);
+              return newSet;
+            });
+          },
+          onEnterBack: () => {
+            setVisibleExhibitions(prev => new Set([...prev, index]));
+            setCurrentExhibition(index);
+            
+            // Fly back in
+            gsap.to(exhibitionElement, {
+              x: 0,
+              opacity: 1,
+              scale: 1,
+              rotation: 0,
+              duration: 1.2,
+              ease: 'power2.out'
+            });
+          },
+          markers: false,
+          refreshPriority: -1,
+          invalidateOnRefresh: true,
+          fastScrollEnd: true // Prevent scroll from getting stuck
+        });
       });
+
+      // Refresh ScrollTrigger after setup
+      ScrollTrigger.refresh();
     }, 100);
 
-    // Add scroll listener to prevent getting stuck
-    const handleScroll = () => {
-      // If scroll gets stuck, gently nudge it
-      const scrollTop = window.pageYOffset;
-      if (scrollTop > 0) {
-        requestAnimationFrame(() => {
-          // Small scroll adjustment if needed
-          if (Math.abs(window.pageYOffset - scrollTop) < 1) {
-            window.scrollTo({
-              top: scrollTop,
-              behavior: 'auto'
-            });
-          }
-        });
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-
     return () => {
-      clearTimeout(refreshTimeout);
-      window.removeEventListener('scroll', handleScroll);
-      // Kill all scroll triggers to prevent conflicts
+      // Comprehensive cleanup
       ScrollTrigger.getAll().forEach(trigger => {
         if (trigger.trigger?.closest('[data-exhibition]')) {
           trigger.kill(true);
         }
       });
+      
+      // Reset any locked scroll positions and scroll-related properties
+      document.body.style.removeProperty('--k');
+      document.documentElement.style.removeProperty('--k');
+      document.documentElement.classList.remove('gallery-html');
+      document.body.classList.remove('gallery-body');
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      
+      // Clear any pending animations
+      gsap.killTweensOf(container.querySelectorAll('[data-exhibition]'));
+      
+      // Force refresh
+      ScrollTrigger.refresh();
     };
-  }, []);
+  }, []); // Empty dependency array to only run on mount/unmount
 
   return (
     <section className="relative min-h-screen bg-gradient-to-b from-black via-gray-900 to-black py-20 overflow-hidden">
@@ -262,7 +266,7 @@ const AnimatedExhibitions: React.FC = () => {
           </span>
         </h2>
         <p className="text-xl text-gray-300 max-w-3xl mx-auto font-playfair">
-          A journey through galleries worldwide, showcasing Rafael's artistic evolution and cultural impact
+          A journey through galleries worldwide, showcasing Rafael&apos;s artistic evolution and cultural impact
         </p>
         <div className="w-32 h-1 bg-gradient-to-r from-amber-400 to-orange-500 mx-auto mt-6 rounded-full"></div>
       </motion.div>

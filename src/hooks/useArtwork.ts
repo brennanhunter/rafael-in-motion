@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Artwork, ArtworkFilters } from '@/types/artwork';
 import { 
   artworkData, 
@@ -77,23 +77,23 @@ export const useArtworkSlider = (artworkList: Artwork[], autoAdvance: boolean = 
   const currentArtwork = artworkList[currentIndex];
   const nextArtwork = artworkList[(currentIndex + 1) % artworkList.length];
 
-  const goToNext = () => {
+  const goToNext = useCallback(() => {
     if (!isTransitioning) {
       setCurrentIndex((prev) => (prev + 1) % artworkList.length);
     }
-  };
+  }, [isTransitioning, artworkList.length]);
 
-  const goToPrevious = () => {
+  const goToPrevious = useCallback(() => {
     if (!isTransitioning) {
       setCurrentIndex((prev) => (prev - 1 + artworkList.length) % artworkList.length);
     }
-  };
+  }, [isTransitioning, artworkList.length]);
 
-  const goToIndex = (index: number) => {
+  const goToIndex = useCallback((index: number) => {
     if (!isTransitioning && index >= 0 && index < artworkList.length) {
       setCurrentIndex(index);
     }
-  };
+  }, [isTransitioning, artworkList.length]);
 
   // Auto-advance functionality
   useEffect(() => {
@@ -101,7 +101,7 @@ export const useArtworkSlider = (artworkList: Artwork[], autoAdvance: boolean = 
 
     const timer = setInterval(goToNext, interval);
     return () => clearInterval(timer);
-  }, [autoAdvance, interval, isTransitioning, currentIndex]);
+  }, [autoAdvance, interval, isTransitioning, goToNext]);
 
   return {
     currentArtwork,

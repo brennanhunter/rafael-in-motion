@@ -52,7 +52,7 @@ export default function InteriorsPage() {
         {/* Header */}
         <div className="text-center mb-16">
           <h1 className="text-5xl font-bold font-cinzel mb-4">Interiors</h1>
-          <p className="text-xl text-gray-300">See how Rafael's artwork transforms living spaces</p>
+          <p className="text-xl text-gray-300">See how Rafael&apos;s artwork transforms living spaces</p>
         </div>
 
         {/* Image Grid */}
