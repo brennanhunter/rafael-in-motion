@@ -6,15 +6,25 @@ import Image from 'next/image';
 
 const Hero: React.FC = () => {
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
-  const words = ['ARTIST', 'CREATOR', 'VISIONARY', 'STORYTELLER', 'MASTER'];
+  const [hasCompletedCycle, setHasCompletedCycle] = useState(false);
+  const words = ['ARTIST', 'CREATOR', 'STORYTELLER', 'VISIONARY'];
 
   useEffect(() => {
+    if (hasCompletedCycle) return; // Stop if we've completed one cycle
+
     const interval = setInterval(() => {
-      setCurrentWordIndex((prev) => (prev + 1) % words.length);
+      setCurrentWordIndex((prev) => {
+        const nextIndex = (prev + 1) % words.length;
+        // If we've reached VISIONARY (index 3) after cycling through all words
+        if (nextIndex === 3 && prev === 2) {
+          setHasCompletedCycle(true);
+        }
+        return nextIndex;
+      });
     }, 2000); // Change word every 2 seconds
 
     return () => clearInterval(interval);
-  }, [words.length]);
+  }, [words.length, hasCompletedCycle]);
 
   useEffect(() => {
     const handleScroll = () => {

@@ -339,7 +339,7 @@ export default function ArtGallery({
           <div className="flex-1 flex items-center justify-center p-4">
             <div className="w-full max-w-md">
               {/* Artwork image */}
-              <div className="relative bg-gray-900 rounded-lg overflow-hidden mb-4 shadow-2xl flex items-center justify-center min-h-[400px] max-h-[70vh]">
+              <div className="relative bg-black rounded-lg overflow-hidden mb-4 shadow-2xl flex items-center justify-center min-h-[400px] max-h-[70vh]">
                 <NextImage
                   src={artworksWithDimensions[currentIndex]?.imagePath || ''}
                   alt={artworksWithDimensions[currentIndex]?.title || ''}

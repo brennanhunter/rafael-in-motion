@@ -149,8 +149,9 @@ function GalleryModel({
         <mesh position={[0, 0, -0.02]}>
           <boxGeometry args={[frameWidth, frameHeight, 0.04]} />
           <meshStandardMaterial 
-            color={index === 0 ? "#950d17" : index === 2 ? "#000000" : index === 4 ? "#F5F5DC" : index === 5 ? "#1E90FF" : "#8B4513"}
-            roughness={0.8}
+            color="#7A7A75"
+            roughness={0.4}
+            metalness={0.1}
           />
         </mesh>
         

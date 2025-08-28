@@ -11,7 +11,7 @@ interface ArtDecoProps {
 export default function ArtDeco({ className = '' }: ArtDecoProps) {
   const artDecoPieces = useArtworkByCategory('art-deco');
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isAutoPlay, setIsAutoPlay] = useState(true);
+  const [isAutoPlay, setIsAutoPlay] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [showUI, setShowUI] = useState(true);
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -151,7 +151,7 @@ export default function ArtDeco({ className = '' }: ArtDecoProps) {
     >
       {/* Main Image Display */}
       <div className="absolute inset-0 flex items-center justify-center">
-        <div className="relative w-full h-full">
+        <div className="relative w-full h-full max-w-4xl mx-auto px-4 pt-32 pb-24">
           {/* Loading State */}
           {isLoading && (
             <div className="absolute inset-0 flex items-center justify-center bg-black z-10">
@@ -173,11 +173,6 @@ export default function ArtDeco({ className = '' }: ArtDecoProps) {
               filter: 'drop-shadow(0 0 40px rgba(0,0,0,0.5))'
             }}
           />
-          
-          {/* Gradient Overlays for Better Text Readability */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-transparent pointer-events-none" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-black/20 pointer-events-none" />
         </div>
       </div>
 
@@ -194,10 +189,10 @@ export default function ArtDeco({ className = '' }: ArtDecoProps) {
           </svg>
         </button>
 
-        {/* Next Button - moved further left to avoid sidebar */}
+        {/* Next Button */}
         <button
           onClick={navigateToNext}
-          className="absolute right-20 top-1/2 -translate-y-1/2 z-[60] bg-black/30 backdrop-blur-sm text-white p-4 rounded-full hover:bg-black/50 transition-all duration-300 group"
+          className="absolute right-6 top-1/2 -translate-y-1/2 z-[60] bg-black/30 backdrop-blur-sm text-white p-4 rounded-full hover:bg-black/50 transition-all duration-300 group"
           disabled={artDecoPieces.length <= 1}
         >
           <svg className="w-6 h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -205,64 +200,67 @@ export default function ArtDeco({ className = '' }: ArtDecoProps) {
           </svg>
         </button>
 
-        {/* Top Controls */}
-        <div className="absolute top-8 left-8 right-20 z-[60]">
-          <div className="flex justify-between items-start">
-            {/* Artwork Info */}
-            <div className="bg-black/30 backdrop-blur-sm text-white p-6 rounded-xl max-w-lg border border-white/10">
-              <h2 className="text-3xl font-bold mb-3 font-cinzel leading-tight">{currentArtwork?.title}</h2>
-              {currentArtwork?.story && (
-                <p className="text-sm opacity-75 mt-4 leading-relaxed max-w-md italic">&quot;{currentArtwork?.story}&quot;</p>
+        {/* Top Navigation Area */}
+        <div className="absolute top-0 left-0 right-0 z-[60] bg-gradient-to-b from-black/80 via-black/60 to-transparent">
+          <div className="flex justify-between items-center p-6">
+            {/* Artwork Info - Fixed position at top */}
+            <div className="bg-black/60 backdrop-blur-sm text-white p-4 rounded-lg max-w-md border border-white/20">
+              <h2 className="text-2xl font-bold mb-2 font-cinzel leading-tight">{currentArtwork?.title}</h2>
+              <div className="text-xs text-white/80">
+                {currentIndex + 1} of {artDecoPieces.length} • Art Deco Collection
+              </div>
+            </div>
+
+            {/* Auto-play Control */}
+            <button
+              onClick={toggleAutoPlay}
+              className={`backdrop-blur-sm text-white p-3 rounded-full transition-all duration-300 group ${
+                isAutoPlay 
+                  ? 'bg-green-500/30 hover:bg-green-500/50 border border-green-400/30' 
+                  : 'bg-red-500/30 hover:bg-red-500/50 border border-red-400/30'
+              }`}
+              title={isAutoPlay ? 'Pause slideshow (Spacebar)' : 'Resume slideshow (Spacebar)'}
+            >
+              {isAutoPlay ? (
+                <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              ) : (
+                <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h8m2 4H7a2 2 0 01-2-2V8a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2z" />
+                </svg>
               )}
-            </div>
-
-            {/* Auto-play Control with Visual State */}
-            <div className="flex space-x-3">
-              <button
-                onClick={toggleAutoPlay}
-                className={`backdrop-blur-sm text-white p-4 rounded-full transition-all duration-300 group ${
-                  isAutoPlay 
-                    ? 'bg-green-500/30 hover:bg-green-500/50 border border-green-400/30' 
-                    : 'bg-red-500/30 hover:bg-red-500/50 border border-red-400/30'
-                }`}
-                title={isAutoPlay ? 'Pause slideshow (Spacebar)' : 'Resume slideshow (Spacebar)'}
-              >
-                {isAutoPlay ? (
-                  <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                ) : (
-                  <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h8m2 4H7a2 2 0 01-2-2V8a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2z" />
-                  </svg>
-                )}
-              </button>
-            </div>
+            </button>
           </div>
         </div>
 
-        {/* Bottom Navigation */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-[60]">
-          <div className="flex items-center space-x-1 bg-black/30 backdrop-blur-sm p-4 rounded-full border border-white/10">
-            {artDecoPieces.map((piece, index) => (
-              <button
-                key={index}
-                onClick={() => navigateToIndex(index)}
-                className={`transition-all duration-300 rounded-full ${
-                  index === currentIndex 
-                    ? 'bg-white w-12 h-3' 
-                    : 'bg-white/40 hover:bg-white/60 w-3 h-3'
-                }`}
-                title={piece.title}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* Image Counter - moved left to avoid sidebar */}
-        <div className="absolute bottom-8 right-20 z-[60]">
-          <div className="bg-black/30 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm border border-white/10">
-            {currentIndex + 1} / {artDecoPieces.length}
+        {/* Bottom Area for Story and Navigation */}
+        <div className="absolute bottom-0 left-0 right-0 z-[60] bg-gradient-to-t from-black/90 via-black/70 to-transparent">
+          <div className="p-6 space-y-4">
+            {/* Story Text */}
+            {currentArtwork?.story && (
+              <div className="bg-black/60 backdrop-blur-sm text-white p-4 rounded-lg border border-white/20 max-w-2xl mx-auto">
+                <p className="text-sm leading-relaxed italic text-center">&quot;{currentArtwork?.story}&quot;</p>
+              </div>
+            )}
+            
+            {/* Navigation Dots */}
+            <div className="flex justify-center">
+              <div className="flex items-center space-x-1 bg-black/40 backdrop-blur-sm p-3 rounded-full border border-white/20">
+                {artDecoPieces.map((piece, index) => (
+                  <button
+                    key={index}
+                    onClick={() => navigateToIndex(index)}
+                    className={`transition-all duration-300 rounded-full ${
+                      index === currentIndex 
+                        ? 'bg-white w-10 h-3' 
+                        : 'bg-white/40 hover:bg-white/60 w-3 h-3'
+                    }`}
+                    title={piece.title}
+                  />
+                ))}
+              </div>
+            </div>
           </div>
         </div>
 
@@ -279,14 +277,14 @@ export default function ArtDeco({ className = '' }: ArtDecoProps) {
         )}
       </div>
 
-      {/* Keyboard Navigation Hint with Auto-play Status */}
-      <div className={`absolute bottom-8 left-8 text-white/50 text-xs transition-opacity duration-300 ${showUI ? 'opacity-100' : 'opacity-0'}`}>
-        <div className="space-y-1">
-          <div>Use ← → keys to navigate</div>
+      {/* Keyboard Navigation Hint */}
+      <div className={`absolute top-20 right-6 text-white/60 text-xs transition-opacity duration-300 ${showUI ? 'opacity-100' : 'opacity-0'}`}>
+        <div className="bg-black/40 backdrop-blur-sm p-3 rounded-lg border border-white/20 space-y-1">
+          <div>← → Navigate</div>
           <div className="flex items-center space-x-2">
-            <span>Spacebar:</span>
+            <span>Space:</span>
             <span className={`px-2 py-1 rounded text-xs ${isAutoPlay ? 'bg-green-500/20 text-green-300' : 'bg-red-500/20 text-red-300'}`}>
-              {isAutoPlay ? 'Auto-play ON' : 'Auto-play OFF'}
+              {isAutoPlay ? 'Auto ON' : 'Auto OFF'}
             </span>
           </div>
         </div>

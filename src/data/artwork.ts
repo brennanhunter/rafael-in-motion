@@ -500,7 +500,123 @@ export const artworkData: ArtworkCollection = [
 // Helper function to get artwork by category (shuffled to avoid alphabetical order)
 export const getArtworkByCategory = (category: Artwork['category']): Artwork[] => {
   const filtered = artworkData.filter(artwork => artwork.category === category);
-  // Shuffle the array to avoid alphabetical ordering
+  
+  // Special ordering for art-deco category
+  if (category === 'art-deco') {
+    const desiredOrder = [
+      'flying-kites-running-cats',
+      'bath-behind-doors',
+      'tea-house',
+      'horses-from-heaven',
+      'the-prey-ii',
+      'origami-birds',
+      'irruption',
+      'the-nap',
+      'imminent',
+      'the-prey',
+      'happiness',
+      'the-blue-romans',
+      'origami-bird',
+      'black-red-and-gold',
+      'catwoman',
+      'drapes-of-love',
+      'finding-yourself',
+      'happiness-2',
+      'the-chase',
+      'cranes-and-dragonflies',
+      'blue-lotus',
+      'reaching-the-beach',
+      'afternoon-bath',
+      'japanese-night',
+      'loving-letter',
+      'soleil',
+      'the-great-wave',
+      'the-kiss',
+      'irruption-ii'
+    ];
+
+    // Create ordered array based on desired order
+    const orderedArtwork: Artwork[] = [];
+    
+    // Add artwork in specified order
+    desiredOrder.forEach(id => {
+      const artwork = filtered.find(piece => piece.id === id);
+      if (artwork) {
+        orderedArtwork.push(artwork);
+      }
+    });
+    
+    // Add any remaining artwork not in the order list
+    filtered.forEach(artwork => {
+      if (!desiredOrder.includes(artwork.id)) {
+        orderedArtwork.push(artwork);
+      }
+    });
+    
+    return orderedArtwork;
+  }
+  
+  // Special ordering for abstracts category
+  if (category === 'abstracts') {
+    const desiredOrder = [
+      'irruption-ii',
+      'red-and-ocre',
+      'blue-and-white-margins',
+      'abstract-and-crochet',
+      'bandits',
+      'beige-and-blue',
+      'a-little-man-in-the-center',
+      'birds-in-baroque',
+      'blue-accents',
+      'dancing-in-the-shadows',
+      'dimensions',
+      'crossing-winter',
+      'dont-just-fly-soar',
+      'fading-monks-in-red',
+      'ford-monks',
+      'is-in-the-air',
+      'jumping-the-bridge',
+      'jungle-in-black-and-white',
+      'letters-numbers-and-other-details',
+      'lost-in-the-red-garden',
+      'pushing',
+      'sunrise',
+      'reaching-the-top',
+      'the-abstract-forest',
+      'irruption',
+      'the-duel',
+      'the-music-is-at-the-bottom',
+      'the-puzzle',
+      'the-unfinished-picture',
+      'three-chapters',
+      'a-hundred-bells-and-one-flute',
+      'anatomy-i',
+      'anatomy-ii',
+      'ghosts'
+    ];
+
+    // Create ordered array based on desired order
+    const orderedArtwork: Artwork[] = [];
+    
+    // Add artwork in specified order
+    desiredOrder.forEach(id => {
+      const artwork = filtered.find(piece => piece.id === id);
+      if (artwork) {
+        orderedArtwork.push(artwork);
+      }
+    });
+    
+    // Add any remaining artwork not in the order list
+    filtered.forEach(artwork => {
+      if (!desiredOrder.includes(artwork.id)) {
+        orderedArtwork.push(artwork);
+      }
+    });
+    
+    return orderedArtwork;
+  }
+  
+  // Shuffle other categories to avoid alphabetical ordering
   return filtered.sort(() => Math.random() - 0.5);
 };
 

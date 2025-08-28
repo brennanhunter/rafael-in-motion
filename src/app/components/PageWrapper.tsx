@@ -185,7 +185,7 @@ export default function PageWrapper({ children }: PageWrapperProps) {
             }}>
             </div>
             
-            {/* Column 3 - Center column with loading symbol */}
+            {/* Column 3 - Center column */}
             <div style={{
               flex: 1,
               height: '100%',
@@ -198,30 +198,6 @@ export default function PageWrapper({ children }: PageWrapperProps) {
               transform: exitingColumns.includes(2) ? 'translateY(100%)' : 'translateY(0)',
               transition: 'transform 0.6s ease-out'
             }}>
-              {/* Loading Symbol - Centered */}
-              <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <div className="mb-8">
-                  <Image
-                    src="/images/logo.png"
-                    alt="Rafael Logo"
-                    width={120}
-                    height={120}
-                    className="mx-auto object-contain animate-pulse"
-                    priority
-                  />
-                </div>
-                
-                {/* Loading Spinner */}
-                <div className="mb-6">
-                  <div className="w-16 h-16 border-4 border-white/30 border-t-white rounded-full animate-spin"></div>
-                </div>
-                
-                <div>
-                  <h2 className="text-4xl font-cinzel font-light text-white tracking-wider">
-                    Loading
-                  </h2>
-                </div>
-              </div>
             </div>
             
             {/* Column 4 */}
@@ -248,6 +224,31 @@ export default function PageWrapper({ children }: PageWrapperProps) {
               transform: exitingColumns.includes(4) ? 'translateY(100%)' : 'translateY(0)',
               transition: 'transform 0.6s ease-out'
             }}>
+            </div>
+          </div>
+
+          {/* Loading Content - Positioned above all columns */}
+          <div className="absolute inset-0 flex flex-col items-center justify-center z-10 pointer-events-none">
+            <div className="mb-4 sm:mb-8">
+              <Image
+                src="/images/logo.png"
+                alt="Rafael Logo"
+                width={80}
+                height={80}
+                className="mx-auto object-contain animate-pulse sm:w-[120px] sm:h-[120px]"
+                priority
+              />
+            </div>
+            
+            {/* Loading Spinner */}
+            <div className="mb-4 sm:mb-6">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-white/30 border-t-white rounded-full animate-spin"></div>
+            </div>
+            
+            <div className="text-center px-4">
+              <h2 className="text-2xl sm:text-4xl font-cinzel font-light text-white tracking-wider">
+                Loading
+              </h2>
             </div>
           </div>
         </div>
