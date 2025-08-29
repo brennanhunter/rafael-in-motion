@@ -351,7 +351,8 @@ export default function ArtGallery({
                     width: 'auto',
                     height: 'auto',
                     maxWidth: '100%',
-                    maxHeight: '100%'
+                    maxHeight: '100%',
+                    filter: artworksWithDimensions[currentIndex]?.id === 'the-prey-ii' ? 'saturate(0.7)' : 'none'
                   }}
                 />
                 
@@ -477,7 +478,10 @@ export default function ArtGallery({
                     className="gallery-img"
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    style={{ objectFit: 'cover' }}
+                    style={{ 
+                      objectFit: 'cover',
+                      filter: artwork.id === 'the-prey-ii' ? 'saturate(0.7)' : 'none'
+                    }}
                     loading="lazy"
                   />
                   {artwork.caption && (
@@ -547,7 +551,10 @@ export default function ArtGallery({
                   width={isMobile ? 400 : 800}
                   height={isMobile ? 300 : 600}
                   sizes={isMobile ? "95vw" : "(max-width: 768px) 90vw, 60vw"}
-                  style={{ objectFit: 'contain' }}
+                  style={{ 
+                    objectFit: 'contain',
+                    filter: selectedArtwork.id === 'the-prey-ii' ? 'saturate(0.7)' : 'none'
+                  }}
                   priority
                 />
               </div>

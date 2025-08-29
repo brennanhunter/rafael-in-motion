@@ -17,7 +17,7 @@ export const artworkData: ArtworkCollection = [
     filename: 'AnatomyI.png',
     imagePath: '/images/abstracts/AnatomyI.png',
     category: 'abstracts',
-    story: 'Story coming soon'
+    story: 'During my medical studies, I became fascinated by the beauty hidden within anatomical drawings. This piece explores the intersection of science and art, where precise medical observation transforms into emotional expression. The skeletal forms dissolve into flowing gestures, suggesting that beneath our physical structure lies something indefinable and poetic.'
   },
   {
     id: 'anatomy-ii',
@@ -25,7 +25,7 @@ export const artworkData: ArtworkCollection = [
     filename: 'AnatomyII.png',
     imagePath: '/images/abstracts/AnatomyII.png',
     category: 'abstracts',
-    story: 'Story coming soon'
+    story: 'The sequel to my anatomical exploration, this piece delves deeper into the emotional landscape of the human form. Here, the clinical precision gives way to pure feeling - bones become rivers, muscles transform into mountains, and the heart emerges as the central sun around which everything orbits. It\'s anatomy reimagined through the lens of love and loss.'
   },
   {
     id: 'bath-behind-doors',
@@ -41,7 +41,7 @@ export const artworkData: ArtworkCollection = [
     filename: 'Black Red and Gold.jpg',
     imagePath: '/images/art-deco/Black Red and Gold.jpg',
     category: 'art-deco',
-    story: 'Story coming soon'
+    story: 'These three colors hold the power of empire and revolution. Painted during a contemplative evening, I was struck by how these particular hues have appeared in flags, royal courts, and rebel banners throughout history. The composition explores the tension between luxury and rebellion, elegance and passion - all contained within this timeless palette.'
   },
   {
     id: 'catwoman',
@@ -73,7 +73,7 @@ export const artworkData: ArtworkCollection = [
     filename: 'Ghosts.jpg',
     imagePath: '/images/abstracts/Ghosts.jpg',
     category: 'abstracts',
-    story: 'Story coming soon'
+    story: 'Some paintings paint themselves. I began this piece intending to create something entirely different, but as I worked, ghostly figures began emerging from the canvas - not supernatural, but emotional spirits of memory and nostalgia. Each translucent form represents a moment that has passed but refuses to be forgotten, lingering in the spaces between conscious thought.'
   },
   {
     id: 'happiness',
@@ -89,7 +89,7 @@ export const artworkData: ArtworkCollection = [
     filename: 'Happiness 2.jpg',
     imagePath: '/images/art-deco/Happiness 2.jpg',
     category: 'art-deco',
-    story: 'Story coming soon'
+    story: 'A continuation of my exploration of joy, this piece captures the quieter moments of contentment. Unlike its predecessor\'s playful energy, this painting finds happiness in stillness - in the gentle curve of a sleeping cat, the soft fold of fabric, the way afternoon light settles into corners. Sometimes the deepest joy is found not in laughter, but in peaceful silence.'
   },
   {
     id: 'horses-from-heaven',
@@ -193,7 +193,7 @@ export const artworkData: ArtworkCollection = [
     filename: 'ThePrey.png',
     imagePath: '/images/art-deco/ThePrey.png',
     category: 'art-deco',
-    story: 'Same story as The Prey II - While in her sleep, the tigers in her kimono are chasing the fish in her tatoo. The golden river in her black garment continues its path in the skin of her leg.'
+    story: 'While in her sleep, the tigers in her kimono are chasing the fish in her tatoo. The golden river in her black garment continues its path in the skin of her leg.'
   },
   {
     id: 'the-prey-ii',
@@ -225,7 +225,7 @@ export const artworkData: ArtworkCollection = [
     filename: 'CranesAndDragonflies.jpg',
     imagePath: '/images/art-deco/CranesAndDragonflies.jpg',
     category: 'art-deco',
-    story: 'Story coming soon'
+    story: 'Inspired by Japanese poetry, this piece explores the delicate balance between the majestic and the ephemeral. The cranes represent longevity and wisdom, while the dragonflies embody the fleeting beauty of each moment. Together, they create a meditation on time - how we must honor both permanence and change, finding grace in the dance between what endures and what passes.'
   },
   {
     id: 'flying-kites-running-cats',
@@ -241,7 +241,7 @@ export const artworkData: ArtworkCollection = [
     filename: 'ReachingTheBeach.jpg',
     imagePath: '/images/art-deco/ReachingTheBeach.jpg',
     category: 'art-deco',
-    story: 'Story coming soon'
+    story: 'This painting captures that moment of anticipation before arrival - when you can smell the salt air and hear the distant waves, but haven\'t yet felt sand beneath your feet. The figures stretch forward with longing, their bodies already moving toward the promise of ocean and freedom. It\'s about the journey being as beautiful as the destination.'
   },
   {
     id: 'the-blue-romans',
@@ -307,7 +307,7 @@ export const artworkData: ArtworkCollection = [
     filename: 'Blue-Accents.jpg',
     imagePath: '/images/abstracts/Blue-Accents.jpg',
     category: 'abstracts',
-    story: 'Story coming soon'
+    story: 'Sometimes a single color can change everything. I was working on a predominantly warm composition when I added just a few touches of blue - suddenly the entire painting transformed. This piece explores how small interventions can create dramatic shifts, both in art and in life. The blue accents don\'t dominate; they illuminate, creating depth and breathing space within the warmth.'
   },
   {
     id: 'the-duel',
@@ -323,7 +323,7 @@ export const artworkData: ArtworkCollection = [
     filename: 'Crossing-Winter.jpg',
     imagePath: '/images/abstracts/Crossing-Winter.jpg',
     category: 'abstracts',
-    story: 'Story coming soon'
+    story: 'Winter has its own logic - everything essential becomes visible when the excess falls away. This painting emerged during the coldest months, when I was learning to find beauty in bareness, strength in what survives the frost. The crossing isn\'t just through season, but through a state of mind, emerging with a clearer understanding of what truly matters.'
   },
   {
     id: 'dimensions',
@@ -331,7 +331,7 @@ export const artworkData: ArtworkCollection = [
     filename: 'Dimensions.jpg',
     imagePath: '/images/abstracts/Dimensions.jpg',
     category: 'abstracts',
-    story: 'Story coming soon'
+    story: 'What if we could see the fourth dimension? This painting attempts to visualize the unseen layers of reality that exist beyond our three-dimensional perception. Each overlapping plane suggests depth beyond depth, spaces within spaces. It was inspired by late-night conversations about physics and philosophy, when the boundaries between art and science dissolve into pure wonder.'
   },
   {
     id: 'dont-just-fly-soar',
@@ -347,7 +347,7 @@ export const artworkData: ArtworkCollection = [
     filename: 'Bandits.jpg',
     imagePath: '/images/abstracts/Bandits.jpg',
     category: 'abstracts',
-    story: 'Story coming soon'
+    story: 'Not all rebels wear masks - some hide in plain sight, disguised as ordinary moments. This piece celebrates the quiet revolutionaries who steal time for beauty, who pilfer moments for reflection in our hurried world. The "bandits" here are thoughts and dreams that refuse to be captured by routine, always escaping to wilder territories of imagination.'
   },
   {
     id: 'a-little-man-in-the-center',
@@ -355,7 +355,7 @@ export const artworkData: ArtworkCollection = [
     filename: 'A-Little-Man-in-the-Center.jpg',
     imagePath: '/images/abstracts/A-Little-Man-in-the-Center.jpg',
     category: 'abstracts',
-    story: 'Story coming soon'
+    story: 'Sometimes we all feel like the little figure at the center of overwhelming chaos. This painting captures that universal moment of feeling small in the face of life\'s complexity. But there\'s power in that smallness - the little man isn\'t being crushed by the swirling forces around him; he\'s the still point around which everything else orbits, the calm eye of his own storm.'
   },
   {
     id: 'abstract-and-crochet',
@@ -363,7 +363,7 @@ export const artworkData: ArtworkCollection = [
     filename: 'Abstract-and-Crochet.jpg.webp',
     imagePath: '/images/abstracts/Abstract-and-Crochet.jpg.webp',
     category: 'abstracts',
-    story: 'Story coming soon'
+    story: 'My grandmother\'s hands working crochet hooks inspired this piece - the way patient, repetitive motions create intricate patterns, how individual stitches accumulate into something beautiful and useful. I wanted to capture that meditative rhythm in paint, where each brushstroke is like a stitch, building texture and meaning through persistent, loving attention to detail.'
   },
   {
     id: 'beige-and-blue',
@@ -371,7 +371,7 @@ export const artworkData: ArtworkCollection = [
     filename: 'Beige-and-Blue.jpg',
     imagePath: '/images/abstracts/Beige-and-Blue.jpg',
     category: 'abstracts',
-    story: 'Story coming soon'
+    story: 'This color combination reminds me of desert meetings sky - that moment at dusk when earth and heaven seem to touch. I was drawn to these muted tones during a period of seeking balance, when I needed to find harmony between groundedness and aspiration. The beige anchors while the blue lifts, creating a visual breathing space between ambition and acceptance.'
   },
   {
     id: 'birds-in-baroque',
@@ -379,7 +379,7 @@ export const artworkData: ArtworkCollection = [
     filename: 'Birds-in-Baroque.jpg.webp',
     imagePath: '/images/abstracts/Birds-in-Baroque.jpg.webp',
     category: 'abstracts',
-    story: 'Story coming soon'
+    story: 'While visiting European cathedrals, I became fascinated by how birds would fly through these ornate spaces, their simple grace contrasting with the elaborate human architecture. This painting captures that juxtaposition - natural freedom moving through constructed beauty, the eternal dialogue between what we build and what remains wild within and around us.'
   },
   {
     id: 'blue-and-white-margins',
@@ -387,7 +387,7 @@ export const artworkData: ArtworkCollection = [
     filename: 'Blue-and-White-Margins.jpg',
     imagePath: '/images/abstracts/Blue-and-White-Margins.jpg',
     category: 'abstracts',
-    story: 'Story coming soon'
+    story: 'Inspired by marginalia in ancient manuscripts, this piece explores the idea that the most important thoughts often happen in the spaces between - in the margins of our official lives. The blue and white create a sense of infinite possibility, like looking at clouds or ocean waves, where the eye can rest and the mind can wander freely.'
   },
   {
     id: 'fading-monks-in-red',
@@ -395,7 +395,7 @@ export const artworkData: ArtworkCollection = [
     filename: 'Fading-Monks-in-Red.jpg',
     imagePath: '/images/abstracts/Fading-Monks-in-Red.jpg',
     category: 'abstracts',
-    story: 'Story coming soon'
+    story: 'During a visit to a monastery, I was struck by how the monks seemed to fade into their environment, becoming part of the walls and shadows through their stillness. This painting captures that dissolution of ego, where individual identity merges with something larger. The red suggests both passion and sacrifice - the fire of devotion that burns away the unnecessary self.'
   },
   {
     id: 'ford-monks',
@@ -403,7 +403,7 @@ export const artworkData: ArtworkCollection = [
     filename: 'Ford-Monks.jpg',
     imagePath: '/images/abstracts/Ford-Monks.jpg',
     category: 'abstracts',
-    story: 'Story coming soon'
+    story: 'The name emerged from a dream where ancient wisdom met modern pragmatism - monks who cross rivers not by walking on water, but by understanding exactly where to step. This piece explores the intersection of mysticism and practicality, suggesting that true spirituality isn\'t about escaping the world but navigating it with deeper awareness and purpose.'
   },
   {
     id: 'is-in-the-air',
@@ -411,7 +411,7 @@ export const artworkData: ArtworkCollection = [
     filename: 'Is-in-the-Air.jpg',
     imagePath: '/images/abstracts/Is-in-the-Air.jpg',
     category: 'abstracts',
-    story: 'Story coming soon'
+    story: 'Sometimes you can feel change before you can see it - it\'s just there, suspended in the atmosphere like electricity before a storm. This painting captures those moments of anticipation when something significant is about to shift, but we don\'t yet know what. The air itself becomes charged with possibility, thick with the weight of transformation.'
   },
   {
     id: 'jumping-the-bridge',
@@ -419,7 +419,7 @@ export const artworkData: ArtworkCollection = [
     filename: 'Jumping-the-Bridge.jpg',
     imagePath: '/images/abstracts/Jumping-the-Bridge.jpg',
     category: 'abstracts',
-    story: 'Story coming soon'
+    story: 'Why cross a bridge when you can leap over it entirely? This piece celebrates those moments when we bypass the expected path and find our own way forward. It\'s about the courage to take shortcuts through difficulty, to trust in our ability to clear obstacles that seem impossibly wide. Sometimes the direct route isn\'t the obvious one.'
   },
   {
     id: 'jungle-in-black-and-white',
@@ -427,7 +427,7 @@ export const artworkData: ArtworkCollection = [
     filename: 'Jungle-in-Black-and-White.jpg',
     imagePath: '/images/abstracts/Jungle-in-Black-and-White.jpg',
     category: 'abstracts',
-    story: 'Story coming soon'
+    story: 'Stripping away color revealed the jungle\'s true architecture - the complex patterns of growth and decay, light and shadow that exist beneath the seductive green surface. This monochromatic exploration discovers that when we remove the obvious beauty, deeper structures emerge: the geometry of survival, the rhythm of seasons, the elegant mathematics of chaos.'
   },
   {
     id: 'letters-numbers-and-other-details',
@@ -435,7 +435,7 @@ export const artworkData: ArtworkCollection = [
     filename: 'Letters-Numbers-and-Other-Details.jpg.webp',
     imagePath: '/images/abstracts/Letters-Numbers-and-Other-Details.jpg.webp',
     category: 'abstracts',
-    story: 'Story coming soon'
+    story: 'Our lives are composed of countless small symbols - the letters we write, numbers we calculate, tiny details we notice and forget. This painting celebrates the poetry hidden in everyday notation, the way meaning accumulates through small marks and measurements. Each element seems mundane alone, but together they create the complex text of human experience.'
   },
   {
     id: 'pushing',
@@ -443,7 +443,7 @@ export const artworkData: ArtworkCollection = [
     filename: 'Pushing.jpg',
     imagePath: '/images/abstracts/Pushing.jpg',
     category: 'abstracts',
-    story: 'Story coming soon'
+    story: 'Sometimes progress isn\'t about breaking through but about the sustained effort of pushing - the continuous application of pressure that gradually reshapes reality. This piece captures that patient persistence, the way change happens not in dramatic moments but through consistent force applied over time. It\'s a meditation on endurance and the quiet power of not giving up.'
   },
   {
     id: 'reaching-the-top',
@@ -451,7 +451,7 @@ export const artworkData: ArtworkCollection = [
     filename: 'Reaching-the-Top.jpg.webp',
     imagePath: '/images/abstracts/Reaching-the-Top.jpg.webp',
     category: 'abstracts',
-    story: 'Story coming soon'
+    story: 'The summit is never what we expect - it\'s smaller, quieter, more ordinary than the struggle to reach it. This painting explores that paradox of achievement, how the peak moment is often less about triumph and more about the simple relief of arrival. The real transformation happened during the climb; the top is just where we pause to appreciate how far we\'ve traveled.'
   },
   {
     id: 'red-and-ocre',
@@ -459,7 +459,7 @@ export const artworkData: ArtworkCollection = [
     filename: 'Red-and-Ocre.jpg.webp',
     imagePath: '/images/abstracts/Red-and-Ocre.jpg.webp',
     category: 'abstracts',
-    story: 'Story coming soon'
+    story: 'These are the colors of ancient cave paintings, of the first human attempts to capture reality on stone. Working with red and ochre connects me to something primal - the fundamental urge to make marks, to say "I was here, I saw this, this mattered." The painting becomes a bridge across millennia, linking my hand to the first artists who mixed earth with vision.'
   },
   {
     id: 'sunrise',
@@ -475,7 +475,7 @@ export const artworkData: ArtworkCollection = [
     filename: 'The-Music-is-at-the-Bottom.jpg',
     imagePath: '/images/abstracts/The-Music-is-at-the-Bottom.jpg',
     category: 'abstracts',
-    story: 'Story coming soon'
+    story: 'We often look up for transcendence, but sometimes the most beautiful melodies emerge from the depths. This piece suggests that profound beauty often lies in the foundation, in the bass notes of existence rather than the soaring highs. The music at the bottom is steady, grounding, the heartbeat that everything else dances above.'
   },
   {
     id: 'the-puzzle',
@@ -483,7 +483,7 @@ export const artworkData: ArtworkCollection = [
     filename: 'The-Puzzle.jpg.webp',
     imagePath: '/images/abstracts/The-Puzzle.jpg.webp',
     category: 'abstracts',
-    story: 'Story coming soon'
+    story: 'Life doesn\'t come with a picture on the box showing what the completed puzzle should look like. This painting embraces that uncertainty - pieces that might fit together, spaces that refuse to be filled, the satisfaction of finding connections and the beauty of accepting incompleteness. Sometimes the puzzle is more interesting when it remains unsolved.'
   },
   {
     id: 'the-unfinished-picture',
@@ -513,7 +513,6 @@ export const getArtworkByCategory = (category: Artwork['category']): Artwork[] =
       'irruption',
       'the-nap',
       'imminent',
-      'the-prey',
       'happiness',
       'the-blue-romans',
       'origami-bird',
@@ -525,6 +524,7 @@ export const getArtworkByCategory = (category: Artwork['category']): Artwork[] =
       'the-chase',
       'cranes-and-dragonflies',
       'blue-lotus',
+      'the-prey',
       'reaching-the-beach',
       'afternoon-bath',
       'japanese-night',

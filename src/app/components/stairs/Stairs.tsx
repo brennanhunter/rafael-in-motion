@@ -24,7 +24,6 @@ const Stairs: React.FC<StairsProps> = ({ isOpen, onClose }) => {
     { text: 'HOME', href: '/' },
     { text: 'ART DECO', href: '/art-deco' },
     { text: 'ABSTRACT', href: '/abstract' },
-    { text: 'SHOWCASE', href: '/interactive-gallery' },
     { text: 'INTERIORS', href: '/interiors' },
     { text: 'CONTACT', href: '/contact' }
   ];

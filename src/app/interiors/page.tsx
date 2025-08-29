@@ -56,23 +56,23 @@ export default function InteriorsPage() {
         </div>
 
         {/* Image Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-2 gap-4 max-w-7xl mx-auto">
           {interiorImages.map((image, index) => (
             <div key={index} className="group cursor-pointer">
-              <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-gray-900">
+              <div className="relative w-full bg-black rounded-lg overflow-hidden flex items-center justify-center">
                 <Image
                   src={image.src}
                   alt={image.title}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  width={800}
+                  height={600}
+                  className="max-w-full max-h-full object-contain transition-transform duration-500 group-hover:scale-105"
+                  style={{
+                    width: 'auto',
+                    height: 'auto',
+                    maxWidth: '100%',
+                    maxHeight: '100%'
+                  }}
                 />
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors duration-300" />
-                
-                {/* Overlay Text */}
-                <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent">
-                  <h3 className="text-xl font-semibold mb-2">{image.title}</h3>
-                  <p className="text-gray-300 text-sm">{image.description}</p>
-                </div>
               </div>
             </div>
           ))}
