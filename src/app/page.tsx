@@ -1,26 +1,21 @@
-// src/app/page.tsx
-"use client";
-
-import { useEffect } from "react";
+import { Metadata } from "next";
 import About from "./components/About";
 import AnimatedExhibitions from "./components/AnimatedExhibitions";
 import ArtDeco from "./components/ArtDeco";
 import Hero from "./components/Hero";
+import HomeClient from "./components/HomeClient";
+import { generatePageMetadata } from "../utils/canonical";
+
+export const metadata: Metadata = generatePageMetadata(
+  '/',
+  'RafaelRafael Artist | Rafael Rafael Painter Official Website - Contemporary Art',
+  'RafaelRafael artist official website - Rafael Rafael painter creating contemporary Art Deco and abstract paintings. Discover Rafael Rafael art collection by Rafael Acevedo, contemporary artist not actor.'
+);
 
 export default function Home() {
-  useEffect(() => {
-    // Ensure clean scroll state on home page
-    (window as typeof window & { __activeGallery?: boolean }).__activeGallery = false;
-    document.body.style.removeProperty('--k');
-    document.documentElement.style.removeProperty('--k');
-    document.documentElement.style.removeProperty('--n');
-    document.documentElement.classList.remove('gallery-html');
-    document.body.classList.remove('gallery-body');
-    window.scrollTo({ top: 0, behavior: 'instant' });
-  }, []);
-
   return (
     <main className="min-h-screen bg-black">
+      <HomeClient />
       <Hero />
       <About />
       <AnimatedExhibitions />

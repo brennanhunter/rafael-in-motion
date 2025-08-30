@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Cinzel } from "next/font/google";
 import "./globals.css";
 import Header from "./components/Header";
 import PageWrapper from "./components/PageWrapper";
+import { SEO_CONFIG } from "../utils/canonical";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,26 +29,14 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://rafaelrafael.com'),
+  metadataBase: new URL(SEO_CONFIG.baseUrl),
   title: {
-    default: "RafaelRafael - Contemporary Artist & Painter | Rafael Acevedo Art",
-    template: "%s | RafaelRafael - Contemporary Artist"
+    default: SEO_CONFIG.defaultTitle,
+    template: SEO_CONFIG.titleTemplate
   },
-  description: "Discover the artistic world of RafaelRafael (Rafael Acevedo), contemporary artist creating stunning Art Deco paintings, abstract art, and interior design pieces. Experience original artwork and visual storytelling.",
-  keywords: [
-    "RafaelRafael",
-    "Rafael Acevedo", 
-    "contemporary artist",
-    "Art Deco paintings",
-    "abstract art",
-    "interior design art",
-    "original paintings",
-    "visual storytelling",
-    "fine art",
-    "modern art",
-    "artist portfolio"
-  ],
-  authors: [{ name: "Rafael Acevedo", url: "https://rafaelrafael.com" }],
+  description: SEO_CONFIG.description,
+  keywords: SEO_CONFIG.keywords,
+  authors: [{ name: "Rafael Acevedo", url: SEO_CONFIG.baseUrl }],
   creator: "Rafael Acevedo",
   publisher: "RafaelRafael",
   robots: {
@@ -64,13 +53,13 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://rafaelrafael.com',
-    siteName: 'RafaelRafael - Contemporary Artist',
-    title: 'RafaelRafael - Contemporary Artist & Painter | Rafael Acevedo Art',
-    description: 'Discover the artistic world of RafaelRafael (Rafael Acevedo), contemporary artist creating stunning Art Deco paintings, abstract art, and interior design pieces.',
+    url: SEO_CONFIG.baseUrl,
+    siteName: SEO_CONFIG.siteName,
+    title: SEO_CONFIG.defaultTitle,
+    description: SEO_CONFIG.description,
     images: [
       {
-        url: '/images/art-deco/FlyingKitesRunningCats.jpg',
+        url: SEO_CONFIG.socialImage,
         width: 1200,
         height: 630,
         alt: 'RafaelRafael - Contemporary Art by Rafael Acevedo',
@@ -81,13 +70,21 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'RafaelRafael - Contemporary Artist & Painter',
-    description: 'Discover the artistic world of RafaelRafael (Rafael Acevedo), contemporary artist creating stunning Art Deco paintings and abstract art.',
-    images: ['/images/art-deco/FlyingKitesRunningCats.jpg'],
+    description: SEO_CONFIG.description,
+    images: [SEO_CONFIG.socialImage],
+    creator: SEO_CONFIG.twitterHandle,
   },
   alternates: {
-    canonical: 'https://rafaelrafael.com',
+    canonical: SEO_CONFIG.baseUrl,
+    languages: {
+      'en': SEO_CONFIG.baseUrl,
+    },
   },
   category: 'Arts & Culture',
+  other: {
+    'format-detection': 'telephone=no',
+    'referrer': 'strict-origin-when-cross-origin',
+  },
 };
 
 export default function RootLayout({
@@ -102,9 +99,10 @@ export default function RootLayout({
         "@type": "Person",
         "@id": "https://rafaelrafael.com/#person",
         name: "Rafael Acevedo",
-        alternateName: "RafaelRafael",
-        description: "Contemporary artist specializing in Art Deco paintings, abstract art, and interior design pieces.",
+        alternateName: ["RafaelRafael", "Rafael Rafael Artist", "Rafael Rafael Painter"],
+        description: "RafaelRafael (Rafael Rafael) is a contemporary artist and painter specializing in Art Deco paintings, abstract art, and interior design pieces. Not to be confused with actors of similar names.",
         url: "https://rafaelrafael.com",
+        disambiguatingDescription: "Contemporary artist and painter, not an actor",
         image: {
           "@type": "ImageObject",
           url: "https://rafaelrafael.com/images/artista.jpg",
@@ -116,6 +114,12 @@ export default function RootLayout({
           "https://facebook.com/rafaelartinmotion"
         ],
         jobTitle: "Contemporary Artist & Painter",
+        hasOccupation: {
+          "@type": "Occupation",
+          name: "Visual Artist",
+          occupationalCategory: "Arts, Design, Entertainment, Sports, and Media Occupations",
+          responsibilities: "Creating contemporary paintings, Art Deco artwork, and abstract art pieces"
+        },
         worksFor: {
           "@type": "Organization",
           "@id": "https://rafaelrafael.com/#organization"
@@ -126,14 +130,19 @@ export default function RootLayout({
           "Contemporary Art",
           "Interior Design Art",
           "Visual Storytelling",
-          "Fine Art"
-        ]
+          "Fine Art",
+          "Painting Techniques",
+          "Color Theory",
+          "Artistic Composition"
+        ],
+        artform: ["Painting", "Contemporary Art", "Abstract Art", "Art Deco"],
+        mainEntityOfPage: "https://rafaelrafael.com"
       },
       {
         "@type": "Organization",
         "@id": "https://rafaelrafael.com/#organization",
         name: "RafaelRafael",
-        alternateName: "Rafael Acevedo Art",
+        alternateName: ["Rafael Rafael Art", "Rafael Rafael Artist Studio"],
         url: "https://rafaelrafael.com",
         logo: {
           "@type": "ImageObject",
@@ -145,16 +154,28 @@ export default function RootLayout({
           "@id": "https://rafaelrafael.com/#person"
         },
         foundingDate: "2020",
-        description: "Contemporary art studio and gallery featuring original paintings by Rafael Acevedo, specializing in Art Deco and abstract artwork."
+        description: "RafaelRafael (Rafael Rafael) contemporary art studio and gallery featuring original paintings by Rafael Acevedo, specializing in Art Deco and abstract artwork.",
+        knowsAbout: ["Contemporary Art", "Art Deco", "Abstract Art", "Painting"],
+        makesOffer: {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "CreativeWork",
+            name: "Contemporary Art Paintings"
+          }
+        }
       },
       {
         "@type": "WebSite",
         "@id": "https://rafaelrafael.com/#website", 
         url: "https://rafaelrafael.com",
-        name: "RafaelRafael - Contemporary Artist",
-        description: "Official website of contemporary artist Rafael Acevedo, featuring Art Deco paintings, abstract art, and interior design pieces.",
+        name: "RafaelRafael - Rafael Rafael Artist Official Website",
+        alternateName: "Rafael Rafael Painter Website",
+        description: "Official website of RafaelRafael (Rafael Rafael), contemporary artist Rafael Acevedo, featuring Art Deco paintings, abstract art, and interior design pieces.",
         publisher: {
           "@id": "https://rafaelrafael.com/#organization"
+        },
+        mainEntity: {
+          "@id": "https://rafaelrafael.com/#person"
         },
         potentialAction: {
           "@type": "SearchAction",
@@ -163,6 +184,11 @@ export default function RootLayout({
             urlTemplate: "https://rafaelrafael.com/?s={search_term_string}"
           },
           "query-input": "required name=search_term_string"
+        },
+        about: {
+          "@type": "Thing",
+          "name": "Contemporary Art",
+          "sameAs": "https://en.wikipedia.org/wiki/Contemporary_art"
         }
       }
     ]
