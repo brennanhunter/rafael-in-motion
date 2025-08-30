@@ -48,9 +48,10 @@ const paintings = [
 
 export default function PageWrapper({ children }: PageWrapperProps) {
   const [isLoading, setIsLoading] = useState(false);
-  const [randomPainting, setRandomPainting] = useState('');
+  const [ setRandomPainting] = useState('');
   const [exitingColumns, setExitingColumns] = useState<number[]>([]);
   const [stairsTriggered, setStairsTriggered] = useState(false);
+  const [showLoadingContent, setShowLoadingContent] = useState(true);
   const pathname = usePathname();
   const previousPathname = useRef<string>('');
   const isFirstRender = useRef(true);
@@ -60,6 +61,7 @@ export default function PageWrapper({ children }: PageWrapperProps) {
     setStairsTriggered(true);
     setIsLoading(true);
     setExitingColumns([]);
+    setShowLoadingContent(true); // Reset loading content visibility
   };
 
   useEffect(() => {
@@ -75,12 +77,13 @@ export default function PageWrapper({ children }: PageWrapperProps) {
       // If stairs wasn't triggered, this is a normal navigation
       if (!stairsTriggered) {
         // Select random painting
-        const randomIndex = Math.floor(Math.random() * paintings.length);
-        setRandomPainting(paintings[randomIndex]);
+        
+        
         
         // Show loading IMMEDIATELY - no delay
         setIsLoading(true);
         setExitingColumns([]); // Reset exit columns
+        setShowLoadingContent(true); // Reset loading content visibility
       }
       
       // Reset stairs trigger flag
@@ -131,6 +134,11 @@ export default function PageWrapper({ children }: PageWrapperProps) {
           const timeout = setTimeout(() => {
             setExitingColumns(prev => [...prev, i]);
             console.log(`PageWrapper Column ${i + 1} exiting`);
+            
+            // Hide loading content when column 5 (index 4) starts exiting
+            if (i === 4) {
+              setShowLoadingContent(false);
+            }
           }, (4 - i) * 150);
           
           timeouts.push(timeout);
@@ -140,6 +148,7 @@ export default function PageWrapper({ children }: PageWrapperProps) {
         const hideTimeout = setTimeout(() => {
           setIsLoading(false);
           setExitingColumns([]);
+          setShowLoadingContent(true); // Reset for next time
         }, 5 * 150 + 600); // All delays + transition time
         
         timeouts.push(hideTimeout);
@@ -228,29 +237,31 @@ export default function PageWrapper({ children }: PageWrapperProps) {
           </div>
 
           {/* Loading Content - Positioned above all columns */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center z-10 pointer-events-none">
-            <div className="mb-4 sm:mb-8">
-              <Image
-                src="/images/logo.png"
-                alt="Rafael Logo"
-                width={80}
-                height={80}
-                className="mx-auto object-contain animate-pulse sm:w-[120px] sm:h-[120px]"
-                priority
-              />
+          {showLoadingContent && (
+            <div className="loading-content absolute inset-0 flex flex-col items-center justify-center z-10 pointer-events-none transition-opacity duration-300">
+              <div className="mb-4 sm:mb-8">
+                <Image
+                  src="/images/logo.png"
+                  alt="Rafael Logo"
+                  width={80}
+                  height={80}
+                  className="mx-auto object-contain animate-pulse sm:w-[120px] sm:h-[120px]"
+                  priority
+                />
+              </div>
+              
+              {/* Loading Spinner */}
+              <div className="mb-4 sm:mb-6">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-white/30 border-t-white rounded-full animate-spin"></div>
+              </div>
+              
+              <div className="text-center px-4">
+                <h2 className="text-2xl sm:text-4xl font-cinzel font-light text-white tracking-wider">
+                  Loading
+                </h2>
+              </div>
             </div>
-            
-            {/* Loading Spinner */}
-            <div className="mb-4 sm:mb-6">
-              <div className="w-12 h-12 sm:w-16 sm:h-16 border-4 border-white/30 border-t-white rounded-full animate-spin"></div>
-            </div>
-            
-            <div className="text-center px-4">
-              <h2 className="text-2xl sm:text-4xl font-cinzel font-light text-white tracking-wider">
-                Loading
-              </h2>
-            </div>
-          </div>
+          )}
         </div>
       )}
 
