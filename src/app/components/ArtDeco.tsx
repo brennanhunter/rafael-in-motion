@@ -203,6 +203,8 @@ export default function ArtDeco({ className = '' }: ArtDecoProps) {
               height={600}
               className={`w-full h-full object-contain transition-all duration-1000 ${
                 imageLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
+              } ${
+                currentArtwork?.title === 'Finding Yourself' ? 'border-2 border-gray-400 rounded-lg' : ''
               }`}
               onLoad={handleImageLoad}
               style={{
@@ -273,28 +275,11 @@ export default function ArtDeco({ className = '' }: ArtDecoProps) {
           </div>
         </div>
 
-        {/* Side Story Panel - Desktop */}
-        <div className="hidden md:block absolute left-6 top-1/2 -translate-y-1/2 z-[60] max-w-xs">
-          {currentArtwork?.story && (
-            <div className="bg-black/80 backdrop-blur-sm text-white p-4 rounded-lg border border-white/30 shadow-2xl">
-              <h3 className="text-sm font-semibold mb-2 text-amber-300">Story</h3>
-              <p className="text-xs leading-relaxed italic">&quot;{currentArtwork?.story}&quot;</p>
-            </div>
-          )}
-        </div>
+
 
         {/* Bottom Area for Navigation Only */}
         <div className="absolute bottom-0 left-0 right-0 z-[60] bg-gradient-to-t from-black/95 via-black/85 to-transparent">
-          <div className="p-4 sm:p-6 space-y-3 sm:space-y-4">
-            {/* Story Text - Mobile Only */}
-            <div className="block md:hidden">
-              {currentArtwork?.story && (
-                <div className="bg-black/70 backdrop-blur-sm text-white p-3 rounded-lg border border-white/20 max-w-full mx-auto">
-                  <p className="text-xs leading-relaxed italic text-center">&quot;{currentArtwork?.story}&quot;</p>
-                </div>
-              )}
-            </div>
-            
+          <div className={`p-4 sm:p-6 space-y-3 sm:space-y-4 transition-opacity duration-500 ${showUI ? 'opacity-100' : 'opacity-0'}`}>
             {/* Navigation Dots */}
             <div className="flex justify-center">
               <div className="flex items-center space-x-1 bg-black/50 backdrop-blur-sm p-2 sm:p-3 rounded-full border border-white/20">
@@ -341,6 +326,27 @@ export default function ArtDeco({ className = '' }: ArtDecoProps) {
         </div>
       </div>
       </div> {/* Close Main Gallery Content wrapper */}
+
+      {/* Story Panels - Always Visible (Outside of UI fade) */}
+      {/* Side Story Panel - Desktop - Always Visible */}
+      <div className="hidden md:block absolute left-6 top-1/2 -translate-y-1/2 z-[60] max-w-xs">
+        {currentArtwork?.story && (
+          <div className="bg-black/90 backdrop-blur-md text-white p-6 rounded-xl border border-amber-400/40 shadow-2xl">
+            <h3 className="text-base font-bold mb-3 text-amber-300 font-cinzel">Story</h3>
+            <p className="text-sm leading-relaxed text-white/90">&quot;{currentArtwork?.story}&quot;</p>
+          </div>
+        )}
+      </div>
+
+      {/* Mobile Story Panel - Always Visible */}
+      <div className="block md:hidden absolute bottom-20 left-4 right-4 z-[60]">
+        {currentArtwork?.story && (
+          <div className="bg-black/90 backdrop-blur-md text-white p-4 rounded-xl border border-amber-400/40 shadow-xl mx-auto max-w-lg">
+            <h3 className="text-sm font-bold mb-2 text-amber-300 font-cinzel text-center">Story</h3>
+            <p className="text-sm leading-relaxed text-white/90 text-center">&quot;{currentArtwork?.story}&quot;</p>
+          </div>
+        )}
+      </div>
 
       {/* Fullscreen Modal */}
       {isFullscreen && (

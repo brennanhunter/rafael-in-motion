@@ -40,6 +40,7 @@ export default function ArtGallery({
   const [showFloatingHelp, setShowFloatingHelp] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [showDesktopNav, setShowDesktopNav] = useState(true);
   const categoryArtworks = useArtworkByCategory(category);
   const { artwork: allArtworks } = useArtwork();
   const [artworksWithDimensions, setArtworksWithDimensions] = useState<ArtworkWithDimensions[]>([]);
@@ -156,6 +157,23 @@ export default function ArtGallery({
     setCurrentIndex(prev => (prev - 1 + artworksWithDimensions.length) % artworksWithDimensions.length);
   };
 
+  // Desktop navigation functions - Simple scroll-based navigation
+  const goToNextDesktop = useCallback(() => {
+    const scrollAmount = window.innerHeight * 0.8; // Scroll by 80% of viewport height
+    window.scrollBy({ 
+      top: scrollAmount, 
+      behavior: 'smooth' 
+    });
+  }, []);
+
+  const goToPreviousDesktop = useCallback(() => {
+    const scrollAmount = window.innerHeight * 0.8; // Scroll by 80% of viewport height
+    window.scrollBy({ 
+      top: -scrollAmount, 
+      behavior: 'smooth' 
+    });
+  }, []);
+
   // Mobile gesture support
   useEffect(() => {
     if (!isMobile) return;
@@ -180,7 +198,7 @@ export default function ArtGallery({
     };
   }, [isMobile, handleTouchStart, handleTouchEnd]);
 
-  // Desktop-only: Set up scroll-driven animations
+  // Desktop-only: Set up scroll-driven animations and simple navigation
   useEffect(() => {
     if (isMobile) return; // Skip entirely on mobile
     
@@ -206,6 +224,17 @@ export default function ArtGallery({
     const hideHelpOnScroll = () => {
       setShowFloatingHelp(false);
       clearTimeout(helpTimer);
+    };
+
+    // Keyboard navigation
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+        e.preventDefault();
+        goToNextDesktop();
+      } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+        e.preventDefault();
+        goToPreviousDesktop();
+      }
     };
     
     // Small delay to ensure DOM is ready
@@ -245,10 +274,12 @@ export default function ArtGallery({
       cleanupFunction = () => {
         removeEventListener('scroll', handleScroll);
         removeEventListener('wheel', handleWheel);
+        removeEventListener('keydown', handleKeyDown);
       };
 
       addEventListener('scroll', handleScroll, { passive: true });
       addEventListener('wheel', handleWheel, { passive: true });
+      addEventListener('keydown', handleKeyDown);
     }, 100);
     
     // Return comprehensive cleanup
@@ -292,7 +323,7 @@ export default function ArtGallery({
         document.body.style.animationTimeline = '';
       }, 10);
     };
-  }, [artworksWithDimensions.length, isMobile]); // Added isMobile dependency
+  }, [artworksWithDimensions.length, isMobile, goToNextDesktop, goToPreviousDesktop]); // Simple dependencies
 
   if (!artworksWithDimensions || artworksWithDimensions.length === 0) {
     return (
@@ -352,7 +383,9 @@ export default function ArtGallery({
                     height: 'auto',
                     maxWidth: '100%',
                     maxHeight: '100%',
-                    filter: artworksWithDimensions[currentIndex]?.id === 'the-prey-ii' ? 'saturate(0.7)' : 'none'
+                    filter: artworksWithDimensions[currentIndex]?.id === 'the-prey-ii' 
+                      ? 'saturate(0.7) contrast(1.3) brightness(0.9) sepia(0.1) drop-shadow(0 0 20px rgba(0,0,0,0.8)) drop-shadow(0 0 40px rgba(139,69,19,0.3))'
+                      : 'none'
                   }}
                 />
                 
@@ -480,7 +513,9 @@ export default function ArtGallery({
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     style={{ 
                       objectFit: 'cover',
-                      filter: artwork.id === 'the-prey-ii' ? 'saturate(0.7)' : 'none'
+                      filter: artwork.id === 'the-prey-ii' 
+                        ? 'saturate(0.7) contrast(1.3) brightness(0.9) sepia(0.1) drop-shadow(0 0 20px rgba(0,0,0,0.8)) drop-shadow(0 0 40px rgba(139,69,19,0.3))'
+                        : 'none'
                     }}
                     loading="lazy"
                   />
@@ -501,20 +536,99 @@ export default function ArtGallery({
         <p>© Rafael Acevedo • Interactive 3D Gallery Experience</p>
       </footer>
 
+      {/* Desktop Navigation Buttons */}
+      {!isMobile && showDesktopNav && (
+        <div className="fixed top-1/2 left-6 right-6 z-30 pointer-events-none">
+          <div className="flex justify-between items-center">
+            {/* Previous Button */}
+            <button
+              onClick={goToPreviousDesktop}
+              className="pointer-events-auto bg-black/80 hover:bg-black/90 backdrop-blur-sm text-white p-4 rounded-full shadow-2xl transition-all duration-300 group border border-white/20 hover:border-amber-400/50"
+              title="Previous artwork"
+            >
+              <svg className="w-6 h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+
+            {/* Next Button */}
+            <button
+              onClick={goToNextDesktop}
+              className="pointer-events-auto bg-black/80 hover:bg-black/90 backdrop-blur-sm text-white p-4 rounded-full shadow-2xl transition-all duration-300 group border border-white/20 hover:border-amber-400/50"
+              title="Next artwork"
+            >
+              <svg className="w-6 h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Desktop Navigation Controls Panel */}
+      {!isMobile && (
+        <div className="fixed bottom-6 left-6 z-30 animate-in slide-in-from-left-4 fade-in duration-500">
+          <div className="bg-black/80 backdrop-blur-sm rounded-2xl px-6 py-4 shadow-2xl border border-white/20 flex items-center gap-4">
+            <div className="text-white text-sm">
+              <p className="font-semibold text-amber-400 mb-1">Gallery Navigation</p>
+              <p className="text-xs opacity-80">Scroll through the 3D gallery • {artworksWithDimensions.length} artworks</p>
+            </div>
+            
+            <div className="flex items-center gap-2">
+              <button
+                onClick={goToPreviousDesktop}
+                className="bg-amber-600/80 hover:bg-amber-600 text-white p-2 rounded-lg transition-all duration-200 group"
+                title="Scroll up (↑ or ←)"
+              >
+                <svg className="w-4 h-4 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+              
+              <button
+                onClick={goToNextDesktop}
+                className="bg-amber-600/80 hover:bg-amber-600 text-white p-2 rounded-lg transition-all duration-200 group"
+                title="Scroll down (↓ or →)"
+              >
+                <svg className="w-4 h-4 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+              
+              <div className="w-px h-6 bg-white/20 mx-2"></div>
+              
+              <button
+                onClick={() => setShowDesktopNav(!showDesktopNav)}
+                className="bg-gray-600/80 hover:bg-gray-600 text-white p-2 rounded-lg transition-all duration-200"
+                title="Toggle navigation buttons"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={showDesktopNav ? "M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L8.465 8.465M9.878 9.878a3 3 0 00-.007.13m6.364 6.364L14.828 14.828M14.828 14.828a3 3 0 00.006-.13M14.828 14.828l1.414 1.414M20.543 20.543L19.13 19.13" : "M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"} />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Floating Help Indicator */}
       {showFloatingHelp && !isMobile && (
         <div className="fixed bottom-6 right-6 z-40 animate-in slide-in-from-bottom-4 fade-in duration-500">
-          <div className="bg-gradient-to-r from-amber-500/90 to-amber-600/90 backdrop-blur-sm rounded-full px-6 py-3 shadow-2xl border border-amber-400/30 flex items-center gap-3 max-w-xs">
+          <div className="bg-gradient-to-r from-amber-500/90 to-amber-600/90 backdrop-blur-sm rounded-xl px-6 py-4 shadow-2xl border border-amber-400/30 flex items-center gap-3 max-w-sm">
             <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center animate-pulse">
-              <span className="text-white text-lg">️</span>
+              <span className="text-white text-lg">💡</span>
             </div>
             <div className="text-white">
-              <p className="font-semibold text-sm">Try scrolling!</p>
-              <p className="text-xs opacity-90">Use mouse wheel to explore</p>
+              <p className="font-semibold text-sm">Navigation Options</p>
+              <p className="text-xs opacity-90">
+                • Scroll with mouse wheel<br/>
+                • Arrow keys (↑↓←→)<br/>
+                • Use navigation buttons
+              </p>
             </div>
             <button 
               onClick={() => setShowFloatingHelp(false)}
-              className="text-white/70 hover:text-white transition-colors"
+              className="text-white/70 hover:text-white transition-colors ml-2"
             >
               ×
             </button>
@@ -553,7 +667,9 @@ export default function ArtGallery({
                   sizes={isMobile ? "95vw" : "(max-width: 768px) 90vw, 60vw"}
                   style={{ 
                     objectFit: 'contain',
-                    filter: selectedArtwork.id === 'the-prey-ii' ? 'saturate(0.7)' : 'none'
+                    filter: selectedArtwork.id === 'the-prey-ii' 
+                      ? 'saturate(0.7) contrast(1.3) brightness(0.9) sepia(0.1) drop-shadow(0 0 20px rgba(0,0,0,0.8)) drop-shadow(0 0 40px rgba(139,69,19,0.3))'
+                      : 'none'
                   }}
                   priority
                 />
