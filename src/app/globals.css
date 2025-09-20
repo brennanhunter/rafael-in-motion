@@ -70,8 +70,31 @@ body {
   height: 100dvh;
   color: #dedede;
   font: clamp(.625em, 3vmin, 1.5em) / 1.25 sans-serif;
-  animation: k 1s linear;
-  animation-timeline: scroll();
+}
+
+/* Native scroll-driven animation for supported browsers */
+@supports (animation-timeline: scroll()) {
+  .gallery-body {
+    animation: k 1s linear;
+    animation-timeline: scroll();
+  }
+}
+
+/* Fallback for Safari and other browsers without scroll-driven animation support */
+@supports not (animation-timeline: scroll()) {
+  .gallery-body {
+    /* JavaScript will manually update --k property based on scroll position */
+    --k: -1; /* Default initial value */
+    will-change: transform; /* Hint to browser for optimization */
+  }
+  
+  .gallery-article {
+    will-change: transform; /* Optimize 3D transforms for Safari */
+  }
+  
+  .gallery-section {
+    will-change: transform; /* Optimize 3D rotation for Safari */
+  }
 }
 
 .gallery-body::before {

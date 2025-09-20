@@ -215,6 +215,9 @@ export default function ArtGallery({
     document.documentElement.classList.add('gallery-html');
     document.body.classList.add('gallery-body');
     
+    // Detect if browser supports scroll-driven animations
+    const supportsScrollTimeline = CSS.supports('animation-timeline', 'scroll()');
+    
     // Show floating help after 3 seconds if user hasn't scrolled
     const helpTimer = setTimeout(() => {
       setShowFloatingHelp(true);
@@ -224,6 +227,33 @@ export default function ArtGallery({
     const hideHelpOnScroll = () => {
       setShowFloatingHelp(false);
       clearTimeout(helpTimer);
+    };
+
+    // Safari fallback: manually update --k property based on scroll position
+    let rafId: number;
+    const updateScrollDrivenProperty = () => {
+      if (!window.__activeGallery) return;
+      
+      const scrollTop = window.scrollY;
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      
+      if (maxScroll > 0) {
+        // Calculate k value from -1 to 1 based on scroll position
+        const scrollProgress = scrollTop / maxScroll;
+        const k = -1 + (scrollProgress * 2); // Maps 0->1 to -1->1
+        
+        // Update CSS custom property
+        document.body.style.setProperty('--k', k.toString());
+      }
+    };
+
+    // Throttled scroll handler for Safari fallback
+    const handleScrollFallback = () => {
+      if (supportsScrollTimeline) return; // Only run for Safari/unsupported browsers
+      
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(updateScrollDrivenProperty);
+      hideHelpOnScroll();
     };
 
     // Keyboard navigation
@@ -251,6 +281,12 @@ export default function ArtGallery({
 
       // Initial position
       f(-1);
+      
+      // Set initial --k value for Safari fallback
+      if (!supportsScrollTimeline) {
+        document.body.style.setProperty('--k', '-1');
+        updateScrollDrivenProperty(); // Set initial value
+      }
 
       // Handle scroll events with proper cleanup
       const handleScroll = () => {
@@ -259,9 +295,17 @@ export default function ArtGallery({
           return;
         }
         
-        const k = +getComputedStyle(document.body).getPropertyValue('--k');
-        f(k);
-        hideHelpOnScroll();
+        if (supportsScrollTimeline) {
+          // For browsers with native scroll-driven animations
+          const k = +getComputedStyle(document.body).getPropertyValue('--k');
+          f(k);
+          hideHelpOnScroll();
+        } else {
+          // For Safari and other browsers without support
+          handleScrollFallback();
+          const k = +getComputedStyle(document.body).getPropertyValue('--k');
+          f(k);
+        }
       };
 
       // Enhanced mobile support
@@ -275,6 +319,7 @@ export default function ArtGallery({
         removeEventListener('scroll', handleScroll);
         removeEventListener('wheel', handleWheel);
         removeEventListener('keydown', handleKeyDown);
+        cancelAnimationFrame(rafId);
       };
 
       addEventListener('scroll', handleScroll, { passive: true });
