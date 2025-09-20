@@ -18,8 +18,9 @@ export default function Home() {
       <HomeClient />
       <Hero />
       <About />
-      <AnimatedExhibitions />
       <ArtDeco />
+      <AnimatedExhibitions />
+      
     </main>
   );
 }
