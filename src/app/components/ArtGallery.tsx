@@ -17,7 +17,7 @@ declare global {
 }
 
 interface ArtGalleryProps {
-  category?: 'art-deco' | 'abstracts' | 'portraits' | 'other';
+  category?: 'elegant-contemporary' | 'abstracts' | 'portraits' | 'other';
   artworks?: Artwork[];
   images?: string[]; // Array of image paths for direct loading
   title?: string;
@@ -30,7 +30,7 @@ interface ArtworkWithDimensions extends Artwork {
 }
 
 export default function ArtGallery({ 
-  category = 'art-deco', 
+  category = 'elegant-contemporary', 
   artworks, 
   images,
   title = 'Infinite Scroll Gallery',
@@ -85,7 +85,7 @@ export default function ArtGallery({
           description: 'Coming soon',
           caption: 'Coming soon',
           tags: [],
-          category: 'art-deco' as const
+          category: 'elegant-contemporary' as const
         };
       });
     } else {

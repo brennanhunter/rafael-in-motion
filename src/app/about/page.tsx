@@ -4,11 +4,11 @@ import Image from 'next/image';
 
 export const metadata: Metadata = {
   title: 'RafaelRafael Artist | About Rafael Rafael Painter - Contemporary Art Biography',
-  description: 'RafaelRafael artist Rafael Acevedo biography - Learn about Rafael Rafael painter, contemporary artist specializing in Art Deco and abstract art. Rafael Rafael artist website, not actor.',
+  description: 'RafaelRafael artist Rafael Acevedo biography - Learn about Rafael Rafael painter, contemporary artist specializing in Elegant Contemporary and abstract art. Rafael Rafael artist website, not actor.',
   keywords: 'RafaelRafael artist, Rafael Rafael painter, Rafael Rafael artist biography, Rafael Acevedo artist, Rafael Rafael contemporary artist, Rafael Rafael website, artist not actor, Rafael Rafael art',
   openGraph: {
     title: 'RafaelRafael Artist | About Rafael Rafael Painter',
-    description: 'Learn about RafaelRafael artist Rafael Acevedo, contemporary painter specializing in Art Deco and abstract art. Official Rafael Rafael artist biography.',
+    description: 'Learn about RafaelRafael artist Rafael Acevedo, contemporary painter specializing in Elegant Contemporary and abstract art. Official Rafael Rafael artist biography.',
   },
 };
 
@@ -55,7 +55,7 @@ export default function About() {
                 </p>
                 
                 <p>
-                  Based in Miami, <strong className="text-amber-400">Rafael</strong> has dedicated his career to creating stunning Art Deco paintings, abstract compositions, and transformative interior design pieces. The name <strong className="text-amber-400">RafaelRafael</strong> reflects the duality of his artistic nature: honoring traditional techniques while embracing contemporary innovation.
+                  Based in Miami, <strong className="text-amber-400">Rafael</strong> has dedicated his career to creating stunning Elegant Contemporary paintings, abstract compositions, and transformative interior design pieces. The name <strong className="text-amber-400">RafaelRafael</strong> reflects the duality of his artistic nature: honoring traditional techniques while embracing contemporary innovation.
                 </p>
                 
                 <p>
@@ -68,7 +68,7 @@ export default function About() {
                 <ul className="space-y-2 text-gray-300">
                   <li className="flex items-center">
                     <span className="w-2 h-2 bg-amber-400 rounded-full mr-3"></span>
-                    Art Deco Paintings
+                    Elegant Contemporary Paintings
                   </li>
                   <li className="flex items-center">
                     <span className="w-2 h-2 bg-amber-400 rounded-full mr-3"></span>
@@ -100,13 +100,13 @@ export default function About() {
           </p>
           
           <div className="grid md:grid-cols-3 gap-8">
-            <Link href="/art-deco" className="group block">
+            <Link href="/elegant-contemporary" className="group block">
               <div className="bg-gray-800 rounded-lg p-6 hover:bg-gray-700 transition-colors duration-300">
                 <h3 className="text-xl font-semibold text-amber-400 mb-3 group-hover:text-amber-300">
-                  Art Deco Collection
+                  Elegant Contemporary Collection
                 </h3>
                 <p className="text-gray-300 text-sm">
-                  Elegant paintings that capture the sophistication of the Art Deco movement
+                  Sophisticated paintings that capture modern elegance and refined contemporary style
                 </p>
               </div>
             </Link>
@@ -144,7 +144,7 @@ export default function About() {
             "@context": "https://schema.org",
             "@type": "AboutPage",
             "name": "About RafaelRafael - Rafael Acevedo Contemporary Artist",
-            "description": "Learn about Rafael Acevedo, the contemporary artist behind RafaelRafael.com specializing in Art Deco and abstract paintings",
+            "description": "Learn about Rafael Acevedo, the contemporary artist behind RafaelRafael.com specializing in Elegant Contemporary and abstract paintings",
             "url": "https://rafaelrafael.com/about",
             "mainEntity": {
               "@type": "Person",

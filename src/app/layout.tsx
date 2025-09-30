@@ -100,7 +100,7 @@ export default function RootLayout({
         "@id": "https://rafaelrafael.com/#person",
         name: "Rafael Acevedo",
         alternateName: ["RafaelRafael", "Rafael Rafael Artist", "Rafael Rafael Painter"],
-        description: "RafaelRafael (Rafael Rafael) is a contemporary artist and painter specializing in Art Deco paintings, abstract art, and interior design pieces. Not to be confused with actors of similar names.",
+        description: "RafaelRafael (Rafael Rafael) is a contemporary artist and painter specializing in Elegant Contemporary paintings, abstract art, and interior design pieces. Not to be confused with actors of similar names.",
         url: "https://rafaelrafael.com",
         disambiguatingDescription: "Contemporary artist and painter, not an actor",
         image: {
@@ -118,24 +118,27 @@ export default function RootLayout({
           "@type": "Occupation",
           name: "Visual Artist",
           occupationalCategory: "Arts, Design, Entertainment, Sports, and Media Occupations",
-          responsibilities: "Creating contemporary paintings, Art Deco artwork, and abstract art pieces"
+          responsibilities: "Creating contemporary paintings, Elegant Contemporary artwork, and abstract art pieces"
         },
         worksFor: {
           "@type": "Organization",
           "@id": "https://rafaelrafael.com/#organization"
         },
         knowsAbout: [
-          "Art Deco Painting",
-          "Abstract Art",
+          "Elegant Contemporary Painting",
           "Contemporary Art",
+          "Abstract Art",
+          "Art Deco Style",
+          "Sophisticated Modern Art",
           "Interior Design Art",
           "Visual Storytelling",
           "Fine Art",
+          "Luxury Art",
           "Painting Techniques",
           "Color Theory",
           "Artistic Composition"
         ],
-        artform: ["Painting", "Contemporary Art", "Abstract Art", "Art Deco"],
+        artform: ["Painting", "Contemporary Art", "Abstract Art", "Elegant Contemporary", "Art Deco"],
         mainEntityOfPage: "https://rafaelrafael.com"
       },
       {
@@ -154,8 +157,8 @@ export default function RootLayout({
           "@id": "https://rafaelrafael.com/#person"
         },
         foundingDate: "2020",
-        description: "RafaelRafael (Rafael Rafael) contemporary art studio and gallery featuring original paintings by Rafael Acevedo, specializing in Art Deco and abstract artwork.",
-        knowsAbout: ["Contemporary Art", "Art Deco", "Abstract Art", "Painting"],
+        description: "RafaelRafael (Rafael Rafael) contemporary art studio and gallery featuring original paintings by Rafael Acevedo, specializing in Elegant Contemporary and abstract artwork. Art style evolved from Art Deco influences into sophisticated modern luxury art.",
+        knowsAbout: ["Contemporary Art", "Elegant Contemporary", "Abstract Art", "Art Deco", "Modern Art", "Painting"],
         makesOffer: {
           "@type": "Offer",
           itemOffered: {
@@ -170,7 +173,7 @@ export default function RootLayout({
         url: "https://rafaelrafael.com",
         name: "RafaelRafael - Rafael Rafael Artist Official Website",
         alternateName: "Rafael Rafael Painter Website",
-        description: "Official website of RafaelRafael (Rafael Rafael), contemporary artist Rafael Acevedo, featuring Art Deco paintings, abstract art, and interior design pieces.",
+        description: "Official website of RafaelRafael (Rafael Rafael), contemporary artist Rafael Acevedo, featuring Elegant Contemporary paintings, abstract art, and interior design pieces.",
         publisher: {
           "@id": "https://rafaelrafael.com/#organization"
         },

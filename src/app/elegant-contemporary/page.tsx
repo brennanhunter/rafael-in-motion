@@ -4,8 +4,8 @@ import { generatePageMetadata } from "../../utils/canonical";
 
 export const metadata: Metadata = generatePageMetadata(
   '/elegant-contemporary',
-  'Elegant Contemporary Gallery - RafaelRafael Contemporary Art',
-  'Explore Rafael Acevedo\'s stunning Elegant Contemporary paintings featuring sophisticated modern aesthetics, refined colors, and elegant design elements that define contemporary luxury.'
+  'Elegant Contemporary Gallery - RafaelRafael Contemporary Art | Art Deco Style Evolution',
+  'Explore Rafael Acevedo\'s stunning Elegant Contemporary paintings featuring sophisticated modern aesthetics, refined colors, and elegant design elements. Evolution of Art Deco style into contemporary luxury art with geometric patterns and bold sophistication.'
 );
 
 export default function ElegantContemporaryPage() {

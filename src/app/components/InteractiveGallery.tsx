@@ -17,12 +17,12 @@ function GalleryModel({
   const [texturesLoaded, setTexturesLoaded] = useState(0);
   
   // Load different painting textures with progress tracking
-  const texture1 = useLoader(THREE.TextureLoader, '/images/art-deco/Tea House.jpg');
-  const texture2 = useLoader(THREE.TextureLoader, '/images/art-deco/TheChase.jpg');
-  const texture3 = useLoader(THREE.TextureLoader, '/images/art-deco/FlyingKitesRunningCats.jpg');
-  const texture4 = useLoader(THREE.TextureLoader, '/images/art-deco/101OrigamiBirds.jpg');
-  const texture5 = useLoader(THREE.TextureLoader, '/images/art-deco/Bath Behind Doors.jpg');
-  const texture6 = useLoader(THREE.TextureLoader, '/images/art-deco/HorsesFromHeaven.png');
+  const texture1 = useLoader(THREE.TextureLoader, '/images/elegant-contemporary/Tea House.jpg');
+  const texture2 = useLoader(THREE.TextureLoader, '/images/elegant-contemporary/TheChase.jpg');
+  const texture3 = useLoader(THREE.TextureLoader, '/images/elegant-contemporary/FlyingKitesRunningCats.jpg');
+  const texture4 = useLoader(THREE.TextureLoader, '/images/elegant-contemporary/101OrigamiBirds.jpg');
+  const texture5 = useLoader(THREE.TextureLoader, '/images/elegant-contemporary/Bath Behind Doors.jpg');
+  const texture6 = useLoader(THREE.TextureLoader, '/images/elegant-contemporary/HorsesFromHeaven.png');
   
   const paintingTextures = useMemo(() => [
     texture1,
@@ -268,42 +268,42 @@ export default function InteractiveGallery() {
       title: 'Tea House',
       artist: 'Rafael Acevedo',
       description: 'Following the ritual, a woman is serving tea: you cannot see the teacups, but the raising steam going up, visually suggest a beautiful turquoise curtain.',
-      image: '/images/art-deco/Tea House.jpg'
+      image: '/images/elegant-contemporary/Tea House.jpg'
     },
     {
       id: 'the-chase',
       title: 'The Chase',
       artist: 'Rafael Acevedo',
       description: 'In this piece a gang of tigers races after a flock of cranes, only to realize they have being pursued by origami birds themselves. It\'s a playful chase within a chase.',
-      image: '/images/art-deco/TheChase.jpg'
+      image: '/images/elegant-contemporary/TheChase.jpg'
     },
     {
       id: 'flying-kites-running-cats',
       title: 'Flying Kites, Running Cats',
       artist: 'Rafael Acevedo',
       description: 'In a playful game cats running alongside horses, but when you look up, you discover vibrant fish seemingly alive, flaming through the air held by the women.',
-      image: '/images/art-deco/FlyingKitesRunningCats.jpg'
+      image: '/images/elegant-contemporary/FlyingKitesRunningCats.jpg'
     },
     {
       id: '101-origami-birds',
       title: '101 Origami Birds',
       artist: 'Rafael Acevedo',
       description: 'A cascade of folded birds fills each panel, transforming simple moments into a quiet flight of imagination.',
-      image: '/images/art-deco/101OrigamiBirds.jpg'
+      image: '/images/elegant-contemporary/101OrigamiBirds.jpg'
     },
     {
       id: 'bath-behind-doors',
       title: 'Bath Behind Doors',
       artist: 'Rafael Acevedo',
       description: 'Three women, three directions of flowing hair: one reaching up, one cascading down, and one stretching sideways capturing a moment of elegance in every direction.',
-      image: '/images/art-deco/Bath Behind Doors.jpg'
+      image: '/images/elegant-contemporary/Bath Behind Doors.jpg'
     },
     {
       id: 'horses-from-heaven',
       title: 'Horses from Heaven',
       artist: 'Rafael Acevedo',
       description: 'The power, the motion and the energy of the black horses galloping across the infinite sky.',
-      image: '/images/art-deco/HorsesFromHeaven.png'
+      image: '/images/elegant-contemporary/HorsesFromHeaven.png'
     }
   ];
 

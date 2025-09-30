@@ -1,0 +1,16 @@
+User-agent: *
+Allow: /
+
+# Allow crawling of all pages
+Allow: /elegant-contemporary
+Allow: /abstract
+Allow: /about
+Allow: /contact
+Allow: /interiors
+Allow: /interactive-gallery
+
+# Legacy redirects (these redirect to /elegant-contemporary)
+Allow: /art-deco
+Allow: /gallery/art-deco
+
+Sitemap: https://rafaelrafael.com/sitemap.xml

@@ -22,7 +22,7 @@ const Stairs: React.FC<StairsProps> = ({ isOpen, onClose }) => {
 
   const menuItems = [
     { text: 'HOME', href: '/' },
-    { text: 'ART DECO', href: '/art-deco' },
+    { text: 'ELEGANT CONTEMPORARY', href: '/elegant-contemporary' },
     { text: 'ABSTRACT', href: '/abstract' },
     { text: 'INTERIORS', href: '/interiors' },
     { text: 'CONTACT', href: '/contact' }

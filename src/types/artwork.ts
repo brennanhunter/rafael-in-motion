@@ -4,7 +4,7 @@ export interface Artwork {
   filename: string;
   imagePath: string;
   caption?: string;
-  category: 'art-deco' | 'abstracts' | 'portraits' | 'other';
+  category: 'elegant-contemporary' | 'abstracts' | 'portraits' | 'other';
   year?: number;
   medium?: string;
   dimensions?: string;

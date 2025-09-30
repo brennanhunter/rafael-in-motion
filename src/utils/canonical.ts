@@ -20,11 +20,13 @@ function normalizePathForCanonical(path: string): string {
   const pathMappings: Record<string, string> = {
     '/home': '/',
     '/index': '/',
-    '/gallery/art-deco': '/art-deco',
+    '/gallery/art-deco': '/elegant-contemporary',
+    '/gallery/elegant-contemporary': '/elegant-contemporary',
     '/gallery/abstract': '/abstract',
     '/gallery/interiors': '/interiors',
-    '/artdeco': '/art-deco', // Handle URL variations
-    '/art_deco': '/art-deco',
+    '/artdeco': '/elegant-contemporary', // Handle URL variations
+    '/art_deco': '/elegant-contemporary',
+    '/art-deco': '/elegant-contemporary', // Handle legacy URLs
     '/art-gallery': '/interactive-gallery',
   };
   
@@ -59,8 +61,9 @@ export const SEO_CONFIG = {
   siteName: 'RafaelRafael - Contemporary Artist',
   defaultTitle: 'RafaelRafael Artist | Rafael Rafael Painter & Contemporary Art by Rafael Acevedo',
   titleTemplate: '%s | RafaelRafael Artist - Rafael Rafael Art',
-  description: 'RafaelRafael artist official website - Rafael Rafael contemporary painter creating Art Deco, abstract art, and interior design paintings. Browse Rafael Rafael art collection by Rafael Acevedo.',
+  description: 'RafaelRafael artist official website - Rafael Rafael contemporary painter creating Elegant Contemporary art, sophisticated modern paintings, and interior design pieces. Formerly known for Art Deco style, now evolved into refined contemporary elegance. Browse Rafael Rafael art collection by Rafael Acevedo.',
   keywords: [
+    // Primary brand keywords
     'RafaelRafael artist',
     'Rafael Rafael painter',
     'Rafael Rafael art',
@@ -69,19 +72,44 @@ export const SEO_CONFIG = {
     'Rafael Acevedo artist',
     'Rafael Rafael paintings',
     'RafaelRafael painter',
-    'contemporary artist',
+    
+    // Primary style keywords - Elegant Contemporary
+    'Elegant Contemporary paintings',
+    'elegant contemporary art',
+    'contemporary elegance',
+    'sophisticated contemporary art',
+    'refined modern paintings',
+    'luxury contemporary art',
+    'elegant modern art',
+    
+    // Secondary style keywords - Art Deco (for legacy SEO)
     'Art Deco paintings',
+    'art deco style',
+    'art deco contemporary',
+    'modern art deco',
+    'contemporary art deco',
+    
+    // General art keywords
+    'contemporary artist',
     'abstract art',
     'interior design art',
     'original paintings',
     'visual storytelling',
     'fine art',
     'modern art',
+    'luxury art',
+    'sophisticated paintings',
+    'geometric art',
+    'decorative art',
+    
+    // Portfolio and gallery keywords
     'artist portfolio',
     'Rafael Rafael gallery',
-    'Rafael Rafael artwork'
+    'Rafael Rafael artwork',
+    'Miami artist',
+    'contemporary art collection'
   ] as string[],
-  socialImage: '/images/art-deco/FlyingKitesRunningCats.jpg',
+  socialImage: '/images/elegant-contemporary/FlyingKitesRunningCats.jpg',
   twitterHandle: '@rafaelartinmotion',
 };
 

@@ -2,13 +2,13 @@ import { Artwork, ArtworkCollection, ArtworkFilters } from '@/types/artwork';
 
 // Centralized artwork data
 export const artworkData: ArtworkCollection = [
-  // Art Deco Collection
+  // Elegant Contemporary Collection
   {
     id: 'afternoon-bath',
     title: 'Afternoon Bath',
     filename: 'Afternoon Bath.jpg',
-    imagePath: '/images/art-deco/Afternoon Bath.jpg',
-    category: 'art-deco',
+    imagePath: '/images/elegant-contemporary/Afternoon Bath.jpg',
+    category: 'elegant-contemporary',
     story: 'Three women, three directions of flowing hair: one reaching up, one cascading down, and one stretching sideways capturing a moment of elegance in every direction.'
   },
   {
@@ -31,40 +31,40 @@ export const artworkData: ArtworkCollection = [
     id: 'bath-behind-doors',
     title: 'Bath Behind Doors',
     filename: 'Bath Behind Doors.jpg',
-    imagePath: '/images/art-deco/Bath Behind Doors.jpg',
-    category: 'art-deco',
+    imagePath: '/images/elegant-contemporary/Bath Behind Doors.jpg',
+    category: 'elegant-contemporary',
     story: 'The water element expressing differently in the picture: the river with its cadence and sinuosity in the asian screens, and the stillness of the blue, glassy surface in the quiet of the pool.'
   },
   {
     id: 'black-red-and-gold',
     title: 'Black Red and Gold',
     filename: 'Black Red and Gold.jpg',
-    imagePath: '/images/art-deco/Black Red and Gold.jpg',
-    category: 'art-deco',
+    imagePath: '/images/elegant-contemporary/Black Red and Gold.jpg',
+    category: 'elegant-contemporary',
     story: 'These three colors hold the power of empire and revolution. Painted during a contemplative evening, I was struck by how these particular hues have appeared in flags, royal courts, and rebel banners throughout history. The composition explores the tension between luxury and rebellion, elegance and passion - all contained within this timeless palette.'
   },
   {
     id: 'catwoman',
     title: 'Catwoman',
     filename: 'Catwoman.jpg',
-    imagePath: '/images/art-deco/Catwoman.jpg',
-    category: 'art-deco',
+    imagePath: '/images/elegant-contemporary/Catwoman.jpg',
+    category: 'elegant-contemporary',
     story: 'Pairs a sensuous woman and her feline in elegant harmony, their forms united by sleek lines and a shimmering gold leaf backdrop.'
   },
   {
     id: 'drapes-of-love',
     title: 'Drapes of Love',
     filename: 'Drapes of Love.jpg',
-    imagePath: '/images/art-deco/Drapes of Love.jpg',
-    category: 'art-deco',
+    imagePath: '/images/elegant-contemporary/Drapes of Love.jpg',
+    category: 'elegant-contemporary',
     story: 'The image captures a reclining woman and her partner: their arms entwined like flowing drapes. The central knot of their embrace forms the heart of the piece.'
   },
   {
     id: 'finding-yourself',
     title: 'Finding Yourself',
     filename: 'Finding Yourself.jpg',
-    imagePath: '/images/art-deco/Finding Yourself.jpg',
-    category: 'art-deco',
+    imagePath: '/images/elegant-contemporary/Finding Yourself.jpg',
+    category: 'elegant-contemporary',
     story: 'Unfolds like a visual matryoshka doll each woman opens a box only to reveal another version of herself. It\'s a layered journey of self-discovery: each box within a box revealing yet another hidden self.'
   },
   {
@@ -79,32 +79,32 @@ export const artworkData: ArtworkCollection = [
     id: 'happiness',
     title: 'Happiness',
     filename: 'Happiness.jpg',
-    imagePath: '/images/art-deco/Happiness.jpg',
-    category: 'art-deco',
+    imagePath: '/images/elegant-contemporary/Happiness.jpg',
+    category: 'elegant-contemporary',
     story: 'A mischievous kitty leads to a delightful surprise as it playfully breaks a porcelain egg and an origami chick emerges from it.'
   },
   {
     id: 'happiness-2',
     title: 'Happiness 2',
     filename: 'Happiness 2.jpg',
-    imagePath: '/images/art-deco/Happiness 2.jpg',
-    category: 'art-deco',
+    imagePath: '/images/elegant-contemporary/Happiness 2.jpg',
+    category: 'elegant-contemporary',
     story: 'A continuation of my exploration of joy, this piece captures the quieter moments of contentment. Unlike its predecessor\'s playful energy, this painting finds happiness in stillness - in the gentle curve of a sleeping cat, the soft fold of fabric, the way afternoon light settles into corners. Sometimes the deepest joy is found not in laughter, but in peaceful silence.'
   },
   {
     id: 'horses-from-heaven',
     title: 'Horses From Heaven',
     filename: 'HorsesFromHeaven.png',
-    imagePath: '/images/art-deco/HorsesFromHeaven.png',
-    category: 'art-deco',
+    imagePath: '/images/elegant-contemporary/HorsesFromHeaven.png',
+    category: 'elegant-contemporary',
     story: 'The power, the motion and the energy of the black horses galloping across the infinite sky.'
   },
   {
     id: 'imminent',
     title: 'Imminent',
     filename: 'Imminent.jpg',
-    imagePath: '/images/art-deco/Imminent.jpg',
-    category: 'art-deco',
+    imagePath: '/images/elegant-contemporary/Imminent.jpg',
+    category: 'elegant-contemporary',
     story: 'One of the raven had discovered a dragonfly drawing the attention of his companions. In just moments the scene is poised to unfold.'
   },
   {
@@ -127,136 +127,136 @@ export const artworkData: ArtworkCollection = [
     id: 'japanese-night',
     title: 'Japanese Night',
     filename: 'Japanese Night.jpg',
-    imagePath: '/images/art-deco/Japanese Night.jpg',
-    category: 'art-deco',
+    imagePath: '/images/elegant-contemporary/Japanese Night.jpg',
+    category: 'elegant-contemporary',
     story: 'A woman stands outside a yellow slit of light, while a man\'s face peers from the luminous interior, breaking the uniformity of the brownish color of the image.'
   },
   {
     id: 'loving-letter',
     title: 'Loving Letter',
     filename: 'Loving Letter.jpg',
-    imagePath: '/images/art-deco/Loving Letter.jpg',
-    category: 'art-deco',
+    imagePath: '/images/elegant-contemporary/Loving Letter.jpg',
+    category: 'elegant-contemporary',
     story: 'She opens an envelope and out soar origami birds, carrying her message into the air.'
   },
   {
     id: 'origami-bird',
     title: 'Origami Bird',
     filename: 'Origami Bird.jpg',
-    imagePath: '/images/art-deco/Origami Bird.jpg',
-    category: 'art-deco',
+    imagePath: '/images/elegant-contemporary/Origami Bird.jpg',
+    category: 'elegant-contemporary',
     story: 'A broken porcelain egg reveals a tiny origami chick - just a hint of whimsy in a world of elegance.'
   },
   {
     id: 'soleil',
     title: 'Soleil',
     filename: 'Soleil.jpg',
-    imagePath: '/images/art-deco/Soleil.jpg',
-    category: 'art-deco',
+    imagePath: '/images/elegant-contemporary/Soleil.jpg',
+    category: 'elegant-contemporary',
     story: 'Painted during a summer in Provence, this piece captures not just the visual impact of the Mediterranean sun, but its emotional resonance. "Soleil" represents those moments when sunlight doesn\'t just illuminate the world around us, but transforms our inner landscape, filling us with a warmth that stays long after the sun has set.'
   },
   {
     id: 'tea-house',
     title: 'Tea House',
     filename: 'Tea House.jpg',
-    imagePath: '/images/art-deco/Tea House.jpg',
-    category: 'art-deco',
+    imagePath: '/images/elegant-contemporary/Tea House.jpg',
+    category: 'elegant-contemporary',
     story: 'Following the ritual, a woman is serving tea: you cannot see the teacups, but the raising steam going up, visually suggest a beautiful turquoise curtain.'
   },
   {
     id: 'the-great-wave',
     title: 'The Great Wave',
     filename: 'The Great Wave.jpg',
-    imagePath: '/images/art-deco/The Great Wave.jpg',
-    category: 'art-deco',
+    imagePath: '/images/elegant-contemporary/The Great Wave.jpg',
+    category: 'elegant-contemporary',
     story: 'The man\'s sweeping cape and the woman\'s red accents mirror a wave and canoes in motion as they dance together.'
   },
   {
     id: 'the-kiss',
     title: 'The Kiss',
     filename: 'The Kiss.jpg',
-    imagePath: '/images/art-deco/The Kiss.jpg',
-    category: 'art-deco',
+    imagePath: '/images/elegant-contemporary/The Kiss.jpg',
+    category: 'elegant-contemporary',
     story: 'Love and anatomy intertwined as two figures merge into a single embrace, capturing both affection and the unity of their figures.'
   },
   {
     id: 'the-nap',
     title: 'The Nap',
     filename: 'TheNap.png',
-    imagePath: '/images/art-deco/TheNap.png',
-    category: 'art-deco',
+    imagePath: '/images/elegant-contemporary/TheNap.png',
+    category: 'elegant-contemporary',
     story: 'A woman rests in a vivid red dreamscape. In the meantime the pages from her book fly away in the form of origami birds.'
   },
   {
     id: 'the-prey',
     title: 'The Prey',
     filename: 'ThePrey.png',
-    imagePath: '/images/art-deco/ThePrey.png',
-    category: 'art-deco',
+    imagePath: '/images/elegant-contemporary/ThePrey.png',
+    category: 'elegant-contemporary',
     story: 'While in her sleep, the tigers in her kimono are chasing the fish in her tatoo. The golden river in her black garment continues its path in the skin of her leg.'
   },
   {
     id: 'the-prey-ii',
     title: 'The Prey II',
     filename: 'ThePreyII.png',
-    imagePath: '/images/art-deco/ThePreyII.png',
-    category: 'art-deco',
+    imagePath: '/images/elegant-contemporary/ThePreyII.png',
+    category: 'elegant-contemporary',
     story: 'While in her sleep, the tigers in her kimono are chasing the fish in her tatoo. The golden river in her black garment continues its path in the skin of her leg.'
   },
   {
     id: 'origami-birds',
     title: '101 Origami Birds',
     filename: '101OrigamiBirds.jpg',
-    imagePath: '/images/art-deco/101OrigamiBirds.jpg',
-    category: 'art-deco',
+    imagePath: '/images/elegant-contemporary/101OrigamiBirds.jpg',
+    category: 'elegant-contemporary',
     story: 'A cascade of folded birds fills each panel, transforming simple moments into a quiet flight of imagination.'
   },
   {
     id: 'blue-lotus',
     title: 'Blue Lotus',
     filename: 'BlueLotus.jpg',
-    imagePath: '/images/art-deco/BlueLotus.jpg',
-    category: 'art-deco',
+    imagePath: '/images/elegant-contemporary/BlueLotus.jpg',
+    category: 'elegant-contemporary',
     story: 'The blue lotus represents rebirth and spiritual awakening in many cultures. This painting was created during a period of personal transformation, when I felt myself emerging from a difficult time like a lotus rising from muddy waters. The blue represents the peace that comes after struggle.'
   },
   {
     id: 'cranes-and-dragonflies',
     title: 'Cranes and Dragonflies',
     filename: 'CranesAndDragonflies.jpg',
-    imagePath: '/images/art-deco/CranesAndDragonflies.jpg',
-    category: 'art-deco',
+    imagePath: '/images/elegant-contemporary/CranesAndDragonflies.jpg',
+    category: 'elegant-contemporary',
     story: 'Inspired by Japanese poetry, this piece explores the delicate balance between the majestic and the ephemeral. The cranes represent longevity and wisdom, while the dragonflies embody the fleeting beauty of each moment. Together, they create a meditation on time - how we must honor both permanence and change, finding grace in the dance between what endures and what passes.'
   },
   {
     id: 'flying-kites-running-cats',
     title: 'Flying Kites Running Cats',
     filename: 'FlyingKitesRunningCats.jpg',
-    imagePath: '/images/art-deco/FlyingKitesRunningCats.jpg',
-    category: 'art-deco',
+    imagePath: '/images/elegant-contemporary/FlyingKitesRunningCats.jpg',
+    category: 'elegant-contemporary',
     story: 'In a playful game cats running alongside horses, but when you look up, you discover vibrant fish seemingly alive, flaming through the air held by the women.'
   },
   {
     id: 'reaching-the-beach',
     title: 'Reaching the Beach',
     filename: 'ReachingTheBeach.jpg',
-    imagePath: '/images/art-deco/ReachingTheBeach.jpg',
-    category: 'art-deco',
+    imagePath: '/images/elegant-contemporary/ReachingTheBeach.jpg',
+    category: 'elegant-contemporary',
     story: 'This painting captures that moment of anticipation before arrival - when you can smell the salt air and hear the distant waves, but haven\'t yet felt sand beneath your feet. The figures stretch forward with longing, their bodies already moving toward the promise of ocean and freedom. It\'s about the journey being as beautiful as the destination.'
   },
   {
     id: 'the-blue-romans',
     title: 'The Blue Romance',
     filename: 'TheBlueRomans.jpg',
-    imagePath: '/images/art-deco/TheBlueRomans.jpg',
-    category: 'art-deco',
+    imagePath: '/images/elegant-contemporary/TheBlueRomans.jpg',
+    category: 'elegant-contemporary',
     story: 'In this piece, an intimate human embrace breaks through painted screens, revealing a parallel world of blue tigers. A silent observer watches the harmony between these two couples, blending human affection and wild grace.'
   },
   {
     id: 'the-chase',
     title: 'The Chase',
     filename: 'TheChase.jpg',
-    imagePath: '/images/art-deco/TheChase.jpg',
-    category: 'art-deco',
+    imagePath: '/images/elegant-contemporary/TheChase.jpg',
+    category: 'elegant-contemporary',
     story: 'In this piece a gang of tigers races after a flock of cranes, only to realize they have being pursued by origami birds themselves. It\'s a playful chase within a chase.'
   },
 
@@ -501,8 +501,8 @@ export const artworkData: ArtworkCollection = [
 export const getArtworkByCategory = (category: Artwork['category']): Artwork[] => {
   const filtered = artworkData.filter(artwork => artwork.category === category);
   
-  // Special ordering for art-deco category
-  if (category === 'art-deco') {
+  // Special ordering for elegant-contemporary category
+  if (category === 'elegant-contemporary') {
     const desiredOrder = [
       'flying-kites-running-cats',
       'bath-behind-doors',

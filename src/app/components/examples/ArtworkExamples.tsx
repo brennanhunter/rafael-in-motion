@@ -62,12 +62,12 @@ export const ArtworkGallery: React.FC = () => {
           <select
             value={filters.category || ''}
             onChange={(e) => updateFilters({ 
-              category: (e.target.value as 'art-deco' | 'abstracts' | 'portraits' | 'other') || undefined 
+              category: (e.target.value as 'elegant-contemporary' | 'abstracts' | 'portraits' | 'other') || undefined 
             })}
             className="px-3 py-2 border rounded-md"
           >
             <option value="">All Categories</option>
-            <option value="art-deco">Art Deco</option>
+            <option value="elegant-contemporary">Elegant Contemporary</option>
             <option value="abstracts">Abstracts</option>
             <option value="portraits">Portraits</option>
             <option value="other">Other</option>

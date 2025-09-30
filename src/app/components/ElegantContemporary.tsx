@@ -5,12 +5,12 @@ import Image from 'next/image';
 import { useArtworkByCategory } from '@/hooks/useArtwork';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
-interface ArtDecoProps {
+interface ElegantContemporaryProps {
   className?: string;
 }
 
-export default function ArtDeco({ className = '' }: ArtDecoProps) {
-  const artDecoPieces = useArtworkByCategory('art-deco');
+export default function ElegantContemporary({ className = '' }: ElegantContemporaryProps) {
+  const elegantContemporaryPieces = useArtworkByCategory('elegant-contemporary');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlay, setIsAutoPlay] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -24,71 +24,74 @@ export default function ArtDeco({ className = '' }: ArtDecoProps) {
 
   const AUTOPLAY_DURATION = 8000; // 8 seconds - more comfortable timing
 
-  const currentArtwork = artDecoPieces[currentIndex];
+  const currentArtwork = elegantContemporaryPieces[currentIndex];
 
   // Auto-play functionality with reset on manual navigation
   useEffect(() => {
     // Clear existing timers
     if (autoPlayRef.current) {
-      clearInterval(autoPlayRef.current);
+      clearTimeout(autoPlayRef.current);
     }
     if (progressRef.current) {
-      clearInterval(progressRef.current);
+      clearTimeout(progressRef.current);
     }
-
-    // Reset progress
+    
     setProgressPercent(0);
-
-    // Start new timers if auto-play is enabled
-    if (isAutoPlay && artDecoPieces.length > 1) {
-      const startTime = Date.now();
-      
-      // Progress animation - updates every 100ms for smooth animation
-      progressRef.current = setInterval(() => {
-        const elapsed = Date.now() - startTime;
-        const percent = Math.min((elapsed / AUTOPLAY_DURATION) * 100, 100);
-        setProgressPercent(percent);
+    
+    if (isAutoPlay && elegantContemporaryPieces.length > 1) {
+      // Start progress timer
+      const progressInterval = setInterval(() => {
+        setProgressPercent(prev => {
+          if (prev >= 100) {
+            return 0;
+          }
+          return prev + (100 / (AUTOPLAY_DURATION / 100));
+        });
       }, 100);
-
+      
       // Auto-advance timer
       autoPlayRef.current = setTimeout(() => {
-        setCurrentIndex((prev) => (prev + 1) % artDecoPieces.length);
+        setImageLoaded(false);
+        setCurrentIndex((prev) => (prev + 1) % elegantContemporaryPieces.length);
       }, AUTOPLAY_DURATION);
+      
+      // Store progress interval for cleanup
+      progressRef.current = progressInterval as NodeJS.Timeout;
+      
+      // Cleanup function
+      return () => {
+        clearInterval(progressInterval);
+        if (autoPlayRef.current) clearTimeout(autoPlayRef.current);
+      };
     }
+  }, [isAutoPlay, elegantContemporaryPieces.length, currentIndex]); // Reset timer when currentIndex changes
 
-    return () => {
-      if (autoPlayRef.current) {
-        clearTimeout(autoPlayRef.current);
-      }
-      if (progressRef.current) {
-        clearInterval(progressRef.current);
-      }
-    };
-  }, [isAutoPlay, artDecoPieces.length, currentIndex]); // Reset timer when currentIndex changes
-
-  // Auto-hide UI after inactivity
+  // Mouse movement detection for UI visibility
   useEffect(() => {
-    const resetHideTimer = () => {
+    const handleMouseMove = () => {
       setShowUI(true);
-      if (hideUIRef.current) {
-        clearTimeout(hideUIRef.current);
-      }
-      hideUIRef.current = setTimeout(() => {
-        setShowUI(false);
-      }, 3000); // Hide after 3 seconds of inactivity
+      resetHideUITimer();
     };
 
-    resetHideTimer();
+    const handleMouseLeave = () => {
+      resetHideUITimer();
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseleave', handleMouseLeave);
+
     return () => {
-      if (hideUIRef.current) {
-        clearTimeout(hideUIRef.current);
-      }
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseleave', handleMouseLeave);
     };
-  }, [currentIndex]);
+  }, []);
 
-  // Handle mouse movement to show UI
-  const handleMouseMove = () => {
-    setShowUI(true);
+  // Initial hide timer
+  useEffect(() => {
+    resetHideUITimer();
+  }, []);
+
+  const resetHideUITimer = () => {
     if (hideUIRef.current) {
       clearTimeout(hideUIRef.current);
     }
@@ -99,13 +102,13 @@ export default function ArtDeco({ className = '' }: ArtDecoProps) {
 
   const navigateToNext = useCallback(() => {
     setImageLoaded(false);
-    setCurrentIndex((prev) => (prev + 1) % artDecoPieces.length);
-  }, [artDecoPieces.length]);
+    setCurrentIndex((prev) => (prev + 1) % elegantContemporaryPieces.length);
+  }, [elegantContemporaryPieces.length]);
 
   const navigateToPrevious = useCallback(() => {
     setImageLoaded(false);
-    setCurrentIndex((prev) => (prev - 1 + artDecoPieces.length) % artDecoPieces.length);
-  }, [artDecoPieces.length]);
+    setCurrentIndex((prev) => (prev - 1 + elegantContemporaryPieces.length) % elegantContemporaryPieces.length);
+  }, [elegantContemporaryPieces.length]);
 
   const navigateToIndex = useCallback((index: number) => {
     setImageLoaded(false);
@@ -160,24 +163,28 @@ export default function ArtDeco({ className = '' }: ArtDecoProps) {
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [navigateToPrevious, navigateToNext, toggleAutoPlay, isFullscreen]); // Added dependencies
+  }, [isAutoPlay, navigateToNext, navigateToPrevious, toggleAutoPlay, isFullscreen]);
 
-  if (artDecoPieces.length === 0) {
+  // Cleanup timers on unmount
+  useEffect(() => {
+    return () => {
+      if (autoPlayRef.current) clearTimeout(autoPlayRef.current);
+      if (hideUIRef.current) clearTimeout(hideUIRef.current);
+      if (progressRef.current) clearTimeout(progressRef.current);
+    };
+  }, []);
+
+  if (elegantContemporaryPieces.length === 0) {
     return (
-      <div className="w-full h-[80vh] flex items-center justify-center bg-black">
-        <div className="text-white text-xl">Loading artwork...</div>
-      </div>
+      <section className={`min-h-screen bg-black flex items-center justify-center ${className}`}>
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-white"></div>
+      </section>
     );
   }
 
   return (
-    <div 
-      className={`relative w-full h-[80vh] overflow-hidden bg-black ${className}`}
-      onMouseMove={handleMouseMove}
-    >
-      {/* Main Gallery Content */}
-      <div className={`${isFullscreen ? 'opacity-0' : 'opacity-100'} transition-opacity duration-300`}>
-      {/* Main Image Display */}
+    <div className={`relative min-h-screen bg-black overflow-hidden ${className}`}>
+      {/* Main Gallery Content - Affected by UI fade */}
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="relative w-full h-full max-w-4xl mx-auto px-4 md:px-32 lg:px-24 pt-40 pb-32 sm:pt-32 sm:pb-24 md:pt-28 md:pb-20">
           {/* Loading State */}
@@ -223,7 +230,7 @@ export default function ArtDeco({ className = '' }: ArtDecoProps) {
         <button
           onClick={navigateToPrevious}
           className="absolute left-[400px] md:left-[450px] top-1/2 -translate-y-1/2 z-[60] bg-black/30 backdrop-blur-sm text-white p-4 rounded-full hover:bg-black/50 transition-all duration-300 group"
-          disabled={artDecoPieces.length <= 1}
+          disabled={elegantContemporaryPieces.length <= 1}
         >
           <svg className="w-6 h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -234,7 +241,7 @@ export default function ArtDeco({ className = '' }: ArtDecoProps) {
         <button
           onClick={navigateToNext}
           className="absolute right-6 top-1/2 -translate-y-1/2 z-[60] bg-black/30 backdrop-blur-sm text-white p-4 rounded-full hover:bg-black/50 transition-all duration-300 group"
-          disabled={artDecoPieces.length <= 1}
+          disabled={elegantContemporaryPieces.length <= 1}
         >
           <svg className="w-6 h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -248,7 +255,7 @@ export default function ArtDeco({ className = '' }: ArtDecoProps) {
             <div className="bg-black/70 backdrop-blur-sm text-white p-3 sm:p-4 rounded-lg max-w-full sm:max-w-md border border-white/20">
               <h2 className="text-lg sm:text-2xl font-bold mb-1 sm:mb-2 font-cinzel leading-tight">{currentArtwork?.title}</h2>
               <div className="text-xs text-white/80">
-                {currentIndex + 1} of {artDecoPieces.length} • Art Deco Collection
+                {currentIndex + 1} of {elegantContemporaryPieces.length} • Elegant Contemporary Collection
               </div>
             </div>
 
@@ -257,10 +264,9 @@ export default function ArtDeco({ className = '' }: ArtDecoProps) {
               onClick={toggleAutoPlay}
               className={`backdrop-blur-sm text-white p-3 rounded-full transition-all duration-300 group self-start sm:self-auto ${
                 isAutoPlay 
-                  ? 'bg-green-500/30 hover:bg-green-500/50 border border-green-400/30' 
-                  : 'bg-red-500/30 hover:bg-red-500/50 border border-red-400/30'
-              }`}
-              title={isAutoPlay ? 'Pause slideshow (Spacebar)' : 'Resume slideshow (Spacebar)'}
+                  ? 'bg-green-500/20 border-green-500/50 hover:bg-green-500/30' 
+                  : 'bg-red-500/20 border-red-500/50 hover:bg-red-500/30'
+              } border`}
             >
               {isAutoPlay ? (
                 <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -283,104 +289,90 @@ export default function ArtDeco({ className = '' }: ArtDecoProps) {
             {/* Navigation Dots */}
             <div className="flex justify-center">
               <div className="flex items-center space-x-1 bg-black/50 backdrop-blur-sm p-2 sm:p-3 rounded-full border border-white/20">
-                {artDecoPieces.map((piece, index) => (
+                {elegantContemporaryPieces.map((piece, index) => (
                   <button
                     key={index}
                     onClick={() => navigateToIndex(index)}
                     className={`transition-all duration-300 rounded-full ${
                       index === currentIndex 
                         ? 'bg-white w-8 sm:w-10 h-2 sm:h-3' 
-                        : 'bg-white/40 hover:bg-white/60 w-2 sm:w-3 h-2 sm:h-3'
+                        : 'bg-white/30 w-2 h-2 hover:bg-white/50'
                     }`}
                     title={piece.title}
                   />
                 ))}
               </div>
             </div>
+
+            {/* Progress Bar for Auto-play */}
+            {isAutoPlay && (
+              <div className="flex justify-center">
+                <div className="w-32 sm:w-48 bg-white/20 rounded-full h-1 overflow-hidden">
+                  <div 
+                    className="bg-white h-full transition-all duration-100 ease-linear"
+                    style={{ width: `${progressPercent}%` }}
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* Keyboard Shortcuts Help */}
+            <div className="flex justify-center">
+              <div className="bg-black/50 backdrop-blur-sm p-2 sm:p-3 rounded-lg border border-white/20 space-y-1">
+                <div className="text-xs">← → Navigate</div>
+                <div className="flex items-center space-x-2 text-xs">
+                  <span>Space:</span>
+                  <span className={`px-1 sm:px-2 py-1 rounded text-xs ${isAutoPlay ? 'bg-green-500/20 text-green-300' : 'bg-red-500/20 text-red-300'}`}>
+                    {isAutoPlay ? 'Auto ON' : 'Auto OFF'}
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
+        </div> {/* Close Main Gallery Content wrapper */}
+
+        {/* Story Panels - Always Visible (Outside of UI fade) */}
+        {/* Side Story Panel - Desktop - Always Visible */}
+      </div>
+
+      {/* Side Story Panel - Desktop only, positioned relative to component */}
+      <div className="absolute left-6 top-1/2 -translate-y-1/2 z-50 hidden xl:block">
+        <div className="bg-black/70 backdrop-blur-sm text-white p-4 rounded-lg max-w-xs border border-white/20 shadow-2xl">
+          <h3 className="text-sm font-semibold mb-2 text-amber-400">Story</h3>
+          <p className="text-xs leading-relaxed text-white/90">
+            {currentArtwork?.story || 'No story available for this artwork.'}
+          </p>
         </div>
-
-        {/* Progress Bar for Auto-play - now properly synced */}
-        {isAutoPlay && (
-          <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/10">
-            <div 
-              className="h-full bg-white/60 transition-all duration-100 ease-linear"
-              style={{
-                width: `${progressPercent}%`
-              }}
-            />
-          </div>
-        )}
       </div>
 
-      {/* Keyboard Navigation Hint */}
-      <div className={`absolute top-20 sm:top-24 right-4 sm:right-6 text-white/60 text-xs transition-opacity duration-300 ${showUI ? 'opacity-100' : 'opacity-0'}`}>
-        <div className="bg-black/50 backdrop-blur-sm p-2 sm:p-3 rounded-lg border border-white/20 space-y-1">
-          <div className="text-xs">← → Navigate</div>
-          <div className="flex items-center space-x-2 text-xs">
-            <span>Space:</span>
-            <span className={`px-1 sm:px-2 py-1 rounded text-xs ${isAutoPlay ? 'bg-green-500/20 text-green-300' : 'bg-red-500/20 text-red-300'}`}>
-              {isAutoPlay ? 'Auto ON' : 'Auto OFF'}
-            </span>
-          </div>
+      {/* Mobile Story Panel - Bottom, positioned relative to component */}
+      <div className="absolute bottom-4 left-4 right-4 z-50 xl:hidden">
+        <div className="bg-black/70 backdrop-blur-sm text-white p-3 rounded-lg border border-white/20 shadow-2xl">
+          <h3 className="text-xs font-semibold mb-2 text-amber-400">Story</h3>
+          <p className="text-xs leading-relaxed text-white/90 line-clamp-3">
+            {currentArtwork?.story || 'No story available for this artwork.'}
+          </p>
         </div>
-      </div>
-      </div> {/* Close Main Gallery Content wrapper */}
-
-      {/* Story Panels - Always Visible (Outside of UI fade) */}
-      {/* Side Story Panel - Desktop - Always Visible */}
-      <div className="hidden md:block absolute left-6 top-1/2 -translate-y-1/2 z-[60] max-w-xs">
-        {currentArtwork?.story && (
-          <div className="bg-black/90 backdrop-blur-md text-white p-6 rounded-xl border border-amber-400/40 shadow-2xl">
-            <h3 className="text-base font-bold mb-3 text-amber-300 font-cinzel">Story</h3>
-            <p className="text-sm leading-relaxed text-white/90">&quot;{currentArtwork?.story}&quot;</p>
-          </div>
-        )}
-      </div>
-
-      {/* Mobile Story Panel - Always Visible */}
-      <div className="block md:hidden absolute bottom-20 left-4 right-4 z-[60]">
-        {currentArtwork?.story && (
-          <div className="bg-black/90 backdrop-blur-md text-white p-4 rounded-xl border border-amber-400/40 shadow-xl mx-auto max-w-lg">
-            <h3 className="text-sm font-bold mb-2 text-amber-300 font-cinzel text-center">Story</h3>
-            <p className="text-sm leading-relaxed text-white/90 text-center">&quot;{currentArtwork?.story}&quot;</p>
-          </div>
-        )}
       </div>
 
       {/* Fullscreen Modal */}
       {isFullscreen && (
-        <div 
-          className="fixed inset-0 bg-black/95 backdrop-blur-sm z-[100] flex items-center justify-center cursor-pointer"
-          onClick={(e) => {
-            console.log('Backdrop clicked!', e.target, e.currentTarget); // More detailed debug
-            closeFullscreen();
-          }}
-        >
-          {/* Close Button */}
+        <div className="fixed inset-0 z-[100] bg-black flex items-center justify-center">
           <button
-            onClick={(e) => {
-              console.log('X button clicked!'); // Debug log
-              e.stopPropagation();
-              closeFullscreen();
-            }}
-            className="absolute top-4 right-4 z-[110] p-2 rounded-full bg-black/50 hover:bg-black/70 transition-colors duration-200"
+            onClick={closeFullscreen}
+            className="absolute top-6 right-6 z-[101] bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-all duration-200"
           >
-            <XMarkIcon className="h-6 w-6 text-white" />
+            <XMarkIcon className="w-6 h-6" />
           </button>
-
-          {/* Fullscreen Image */}
-          <div 
-            className="relative w-full h-full flex items-center justify-center p-8 pointer-events-none"
-          >
+          
+          <div className="w-full h-full flex items-center justify-center p-4">
             <Image
               src={currentArtwork?.imagePath || ''}
               alt={currentArtwork?.title || ''}
               width={1920}
               height={1080}
-              className="max-w-full max-h-full object-contain pointer-events-none"
+              className="max-w-full max-h-full object-contain"
               style={{
-                filter: 'drop-shadow(0 0 60px rgba(0,0,0,0.8))',
                 width: 'auto',
                 height: 'auto',
                 maxWidth: '100%',
