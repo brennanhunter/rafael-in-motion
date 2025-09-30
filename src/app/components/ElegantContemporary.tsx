@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Image from 'next/image';
+import { motion } from 'framer-motion';
 import { useArtworkByCategory } from '@/hooks/useArtwork';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
@@ -184,9 +185,25 @@ export default function ElegantContemporary({ className = '' }: ElegantContempor
 
   return (
     <div className={`relative min-h-screen bg-black overflow-hidden ${className}`}>
+      {/* Section Header - Outside of UI fade effects */}
+      <div className="relative z-[70] pt-8 pb-8">
+        <div className="text-center">
+          <motion.div
+            initial={{ opacity: 0, y: -50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 font-cinzel mb-6 leading-tight">
+              Elegant Contemporary
+            </h2>
+            <div className="w-32 h-1 bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto"></div>
+          </motion.div>
+        </div>
+      </div>
+
       {/* Main Gallery Content - Affected by UI fade */}
       <div className="absolute inset-0 flex items-center justify-center">
-        <div className="relative w-full h-full max-w-4xl mx-auto px-4 md:px-32 lg:px-24 pt-40 pb-32 sm:pt-32 sm:pb-24 md:pt-28 md:pb-20">
+        <div className="relative w-full h-full max-w-4xl mx-auto px-4 md:px-32 lg:px-24 pt-8 pb-32 sm:pt-8 sm:pb-24 md:pt-8 md:pb-20">
           {/* Loading State */}
           {isLoading && (
             <div className="absolute inset-0 flex items-center justify-center bg-black z-10">

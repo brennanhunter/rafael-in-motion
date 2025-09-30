@@ -3,28 +3,30 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { motion } from 'framer-motion';
 
 const Hero: React.FC = () => {
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
-  const [hasCompletedCycle, setHasCompletedCycle] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(true);
   const words = ['ARTIST', 'CREATOR', 'STORYTELLER', 'VISIONARY'];
 
   useEffect(() => {
-    if (hasCompletedCycle) return; // Stop if we've completed one cycle
+    if (!isAnimating) return;
 
     const interval = setInterval(() => {
       setCurrentWordIndex((prev) => {
         const nextIndex = (prev + 1) % words.length;
-        // If we've reached VISIONARY (index 3) after cycling through all words
-        if (nextIndex === 3 && prev === 2) {
-          setHasCompletedCycle(true);
+        // Stop animation after showing VISIONARY
+        if (nextIndex === 0) {
+          setIsAnimating(false);
+          return 3; // Stay on VISIONARY
         }
         return nextIndex;
       });
-    }, 2000); // Change word every 2 seconds
+    }, 2000);
 
     return () => clearInterval(interval);
-  }, [words.length, hasCompletedCycle]);
+  }, [isAnimating]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -66,9 +68,14 @@ const Hero: React.FC = () => {
       <div id="hero-text" className="relative z-20 h-full flex items-center justify-center text-center">
         <div className="space-y-8">
           {/* Main Name */}
-          <h1 className="hero-title text-8xl md:text-9xl lg:text-[12rem] font-cinzel font-bold text-white tracking-wider">
+          <motion.h1 
+            className="hero-title text-8xl md:text-9xl lg:text-[12rem] font-cinzel font-bold text-white tracking-wider"
+            initial={{ opacity: 0, scale: 0.8, y: 30 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
+          >
             RAFAEL
-          </h1>
+          </motion.h1>
           
           {/* Animated Subtitle */}
           <div className="h-24 flex items-center justify-center">

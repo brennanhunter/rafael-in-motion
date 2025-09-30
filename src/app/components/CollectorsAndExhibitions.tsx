@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 
@@ -28,7 +28,7 @@ const collectors: Collector[] = [
     id: 'boca-raton-museum',
     name: 'Boca Ratón Museum of Art',
     location: 'Boca Raton, Florida',
-    description: 'Prestigious contemporary art collection featuring RafaelRafael\'s elegant contemporary works',
+    description: 'Prestigious contemporary art collection featuring Rafael\'s distinctive artwork',
     featured: true
   },
   {
@@ -194,6 +194,115 @@ const exhibitions: Exhibition[] = [
   }
 ];
 
+const IndividualCollector: React.FC<{ collector: Collector; index: number; windowWidth: number }> = ({ collector, index, windowWidth }) => {
+  const itemRef = useRef<HTMLDivElement>(null);
+  const [scrollY, setScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  const isFromLeft = index % 2 === 0;
+  
+  // Calculate this item's position relative to viewport
+  let scrollProgress = 0;
+  let opacity = 0;
+  
+  if (itemRef.current) {
+    const rect = itemRef.current.getBoundingClientRect();
+    const itemTop = rect.top + scrollY;
+    
+    // Start animation when item enters bottom of screen
+    const scrollStart = itemTop - window.innerHeight;
+    // Complete when item is centered
+    const scrollEnd = itemTop - (window.innerHeight / 2);
+    const scrollRange = scrollEnd - scrollStart;
+    
+    scrollProgress = Math.max(0, Math.min(1, (scrollY - scrollStart) / scrollRange));
+    opacity = Math.max(0, Math.min(1, scrollProgress * 1.5));
+  }
+  
+  // Calculate position based on scroll progress
+  const startX = isFromLeft ? -windowWidth : windowWidth;
+  const endX = 0;
+  const currentX = startX + (endX - startX) * scrollProgress;
+
+  return (
+    <div
+      ref={itemRef}
+      className="group w-full h-32 md:h-36 lg:h-40 xl:h-44 2xl:h-48 flex items-center justify-center"
+      style={{
+        transform: `translateX(${currentX}px)`,
+        opacity: opacity
+      }}
+    >
+      <h3 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-bold text-white font-cinzel leading-tight transition-all duration-300 hover:text-shadow-glow cursor-pointer text-center transform hover:scale-105 uppercase">
+        {collector.name}
+      </h3>
+    </div>
+  );
+};
+
+const ScrollBasedCollectors: React.FC<{ collectors: Collector[] }> = ({ collectors }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [scrollY, setScrollY] = useState(0);
+  const [containerTop, setContainerTop] = useState(0);
+  const [windowWidth, setWindowWidth] = useState(1920);
+
+  useEffect(() => {
+    // Initialize window dimensions
+    const updateDimensions = () => {
+      setWindowWidth(window.innerWidth);
+      if (containerRef.current) {
+        const rect = containerRef.current.getBoundingClientRect();
+        setContainerTop(rect.top + window.scrollY);
+      }
+    };
+
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+
+    // Set initial values
+    updateDimensions();
+    handleScroll();
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', updateDimensions);
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', updateDimensions);
+    };
+  }, []);
+
+  return (
+    <div ref={containerRef} className="w-full px-4">
+      <div className="space-y-24">
+        {collectors.map((collector, index) => (
+          <IndividualCollector 
+            key={collector.id} 
+            collector={collector} 
+            index={index}
+            windowWidth={windowWidth}
+          />
+        ))}
+      </div>
+      {/* Extra scroll room for last animations to complete */}
+      <div className="h-96"></div>
+    </div>
+  );
+};
+
 const CollectorsAndExhibitions: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeSection, setActiveSection] = useState<'collectors' | 'exhibitions'>('collectors');
@@ -230,7 +339,7 @@ const CollectorsAndExhibitions: React.FC = () => {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed px-6"
         >
-          RafaelRafael&apos;s elegant contemporary works are proudly collected by distinguished patrons and showcased in prestigious exhibitions worldwide.
+          Rafael&apos;s artwork is proudly collected by distinguished patrons and showcased in prestigious exhibitions worldwide.
         </motion.p>
       </div>
 
@@ -262,54 +371,7 @@ const CollectorsAndExhibitions: React.FC = () => {
 
       {/* Collectors Section */}
       {activeSection === 'collectors' && (
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {collectors.map((collector, index) => (
-              <motion.div
-                key={collector.id}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="group relative"
-              >
-                <div className={`p-8 rounded-2xl border transition-all duration-300 ${
-                  collector.featured 
-                    ? 'bg-gradient-to-br from-amber-400/10 to-amber-400/5 border-amber-400/30 shadow-lg shadow-amber-400/10' 
-                    : 'bg-black/40 border-white/10 hover:border-amber-400/20'
-                } backdrop-blur-sm group-hover:transform group-hover:scale-105`}>
-                  {collector.featured && (
-                    <div className="absolute -top-3 -right-3 bg-amber-400 text-black px-3 py-1 rounded-full text-sm font-bold">
-                      Featured
-                    </div>
-                  )}
-                  
-                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-2 font-cinzel group-hover:text-amber-300 transition-colors">
-                    {collector.name}
-                  </h3>
-                  
-                  {collector.title && (
-                    <p className="text-amber-400 font-medium mb-2">
-                      {collector.title}
-                    </p>
-                  )}
-                  
-                  {collector.location && (
-                    <p className="text-gray-400 text-sm mb-4">
-                      {collector.location}
-                    </p>
-                  )}
-                  
-                  {collector.description && (
-                    <p className="text-gray-300 leading-relaxed">
-                      {collector.description}
-                    </p>
-                  )}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
+        <ScrollBasedCollectors collectors={collectors} />
       )}
 
       {/* Exhibitions Section */}
