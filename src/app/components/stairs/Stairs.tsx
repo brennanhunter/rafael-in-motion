@@ -221,7 +221,7 @@ const Stairs: React.FC<StairsProps> = ({ isOpen, onClose }) => {
             {menuItems.map((item, index) => (
               <div 
                 key={item.text}
-                className="text-6xl md:text-7xl lg:text-8xl font-cinzel font-bold text-white tracking-wider mb-8 cursor-pointer hover:opacity-80 transition-all duration-500" 
+                className="text-4xl md:text-5xl lg:text-5xl font-cinzel font-bold text-white tracking-wider mb-8 cursor-pointer hover:opacity-80 transition-all duration-500" 
                 style={{
                   opacity: visibleMenuItems.includes(index) ? 1 : 0,
                   transform: visibleMenuItems.includes(index) ? 'translateY(0)' : 'translateY(20px)',

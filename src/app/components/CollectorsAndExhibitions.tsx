@@ -245,7 +245,7 @@ const IndividualCollector: React.FC<{ collector: Collector; index: number; windo
         opacity: opacity
       }}
     >
-      <h3 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-bold text-white font-cinzel leading-tight transition-all duration-300 hover:text-shadow-glow cursor-pointer text-center transform hover:scale-105 uppercase">
+      <h3 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-white font-cinzel leading-tight transition-all duration-300 hover:text-shadow-glow cursor-pointer text-center transform hover:scale-105 uppercase">
         {collector.name}
       </h3>
     </div>
@@ -327,10 +327,10 @@ const CollectorsAndExhibitions: React.FC = () => {
           transition={{ duration: 0.8 }}
           className="mb-8"
         >
-          <h2 className="text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 font-cinzel mb-6">
+          <h2 className="text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-yellow-100 to-amber-200 font-cinzel mb-6">
             Collectors & Exhibitions
           </h2>
-          <div className="w-32 h-1 bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto mb-8"></div>
+          <div className="w-32 h-1 bg-gradient-to-r from-transparent via-amber-200 to-transparent mx-auto mb-8"></div>
         </motion.div>
         
         <motion.p

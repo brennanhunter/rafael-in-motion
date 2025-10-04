@@ -186,17 +186,17 @@ export default function ElegantContemporary({ className = '' }: ElegantContempor
   return (
     <div className={`relative min-h-screen bg-black overflow-hidden ${className}`}>
       {/* Section Header - Outside of UI fade effects */}
-      <div className="relative z-[70] pt-8 pb-8">
+      <div className="relative z-[70] pt-4 pb-6">
         <div className="text-center">
           <motion.div
             initial={{ opacity: 0, y: -50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 font-cinzel mb-6 leading-tight">
+            <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-yellow-100 to-amber-200 font-cinzel mb-6 leading-tight">
               Elegant Contemporary
             </h2>
-            <div className="w-32 h-1 bg-gradient-to-r from-transparent via-amber-400 to-transparent mx-auto"></div>
+            <div className="w-32 h-1 bg-gradient-to-r from-transparent via-amber-200 to-transparent mx-auto"></div>
           </motion.div>
         </div>
       </div>

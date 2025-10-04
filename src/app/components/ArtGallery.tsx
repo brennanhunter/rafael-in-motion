@@ -534,18 +534,22 @@ export default function ArtGallery({
                 } as React.CSSProperties}
                 onClick={() => setSelectedArtwork(artwork)}
               >
-                {/* Back face - Article info */}
+                {/* Back face - Clean image without darkening */}
                 <header className="gallery-article-header">
-                  <div className="p-4 flex flex-col justify-center items-center text-center h-full">
-                    <h2 className="gallery-h2 font-bold mb-2">
-                      {artwork.title}
-                    </h2>
-                    {artwork.medium && (
-                      <em className="gallery-em text-sm opacity-80">
-                        {artwork.medium}
-                      </em>
-                    )}
-                  </div>
+                  <NextImage
+                    src={artwork.imagePath}
+                    alt={artwork.title}
+                    className="gallery-img"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    style={{ 
+                      objectFit: 'cover',
+                      filter: artwork.id === 'the-prey-ii' 
+                        ? 'saturate(0.7) contrast(1.3) brightness(0.9) sepia(0.1) drop-shadow(0 0 20px rgba(0,0,0,0.8)) drop-shadow(0 0 40px rgba(139,69,19,0.3))'
+                        : 'none'
+                    }}
+                    loading="lazy"
+                  />
                 </header>
 
                 {/* Front face - Image */}
