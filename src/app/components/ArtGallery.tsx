@@ -429,7 +429,7 @@ export default function ArtGallery({
                     maxWidth: '100%',
                     maxHeight: '100%',
                     filter: artworksWithDimensions[currentIndex]?.id === 'the-prey-ii' 
-                      ? 'saturate(0.7) contrast(1.3) brightness(0.9) sepia(0.1) drop-shadow(0 0 20px rgba(0,0,0,0.8)) drop-shadow(0 0 40px rgba(139,69,19,0.3))'
+                      ? 'saturate(1.4) contrast(1.2) brightness(1.1) drop-shadow(0 0 20px rgba(0,0,0,0.8))'
                       : 'none'
                   }}
                 />
@@ -545,7 +545,7 @@ export default function ArtGallery({
                     style={{ 
                       objectFit: 'cover',
                       filter: artwork.id === 'the-prey-ii' 
-                        ? 'saturate(0.7) contrast(1.3) brightness(0.9) sepia(0.1) drop-shadow(0 0 20px rgba(0,0,0,0.8)) drop-shadow(0 0 40px rgba(139,69,19,0.3))'
+                        ? 'saturate(1.4) contrast(1.2) brightness(1.1) drop-shadow(0 0 20px rgba(0,0,0,0.8))'
                         : 'none'
                     }}
                     loading="lazy"
@@ -563,7 +563,7 @@ export default function ArtGallery({
                     style={{ 
                       objectFit: 'cover',
                       filter: artwork.id === 'the-prey-ii' 
-                        ? 'saturate(0.7) contrast(1.3) brightness(0.9) sepia(0.1) drop-shadow(0 0 20px rgba(0,0,0,0.8)) drop-shadow(0 0 40px rgba(139,69,19,0.3))'
+                        ? 'saturate(1.4) contrast(1.2) brightness(1.1) drop-shadow(0 0 20px rgba(0,0,0,0.8))'
                         : 'none'
                     }}
                     loading="lazy"
@@ -717,7 +717,7 @@ export default function ArtGallery({
                   style={{ 
                     objectFit: 'contain',
                     filter: selectedArtwork.id === 'the-prey-ii' 
-                      ? 'saturate(0.7) contrast(1.3) brightness(0.9) sepia(0.1) drop-shadow(0 0 20px rgba(0,0,0,0.8)) drop-shadow(0 0 40px rgba(139,69,19,0.3))'
+                      ? 'saturate(1.4) contrast(1.2) brightness(1.1) drop-shadow(0 0 20px rgba(0,0,0,0.8))'
                       : 'none'
                   }}
                   priority

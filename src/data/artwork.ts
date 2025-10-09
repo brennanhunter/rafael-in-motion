@@ -370,7 +370,7 @@ export const artworkData: ArtworkCollection = [
     title: 'Beige and Blue',
     filename: 'Beige-and-Blue.jpg',
     imagePath: '/images/abstracts/Beige-and-Blue.jpg',
-    category: 'abstracts',
+    category: 'elegant-contemporary',
     story: 'This color combination reminds me of desert meetings sky - that moment at dusk when earth and heaven seem to touch. I was drawn to these muted tones during a period of seeking balance, when I needed to find harmony between groundedness and aspiration. The beige anchors while the blue lifts, creating a visual breathing space between ambition and acceptance.'
   },
   {
@@ -386,7 +386,7 @@ export const artworkData: ArtworkCollection = [
     title: 'Blue and White Margins',
     filename: 'Blue-and-White-Margins.jpg',
     imagePath: '/images/abstracts/Blue-and-White-Margins.jpg',
-    category: 'abstracts',
+    category: 'elegant-contemporary',
     story: 'Inspired by marginalia in ancient manuscripts, this piece explores the idea that the most important thoughts often happen in the spaces between - in the margins of our official lives. The blue and white create a sense of infinite possibility, like looking at clouds or ocean waves, where the eye can rest and the mind can wander freely.'
   },
   {
@@ -458,7 +458,7 @@ export const artworkData: ArtworkCollection = [
     title: 'Red and Ocre',
     filename: 'Red-and-Ocre.jpg.webp',
     imagePath: '/images/abstracts/Red-and-Ocre.jpg.webp',
-    category: 'abstracts',
+    category: 'elegant-contemporary',
     story: 'These are the colors of ancient cave paintings, of the first human attempts to capture reality on stone. Working with red and ochre connects me to something primal - the fundamental urge to make marks, to say "I was here, I saw this, this mattered." The painting becomes a bridge across millennia, linking my hand to the first artists who mixed earth with vision.'
   },
   {
@@ -504,11 +504,13 @@ export const getArtworkByCategory = (category: Artwork['category']): Artwork[] =
   // Special ordering for elegant-contemporary category
   if (category === 'elegant-contemporary') {
     const desiredOrder = [
+      'the-prey',
       'flying-kites-running-cats',
       'bath-behind-doors',
       'tea-house',
       'horses-from-heaven',
-      'the-prey-ii',
+      'blue-and-white-margins',
+      'red-and-ocre',
       'origami-birds',
       'irruption',
       'the-nap',
@@ -521,10 +523,11 @@ export const getArtworkByCategory = (category: Artwork['category']): Artwork[] =
       'drapes-of-love',
       'finding-yourself',
       'happiness-2',
+      'beige-and-blue',
       'the-chase',
       'cranes-and-dragonflies',
       'blue-lotus',
-      'the-prey',
+      'the-prey-ii',
       'reaching-the-beach',
       'afternoon-bath',
       'japanese-night',
@@ -560,11 +563,8 @@ export const getArtworkByCategory = (category: Artwork['category']): Artwork[] =
   if (category === 'abstracts') {
     const desiredOrder = [
       'irruption-ii',
-      'red-and-ocre',
-      'blue-and-white-margins',
       'abstract-and-crochet',
       'bandits',
-      'beige-and-blue',
       'a-little-man-in-the-center',
       'birds-in-baroque',
       'blue-accents',

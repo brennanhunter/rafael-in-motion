@@ -228,9 +228,13 @@ body {
   rotate: y calc((1 + var(--hov)) * 0.5turn);
 }
 
+.gallery-article {
+  --hov: 1; /* Always show front face */
+}
+
 .gallery-article:hover,
 .gallery-article:focus-within {
-  --hov: round(var(--sel));
+  --hov: 1; /* Disable flip on hover */
 }
 
 @supports not (scale: abs(-1)) {
