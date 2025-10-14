@@ -252,7 +252,7 @@ export default function ElegantContemporary({ className = '' }: ElegantContempor
                 alt={currentArtwork?.title || ''}
                 width={800}
                 height={600}
-                className={`max-w-full max-h-full object-contain transition-all duration-1000 ${
+                className={`elegant-contemporary-image w-full h-auto max-w-full object-contain transition-all duration-1000 sm:max-h-[70vh] max-h-[60vh] ${
                   imageLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
                 } ${
                   (currentArtwork?.title === 'Finding Yourself' || currentArtwork?.title === 'Japanese Night') ? 'border-2 border-gray-400 rounded-lg' : ''
@@ -269,29 +269,32 @@ export default function ElegantContemporary({ className = '' }: ElegantContempor
         </div>
       </div>
 
-      {/* Navigation Dots - Separate section */}
-      <div className="py-4">
+      {/* Navigation Dots - Simplified to 4 dots */}
+      <div className="py-2">
         <div className={`flex justify-center transition-opacity duration-500 ${showUI ? 'opacity-100' : 'opacity-0'}`}>
-          <div className="flex items-center space-x-1 bg-black/50 backdrop-blur-sm p-2 sm:p-3 rounded-full border border-white/20">
-            {elegantContemporaryPieces.map((piece, index) => (
-              <button
-                key={index}
-                onClick={() => navigateToIndex(index)}
-                className={`transition-all duration-300 rounded-full ${
-                  index === currentIndex 
-                    ? 'bg-white w-8 sm:w-10 h-2 sm:h-3' 
-                    : 'bg-white/30 w-2 h-2 hover:bg-white/50'
-                }`}
-                title={piece.title}
-              />
-            ))}
+          <div className="flex items-center space-x-2 bg-black/50 backdrop-blur-sm p-2 rounded-full border border-white/20">
+            {[...Array(4)].map((_, index) => {
+              const progress = currentIndex / (elegantContemporaryPieces.length - 1);
+              const segmentIndex = Math.floor(progress * 3);
+              const isActive = index === segmentIndex;
+              return (
+                <div
+                  key={index}
+                  className={`transition-all duration-300 rounded-full ${
+                    isActive
+                      ? 'bg-white w-6 h-2' 
+                      : 'bg-white/30 w-2 h-2'
+                  }`}
+                />
+              );
+            })}
           </div>
         </div>
 
         {/* Progress Bar for Auto-play */}
         {isAutoPlay && (
-          <div className="flex justify-center mt-3">
-            <div className="w-32 sm:w-48 bg-white/20 rounded-full h-1 overflow-hidden">
+          <div className="flex justify-center mt-2">
+            <div className="w-24 bg-white/20 rounded-full h-1 overflow-hidden">
               <div 
                 className="bg-white h-full transition-all duration-100 ease-linear"
                 style={{ width: `${progressPercent}%` }}
@@ -301,22 +304,18 @@ export default function ElegantContemporary({ className = '' }: ElegantContempor
         )}
       </div>
 
-      {/* Title and Story - Separate section that flows naturally */}
+      {/* Title and Story - Closer to image */}
       <div className="px-4 pb-8">
         <div className="max-w-4xl mx-auto">
-          {/* Title */}
-          <div className="text-center mb-6">
-            <h2 className="text-2xl md:text-4xl font-bold mb-2 font-cinzel leading-tight text-white">{currentArtwork?.title}</h2>
-            <div className="text-sm text-white/80">
-              {currentIndex + 1} of {elegantContemporaryPieces.length} • Elegant Contemporary Collection
-            </div>
+          {/* Title - Smaller and closer */}
+          <div className="text-center mb-3">
+            <h2 className="text-lg md:text-2xl font-bold font-cinzel leading-tight text-white">{currentArtwork?.title}</h2>
           </div>
           
-          {/* Story */}
-          <div className="max-w-2xl mx-auto bg-black/70 backdrop-blur-sm text-white p-6 rounded-lg border border-white/20 shadow-2xl">
-            <h3 className="text-lg font-semibold mb-3 text-amber-400">Story</h3>
-            <p className="text-base leading-relaxed text-white/90">
-              {currentArtwork?.story || 'No story available for this artwork.'}
+          {/* Story - Inline with story text */}
+          <div className="max-w-2xl mx-auto bg-black/70 backdrop-blur-sm text-white p-4 rounded-lg border border-white/20 shadow-2xl">
+            <p className="text-sm leading-relaxed text-white/90">
+              <span className="text-amber-400 font-semibold">Story:</span> {currentArtwork?.story || 'No story available for this artwork.'}
             </p>
           </div>
         </div>
