@@ -14,7 +14,6 @@ export default function ElegantContemporaryPage() {
       <ArtGallery 
         category="elegant-contemporary"
         title="Elegant Contemporary"
-        subtitle="Scroll to cycle through the collection"
       />
     </main>
   );

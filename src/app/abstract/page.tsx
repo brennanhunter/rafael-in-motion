@@ -14,7 +14,6 @@ export default function AbstractPage() {
       <ArtGallery 
         category="abstracts"
         title="Abstract"
-        subtitle="Scroll to cycle through the collection"
       />
     </main>
   );

@@ -270,7 +270,7 @@ export default function ElegantContemporary({ className = '' }: ElegantContempor
       </div>
 
       {/* Navigation Dots - Simplified to 4 dots */}
-      <div className="py-2">
+      <div className="py-1 md:py-2">
         <div className={`flex justify-center transition-opacity duration-500 ${showUI ? 'opacity-100' : 'opacity-0'}`}>
           <div className="flex items-center space-x-2 bg-black/50 backdrop-blur-sm p-2 rounded-full border border-white/20">
             {[...Array(4)].map((_, index) => {
@@ -293,7 +293,7 @@ export default function ElegantContemporary({ className = '' }: ElegantContempor
 
         {/* Progress Bar for Auto-play */}
         {isAutoPlay && (
-          <div className="flex justify-center mt-2">
+          <div className="flex justify-center mt-1 md:mt-2">
             <div className="w-24 bg-white/20 rounded-full h-1 overflow-hidden">
               <div 
                 className="bg-white h-full transition-all duration-100 ease-linear"
@@ -305,15 +305,15 @@ export default function ElegantContemporary({ className = '' }: ElegantContempor
       </div>
 
       {/* Title and Story - Closer to image */}
-      <div className="px-4 pb-8">
+      <div className="px-4 pb-4 md:pb-8 mt-2 md:mt-0">
         <div className="max-w-4xl mx-auto">
           {/* Title - Smaller and closer */}
-          <div className="text-center mb-3">
+          <div className="text-center mb-2 md:mb-3">
             <h2 className="text-lg md:text-2xl font-bold font-cinzel leading-tight text-white">{currentArtwork?.title}</h2>
           </div>
           
           {/* Story - Inline with story text */}
-          <div className="max-w-2xl mx-auto bg-black/70 backdrop-blur-sm text-white p-4 rounded-lg border border-white/20 shadow-2xl">
+          <div className="max-w-2xl mx-auto bg-black/70 backdrop-blur-sm text-white p-3 md:p-4 rounded-lg border border-white/20 shadow-2xl">
             <p className="text-sm leading-relaxed text-white/90">
               <span className="text-amber-400 font-semibold">Story:</span> {currentArtwork?.story || 'No story available for this artwork.'}
             </p>
