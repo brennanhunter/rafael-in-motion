@@ -81,12 +81,6 @@ const About: React.FC = () => {
                 His paintings, rendered through a unique mixed media technique of acrylics on canvas or treated paper, exude sensuality, exoticism, and a touch of mysticism.
               </p>
             </div>
-
-            <div className="bg-gradient-to-br from-amber-900/20 to-orange-900/20 backdrop-blur-sm p-8 rounded-2xl border border-amber-700/30 shadow-2xl">
-              <p className="text-lg text-gray-300 leading-relaxed">
-                Each stroke on the canvas tells a tale of playfulness, nostalgia, drama, or mystique, creating an intriguing visual challenge that transcends cultural boundaries. Explore Rafael&apos;s world where abstract and graphic elements converge, offering a captivating blend of ancient aesthetics and contemporary expression.
-              </p>
-            </div>
           </div>
 
           {/* Artist Portrait */}

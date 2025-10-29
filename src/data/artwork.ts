@@ -196,14 +196,6 @@ export const artworkData: ArtworkCollection = [
     story: 'While in her sleep, the tigers in her kimono are chasing the fish in her tatoo. The golden river in her black garment continues its path in the skin of her leg.'
   },
   {
-    id: 'the-prey-ii',
-    title: 'The Prey II',
-    filename: 'ThePreyII.png',
-    imagePath: '/images/elegant-contemporary/ThePreyII.png',
-    category: 'elegant-contemporary',
-    story: 'While in her sleep, the tigers in her kimono are chasing the fish in her tatoo. The golden river in her black garment continues its path in the skin of her leg.'
-  },
-  {
     id: 'origami-birds',
     title: '101 Origami Birds',
     filename: '101OrigamiBirds.jpg',
@@ -527,7 +519,6 @@ export const getArtworkByCategory = (category: Artwork['category']): Artwork[] =
       'the-chase',
       'cranes-and-dragonflies',
       'blue-lotus',
-      'the-prey-ii',
       'reaching-the-beach',
       'afternoon-bath',
       'japanese-night',

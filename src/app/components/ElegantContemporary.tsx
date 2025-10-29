@@ -259,9 +259,7 @@ export default function ElegantContemporary({ className = '' }: ElegantContempor
                 }`}
                 onLoad={handleImageLoad}
                 style={{
-                  filter: `drop-shadow(0 0 40px rgba(0,0,0,0.5)) ${
-                    currentArtwork?.id === 'the-prey-ii' ? 'saturate(0.7)' : ''
-                  }`
+                  filter: 'drop-shadow(0 0 40px rgba(0,0,0,0.5))'
                 }}
               />
             </div>
