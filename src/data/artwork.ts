@@ -22,8 +22,8 @@ export const artworkData: ArtworkCollection = [
   {
     id: 'anatomy-ii',
     title: 'Anatomy II',
-    filename: 'AnatomyII.png',
-    imagePath: '/images/abstracts/AnatomyII.png',
+    filename: 'anatomy-ii.jpg',
+    imagePath: '/images/abstracts/anatomy-ii.jpg',
     category: 'abstracts',
     story: 'The sequel to my anatomical exploration, this piece delves deeper into the emotional landscape of the human form. Here, the clinical precision gives way to pure feeling - bones become rivers, muscles transform into mountains, and the heart emerges as the central sun around which everything orbits. It\'s anatomy reimagined through the lens of love and loss.'
   },

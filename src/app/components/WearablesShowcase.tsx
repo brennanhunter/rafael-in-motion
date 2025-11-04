@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { useEffect, useState, useRef } from 'react';
 
 export default function WearablesShowcase() {
@@ -51,20 +50,23 @@ export default function WearablesShowcase() {
         </div>
 
         <div className="flex items-center justify-center min-h-[70vh]">
-          {/* Image with fade-in animation */}
+          {/* Centered Text */}
           <div 
-            className={`relative w-full max-w-2xl transition-all duration-1000 ease-out delay-300 ${
-              isVisible ? 'opacity-100 scale-115' : 'opacity-0 scale-100'
+            className={`flex flex-col justify-center items-center space-y-6 max-w-4xl mx-auto text-center transition-all duration-1000 ease-out delay-300 ${
+              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
             }`}
           >
-            <Image
-              src="/images/wearables/canva-creation.png"
-              alt="Wearable Art"
-              width={800}
-              height={1200}
-              className="w-full h-auto object-contain"
-              priority
-            />
+            <div className="space-y-8 text-gray-100">
+              <p className="text-2xl md:text-3xl lg:text-4xl leading-relaxed">
+                In Art In Motion, painting leaves the canvas to flow across fabric.
+              </p>
+              <p className="text-2xl md:text-3xl lg:text-4xl leading-relaxed">
+                Each garment, printed with details drawn from the original artworks, transforms into movement and movement into presence.
+              </p>
+              <p className="text-2xl md:text-3xl lg:text-4xl leading-relaxed">
+                Touches of silk, blended with other fine materials, lend a quiet luminosity — a softness that allows the art to move with grace and breath.
+              </p>
+            </div>
           </div>
         </div>
       </div>

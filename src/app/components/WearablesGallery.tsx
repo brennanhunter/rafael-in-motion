@@ -15,6 +15,7 @@ const wearablesImages = [
   { src: '/images/wearables/sash-and-black-dress.jpg', alt: 'Sash and Black Dress' },
   { src: '/images/wearables/woman-at-round-table.jpg', alt: 'Woman at Round Table' },
   { src: '/images/wearables/woman-on-ladder.jpg', alt: 'Woman on Ladder' },
+  { src: '/images/wearables/with-clothes-hanging.jpeg', alt: 'With Clothes Hanging' },
 ];
 
 export default function WearablesGallery() {
