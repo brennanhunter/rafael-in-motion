@@ -231,6 +231,23 @@ export default function ElegantContemporary({ className = '' }: ElegantContempor
               </button>
             </div>
 
+            {/* Title and Story - Above image */}
+            <div className="px-4 pb-4 md:pb-6">
+              <div className="max-w-4xl mx-auto">
+                {/* Title */}
+                <div className="text-center mb-2 md:mb-3">
+                  <h2 className="text-lg md:text-2xl font-bold font-cinzel leading-tight text-white">{currentArtwork?.title}</h2>
+                </div>
+                
+                {/* Story */}
+                <div className="max-w-2xl mx-auto bg-black/70 backdrop-blur-sm text-white p-3 md:p-4 rounded-lg border border-white/20 shadow-2xl">
+                  <p className="text-sm leading-relaxed text-white/90">
+                    <span className="text-amber-400 font-semibold">Story:</span> {currentArtwork?.story || 'No story available for this artwork.'}
+                  </p>
+                </div>
+              </div>
+            </div>
+
             {/* Loading State */}
             {isLoading && (
               <div className="absolute inset-0 flex items-center justify-center bg-black z-10">
@@ -300,23 +317,6 @@ export default function ElegantContemporary({ className = '' }: ElegantContempor
             </div>
           </div>
         )}
-      </div>
-
-      {/* Title and Story - Closer to image */}
-      <div className="px-4 pb-4 md:pb-8 mt-2 md:mt-0">
-        <div className="max-w-4xl mx-auto">
-          {/* Title - Smaller and closer */}
-          <div className="text-center mb-2 md:mb-3">
-            <h2 className="text-lg md:text-2xl font-bold font-cinzel leading-tight text-white">{currentArtwork?.title}</h2>
-          </div>
-          
-          {/* Story - Inline with story text */}
-          <div className="max-w-2xl mx-auto bg-black/70 backdrop-blur-sm text-white p-3 md:p-4 rounded-lg border border-white/20 shadow-2xl">
-            <p className="text-sm leading-relaxed text-white/90">
-              <span className="text-amber-400 font-semibold">Story:</span> {currentArtwork?.story || 'No story available for this artwork.'}
-            </p>
-          </div>
-        </div>
       </div>
 
 

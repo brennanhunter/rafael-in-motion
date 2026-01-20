@@ -37,7 +37,7 @@ export default function WearablesShowcase() {
       <div className="container mx-auto px-8 py-20">
         {/* Title */}
         <div 
-          className={`text-center mb-16 transition-all duration-1000 ease-out ${
+          className={`text-center mb-8 transition-all duration-1000 ease-out ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10'
           }`}
         >
