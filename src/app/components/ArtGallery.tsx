@@ -154,6 +154,26 @@ export default function ArtGallery({
         </div>
       )}
 
+      {/* Artwork Information - Story/Description */}
+      <div className="px-4 pb-4">
+        <div className="max-w-4xl mx-auto text-center">
+          <motion.div
+            key={`story-${currentIndex}`}
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            {(currentArtwork.description || currentArtwork.story) && (
+              <div className="max-w-2xl mx-auto bg-black/70 backdrop-blur-sm text-white p-4 rounded-lg border border-white/20 shadow-2xl">
+                <p className="text-sm md:text-base leading-relaxed text-white/90">
+                  {currentArtwork.story || currentArtwork.description}
+                </p>
+              </div>
+            )}
+          </motion.div>
+        </div>
+      </div>
+
       {/* Main Carousel */}
       <div className="relative flex-1 flex items-center justify-center px-4 md:px-8 lg:px-16">
         <div className="relative w-full max-w-6xl mx-auto">
@@ -234,11 +254,11 @@ export default function ArtGallery({
         </div>
       </div>
 
-      {/* Artwork Information */}
+      {/* Artwork Information - Title and Details */}
       <div className="px-4 pb-6 mt-4">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
-            key={currentIndex}
+            key={`details-${currentIndex}`}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
@@ -248,18 +268,10 @@ export default function ArtGallery({
             </h2>
             
             {(currentArtwork.year || currentArtwork.medium || currentArtwork.dimensions) && (
-              <div className="text-sm md:text-base text-white/70 mb-4 space-y-1">
+              <div className="text-sm md:text-base text-white/70 space-y-1">
                 {currentArtwork.year && <p>Year: {currentArtwork.year}</p>}
                 {currentArtwork.medium && <p>Medium: {currentArtwork.medium}</p>}
                 {currentArtwork.dimensions && <p>Dimensions: {currentArtwork.dimensions}</p>}
-              </div>
-            )}
-            
-            {(currentArtwork.description || currentArtwork.story) && (
-              <div className="max-w-2xl mx-auto bg-black/70 backdrop-blur-sm text-white p-4 rounded-lg border border-white/20 shadow-2xl">
-                <p className="text-sm md:text-base leading-relaxed text-white/90">
-                  {currentArtwork.story || currentArtwork.description}
-                </p>
               </div>
             )}
           </motion.div>
