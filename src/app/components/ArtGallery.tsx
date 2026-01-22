@@ -16,7 +16,7 @@ interface ArtGalleryProps {
 
 export default function ArtGallery({ 
   category = 'abstracts', 
-  title = 'Art Gallery',
+  title,
   subtitle,
   className = '' 
 }: ArtGalleryProps) {
@@ -155,7 +155,7 @@ export default function ArtGallery({
       )}
 
       {/* Artwork Information - Story/Description */}
-      <div className="px-4 pb-4">
+      <div className={`px-4 pb-4 ${!title ? 'pt-32 md:pt-36' : ''}`}>
         <div className="max-w-4xl mx-auto text-center">
           <motion.div
             key={`story-${currentIndex}`}

@@ -13,7 +13,6 @@ export default function ElegantContemporaryPage() {
     <main className="min-h-screen">
       <ArtGallery 
         category="elegant-contemporary"
-        title="Elegant Contemporary"
       />
     </main>
   );

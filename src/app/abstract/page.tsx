@@ -13,7 +13,6 @@ export default function AbstractPage() {
     <main className="min-h-screen">
       <ArtGallery 
         category="abstracts"
-        title="Abstract"
       />
     </main>
   );
