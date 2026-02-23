@@ -1,8 +1,28 @@
+export interface SanityImage {
+  asset: {
+    _id: string;
+    url: string;
+    metadata?: {
+      lqip?: string;
+      dimensions?: {
+        width: number;
+        height: number;
+      };
+    };
+  };
+  alt?: string;
+  hotspot?: Record<string, unknown>;
+  crop?: Record<string, unknown>;
+}
+
 export interface Artwork {
-  id: string;
+  _id?: string;
+  id?: string;
   title: string;
-  filename: string;
-  imagePath: string;
+  slug?: string;
+  mainImage?: SanityImage;
+  filename?: string;
+  imagePath?: string;
   caption?: string;
   category: 'elegant-contemporary' | 'abstracts' | 'portraits' | 'other';
   year?: number;

@@ -542,7 +542,7 @@ export const getArtworkByCategory = (category: Artwork['category']): Artwork[] =
     
     // Add any remaining artwork not in the order list
     filtered.forEach(artwork => {
-      if (!desiredOrder.includes(artwork.id)) {
+      if (!desiredOrder.includes(artwork.id!)) {
         orderedArtwork.push(artwork);
       }
     });
@@ -599,7 +599,7 @@ export const getArtworkByCategory = (category: Artwork['category']): Artwork[] =
     
     // Add any remaining artwork not in the order list
     filtered.forEach(artwork => {
-      if (!desiredOrder.includes(artwork.id)) {
+      if (!desiredOrder.includes(artwork.id!)) {
         orderedArtwork.push(artwork);
       }
     });
@@ -664,7 +664,7 @@ export const getArtworkById = (id: string): Artwork | undefined => {
 // Helper function to get random artwork
 export const getRandomArtwork = (count: number = 1, excludeIds: string[] = []): Artwork[] => {
   const availableArtwork = artworkData.filter(artwork => 
-    !excludeIds.includes(artwork.id)
+    !excludeIds.includes(artwork.id!)
   );
   
   const shuffled = [...availableArtwork].sort(() => 0.5 - Math.random());

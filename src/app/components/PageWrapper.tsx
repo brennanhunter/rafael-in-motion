@@ -161,6 +161,11 @@ export default function PageWrapper({ children }: PageWrapperProps) {
     }
   }, [pathname]);
 
+  // On studio routes, render children directly without transitions
+  if (pathname.startsWith('/studio')) {
+    return <>{children}</>;
+  }
+
   return (
     <NavigationContext.Provider value={{ triggerStairsNavigation }}>
       {/* Loading Overlay */}

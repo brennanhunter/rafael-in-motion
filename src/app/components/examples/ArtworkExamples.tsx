@@ -2,7 +2,8 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { useFeaturedArtwork, useArtworkSearch, useRandomArtwork } from '@/hooks/useArtwork';
+import { useFeaturedArtwork, useArtworkSearch } from '@/hooks/useArtwork';
+import { getRandomArtwork } from '@/data/artwork';
 
 // Example 1: Display featured artwork
 export const FeaturedArtwork: React.FC = () => {
@@ -14,7 +15,7 @@ export const FeaturedArtwork: React.FC = () => {
         <div key={artwork.id} className="bg-white rounded-lg shadow-lg overflow-hidden">
           <div className="relative aspect-square">
             <Image
-              src={artwork.imagePath}
+              src={artwork.imagePath || ''}
               alt={artwork.title}
               fill
               className="object-cover"
@@ -103,7 +104,7 @@ export const ArtworkGallery: React.FC = () => {
           <div key={piece.id} className="bg-white rounded-lg shadow overflow-hidden">
             <div className="relative aspect-square">
               <Image
-                src={piece.imagePath}
+                src={piece.imagePath || ''}
                 alt={piece.title}
                 fill
                 className="object-cover"
@@ -133,7 +134,8 @@ export const ArtworkGallery: React.FC = () => {
 
 // Example 3: Random artwork showcase
 export const RandomShowcase: React.FC = () => {
-  const { artwork: randomPieces, refresh } = useRandomArtwork(3);
+  const [randomPieces, setRandomPieces] = React.useState(() => getRandomArtwork(3));
+  const refresh = () => setRandomPieces(getRandomArtwork(3));
 
   return (
     <div className="space-y-4">
@@ -152,7 +154,7 @@ export const RandomShowcase: React.FC = () => {
           <div key={artwork.id} className="bg-white rounded-lg shadow overflow-hidden">
             <div className="relative aspect-video">
               <Image
-                src={artwork.imagePath}
+                src={artwork.imagePath || ''}
                 alt={artwork.title}
                 fill
                 className="object-cover"

@@ -1,35 +1,39 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
+'use client';
+import { useState, useEffect, useCallback } from 'react';
 import { Artwork, ArtworkFilters } from '@/types/artwork';
-import { 
-  artworkData, 
-  getArtworkByCategory, 
-  getFeaturedArtwork, 
-  searchArtwork, 
-  getArtworkById,
-  getRandomArtwork 
-} from '@/data/artwork';
+import { client } from '@/sanity/lib/client';
+import { ARTWORKS_BY_CATEGORY_QUERY, ALL_ARTWORKS_QUERY } from '@/sanity/lib/queries';
 
 export const useArtwork = (filters?: ArtworkFilters) => {
-  const [loading, setLoading] = useState(false);
+  const [artwork, setArtwork] = useState<Artwork[]>([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Get filtered artwork based on provided filters
-  const artwork = useMemo(() => {
-    try {
-      setLoading(true);
-      setError(null);
-      
-      if (!filters) {
-        return artworkData;
+  useEffect(() => {
+    async function fetchArtworks() {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        let query: string = ALL_ARTWORKS_QUERY;
+        let params = {};
+        
+        if (filters?.category) {
+          query = ARTWORKS_BY_CATEGORY_QUERY;
+          params = { category: filters.category };
+        }
+        
+        const data = await client.fetch(query, params);
+        setArtwork(data || []);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'An error occurred');
+        setArtwork([]);
+      } finally {
+        setLoading(false);
       }
-      
-      return searchArtwork(filters);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
-      return [];
-    } finally {
-      setLoading(false);
     }
+    
+    fetchArtworks();
   }, [filters]);
 
   return {
@@ -41,32 +45,81 @@ export const useArtwork = (filters?: ArtworkFilters) => {
 };
 
 export const useArtworkByCategory = (category: Artwork['category']) => {
-  return useMemo(() => getArtworkByCategory(category), [category]);
+  const [artworks, setArtworks] = useState<Artwork[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchArtworks() {
+      try {
+        setLoading(true);
+        const data = await client.fetch(ARTWORKS_BY_CATEGORY_QUERY, { category });
+        setArtworks(data || []);
+      } catch (error) {
+        console.error('Error fetching artworks:', error);
+        setArtworks([]);
+      } finally {
+        setLoading(false);
+      }
+    }
+    
+    fetchArtworks();
+  }, [category]);
+
+  return artworks;
 };
 
 export const useFeaturedArtwork = () => {
-  return useMemo(() => getFeaturedArtwork(), []);
+  const [artworks, setArtworks] = useState<Artwork[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchFeaturedArtworks() {
+      try {
+        setLoading(true);
+        const data = await client.fetch(`*[_type == "artwork" && featured == true] | order(_createdAt desc) {
+          _id, title, "slug": slug.current, mainImage { asset->{ _id, url, metadata { lqip, dimensions { width, height } } }, alt, hotspot, crop },
+          category, story, year, medium, dimensions, featured
+        }`);
+        setArtworks(data || []);
+      } catch (error) {
+        console.error('Error fetching featured artworks:', error);
+        setArtworks([]);
+      } finally {
+        setLoading(false);
+      }
+    }
+    
+    fetchFeaturedArtworks();
+  }, []);
+
+  return artworks;
 };
 
 export const useArtworkById = (id: string) => {
-  return useMemo(() => getArtworkById(id), [id]);
-};
+  const [artwork, setArtwork] = useState<Artwork | null>(null);
+  const [loading, setLoading] = useState(true);
 
-export const useRandomArtwork = (count: number = 1, excludeIds: string[] = []) => {
-  const [randomArtwork, setRandomArtwork] = useState<Artwork[]>([]);
-  
   useEffect(() => {
-    setRandomArtwork(getRandomArtwork(count, excludeIds));
-  }, [count, excludeIds]);
-  
-  const refreshRandom = () => {
-    setRandomArtwork(getRandomArtwork(count, excludeIds));
-  };
-  
-  return {
-    artwork: randomArtwork,
-    refresh: refreshRandom
-  };
+    async function fetchArtwork() {
+      try {
+        setLoading(true);
+        const data = await client.fetch(`*[_type == "artwork" && _id == $id][0] {
+          _id, title, "slug": slug.current, mainImage { asset->{ _id, url, metadata { lqip, dimensions { width, height } } }, alt, hotspot, crop },
+          category, story, year, medium, dimensions, featured
+        }`, { id });
+        setArtwork(data);
+      } catch (error) {
+        console.error('Error fetching artwork:', error);
+        setArtwork(null);
+      } finally {
+        setLoading(false);
+      }
+    }
+    
+    fetchArtwork();
+  }, [id]);
+
+  return { artwork, loading };
 };
 
 // Hook for artwork slider/gallery with navigation

@@ -12,13 +12,18 @@
     "@heroicons/react": "^2.2.0",
     "@react-three/drei": "^10.7.4",
     "@react-three/fiber": "^9.3.0",
+    "@sanity/image-url": "^1.2.0",
+    "@sanity/vision": "^4.22.0",
     "drei": "^2.2.21",
     "framer-motion": "^12.23.12",
     "gsap": "^3.13.0",
     "next": "15.4.10",
+    "next-sanity": "^11.6.12",
     "react": "19.1.0",
     "react-dom": "19.1.0",
+    "sanity": "^4.22.0",
     "sass": "^1.91.0",
+    "styled-components": "^6.3.8",
     "three": "^0.178.0"
   },
   "devDependencies": {
@@ -31,6 +36,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.4.5",
     "tailwindcss": "^4",
+    "tsx": "^4.21.0",
     "typescript": "^5"
   }
 }

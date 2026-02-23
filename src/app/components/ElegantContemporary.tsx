@@ -265,8 +265,8 @@ export default function ElegantContemporary({ className = '' }: ElegantContempor
               title="Click to view fullscreen"
             >
               <Image
-                src={currentArtwork?.imagePath || ''}
-                alt={currentArtwork?.title || ''}
+                src={currentArtwork?.mainImage?.asset?.url || ''}
+                alt={currentArtwork?.mainImage?.alt || currentArtwork?.title || ''}
                 width={800}
                 height={600}
                 className={`elegant-contemporary-image w-full h-auto max-w-full object-contain transition-all duration-1000 sm:max-h-[70vh] max-h-[60vh] ${
@@ -341,8 +341,8 @@ export default function ElegantContemporary({ className = '' }: ElegantContempor
           
           <div className="w-full h-full flex items-center justify-center p-4">
             <Image
-              src={currentArtwork?.imagePath || ''}
-              alt={currentArtwork?.title || ''}
+              src={currentArtwork?.mainImage?.asset?.url || ''}
+              alt={currentArtwork?.mainImage?.alt || currentArtwork?.title || ''}
               width={1920}
               height={1080}
               className="max-w-full max-h-full object-contain"

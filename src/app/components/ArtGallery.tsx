@@ -6,6 +6,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useArtworkByCategory } from '@/hooks/useArtwork';
 import { Artwork } from '@/types/artwork';
 import { ChevronLeftIcon, ChevronRightIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { SanityImage } from './SanityImage';
+import { urlFor } from '@/sanity/lib/image';
 
 interface ArtGalleryProps {
   category?: 'elegant-contemporary' | 'abstracts' | 'portraits' | 'other';
@@ -30,6 +32,15 @@ export default function ArtGallery({
   const hideControlsRef = useRef<NodeJS.Timeout | null>(null);
 
   const AUTOPLAY_DURATION = 5000;
+
+  // Debug log
+  useEffect(() => {
+    console.log('Artworks:', artworks);
+    if (artworks.length > 0) {
+      console.log('Current artwork:', artworks[currentIndex]);
+      console.log('MainImage:', artworks[currentIndex]?.mainImage);
+    }
+  }, [artworks, currentIndex]);
 
   // Auto-hide controls
   useEffect(() => {
@@ -126,12 +137,15 @@ export default function ArtGallery({
   if (artworks.length === 0) {
     return (
       <div className={`min-h-screen bg-black flex items-center justify-center ${className}`}>
-        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-white"></div>
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-white mx-auto mb-4"></div>
+          <p className="text-white">Loading artwork...</p>
+        </div>
       </div>
     );
   }
 
-  const currentArtwork = artworks[currentIndex];
+  const currentArtwork = artworks[currentIndex] || artworks[0];
 
   return (
     <div className={`min-h-screen bg-black text-white ${className}`}>
@@ -230,22 +244,31 @@ export default function ArtGallery({
                 transition={{ duration: 0.5 }}
                 className="relative w-full h-full flex items-center justify-center"
               >
-                <Image
-                  src={currentArtwork.imagePath}
-                  alt={currentArtwork.title}
-                  width={1200}
-                  height={800}
-                  className="w-full h-auto max-w-full object-contain transition-transform duration-300 group-hover:scale-105 sm:max-h-[70vh] max-h-[60vh]"
-                  onLoad={handleImageLoad}
-                  style={{
-                    filter: 'drop-shadow(0 0 40px rgba(0,0,0,0.5))'
-                  }}
-                />
+                {currentArtwork.mainImage?.asset?.url ? (
+                  <div className="w-full h-auto max-w-full transition-transform duration-300 group-hover:scale-105 sm:max-h-[70vh] max-h-[60vh]"
+                    style={{
+                      filter: 'drop-shadow(0 0 40px rgba(0,0,0,0.5))'
+                    }}>
+                    <Image
+                      src={currentArtwork.mainImage.asset.url}
+                      alt={currentArtwork.mainImage.alt || currentArtwork.title}
+                      width={1200}
+                      height={800}
+                      className="w-full h-auto object-contain"
+                      onLoad={handleImageLoad}
+                    />
+                  </div>
+                ) : (
+                  <div className="text-white">
+                    <p>No image available</p>
+                    <p className="text-xs mt-2">Debug: {JSON.stringify(currentArtwork.mainImage)}</p>
+                  </div>
+                )}
               </motion.div>
             </AnimatePresence>
 
             {/* Loading indicator */}
-            {!imageLoaded && (
+            {!imageLoaded && currentArtwork.mainImage?.asset?.url && (
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-white"></div>
               </div>
@@ -284,7 +307,7 @@ export default function ArtGallery({
           <div className="flex space-x-2 bg-black/50 backdrop-blur-sm p-3 rounded-xl border border-white/20 max-w-full overflow-x-auto">
             {artworks.map((artwork, index) => (
               <button
-                key={artwork.id}
+                key={artwork._id}
                 onClick={() => goToIndex(index)}
                 className={`relative flex-shrink-0 w-16 h-16 md:w-20 md:h-20 rounded-lg overflow-hidden transition-all duration-300 ${
                   index === currentIndex 
@@ -292,13 +315,15 @@ export default function ArtGallery({
                     : 'hover:scale-105 opacity-70 hover:opacity-100'
                 }`}
               >
-                <Image
-                  src={artwork.imagePath}
-                  alt={artwork.title}
-                  width={80}
-                  height={80}
-                  className="w-full h-full object-cover"
-                />
+                {artwork.mainImage?.asset?.url && (
+                  <Image
+                    src={artwork.mainImage.asset.url}
+                    alt={artwork.mainImage.alt || artwork.title}
+                    width={80}
+                    height={80}
+                    className="w-full h-full object-cover"
+                  />
+                )}
               </button>
             ))}
           </div>
@@ -342,13 +367,15 @@ export default function ArtGallery({
           </button>
           
           <div className="w-full h-full flex items-center justify-center p-4">
-            <Image
-              src={currentArtwork.imagePath}
-              alt={currentArtwork.title}
-              width={1920}
-              height={1080}
-              className="max-w-full max-h-full object-contain"
-            />
+            {currentArtwork.mainImage?.asset?.url && (
+              <Image
+                src={currentArtwork.mainImage.asset.url}
+                alt={currentArtwork.mainImage.alt || currentArtwork.title}
+                width={1920}
+                height={1080}
+                className="max-w-full max-h-full object-contain"
+              />
+            )}
           </div>
           
           {/* Fullscreen Navigation */}

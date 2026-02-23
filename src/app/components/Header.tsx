@@ -2,13 +2,18 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import Stairs from './stairs/Stairs';
 
 const Header: React.FC = () => {
   const [isStairsOpen, setIsStairsOpen] = useState<boolean>(false);
   const [isAtTop, setIsAtTop] = useState<boolean>(true);
+  const pathname = usePathname();
+  const isStudio = pathname.startsWith('/studio');
 
   useEffect(() => {
+    // Skip scroll listener on studio routes
+    if (isStudio) return;
     const handleScroll = () => {
       // Consider "at top" if scroll position is less than 10px to account for minor scroll variations
       setIsAtTop(window.scrollY < 10);
@@ -23,7 +28,10 @@ const Header: React.FC = () => {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [isStudio]);
+
+  // Hide header on Sanity Studio routes
+  if (isStudio) return null;
 
   return (
     <>
