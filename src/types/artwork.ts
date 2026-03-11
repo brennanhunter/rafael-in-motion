@@ -31,6 +31,8 @@ export interface Artwork {
   description?: string;
   story?: string;
   featured?: boolean;
+  displayOrder?: number;
+  featuredOrder?: number;
   tags?: string[];
 }
 

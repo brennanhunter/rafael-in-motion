@@ -1,8 +1,8 @@
 /**
  * Migration script: Uploads all artwork from src/data/artwork.ts to Sanity
  *
- * Usage (Windows PowerShell):
- *   $env:SANITY_TOKEN="<your-token>"; npx tsx scripts/migrate-artwork.ts
+ * Usage:
+ *   SANITY_TOKEN="<your-token>" npx tsx scripts/migrate-artwork.ts
  *
  * Create a token at: https://www.sanity.io/manage/project/2ttjh66o/api#tokens
  *   - Give it "Editor" permissions
@@ -26,7 +26,7 @@ if (!token) {
     'Create a token at: https://www.sanity.io/manage/project/2ttjh66o/api#tokens'
   );
   console.error(
-    'Then run:\n  $env:SANITY_TOKEN="<your-token>"; npx tsx scripts/migrate-artwork.ts'
+    'Then run:\n  SANITY_TOKEN="<your-token>" npx tsx scripts/migrate-artwork.ts'
   );
   process.exit(1);
 }
@@ -67,21 +67,68 @@ async function migrate() {
   console.log(`\nMigrating ${artworkData.length} artworks to Sanity...\n`);
 
   let success = 0;
+  let patched = 0;
   let skipped = 0;
   let failed = 0;
+
+  // Track per-category order so array position becomes displayOrder
+  const categoryCounters: Record<string, number> = {};
 
   for (const artwork of artworkData) {
     process.stdout.write(`Migrating: "${artwork.title}"... `);
 
+    // Derive category from image folder path (source of truth) rather than artwork.ts category field
+    let cat = artwork.category;
+    if (artwork.imagePath) {
+      if (artwork.imagePath.includes('/abstracts/')) {
+        cat = 'abstracts';
+      } else if (artwork.imagePath.includes('/elegant-contemporary/')) {
+        cat = 'elegant-contemporary';
+      }
+    }
+
+    if (cat !== artwork.category) {
+      console.log(`  NOTE: category corrected from "${artwork.category}" to "${cat}" (based on image folder)`);
+    }
+
+    // Increment order counter per category
+    categoryCounters[cat] = (categoryCounters[cat] || 0) + 1;
+    const displayOrder = categoryCounters[cat];
+
     // Check if already exists by slug
     const existing = await client.fetch(
-      `*[_type == "artwork" && slug.current == $slug][0]._id`,
+      `*[_type == "artwork" && slug.current == $slug][0]{ _id, category, displayOrder, story }`,
       { slug: artwork.id }
     );
 
     if (existing) {
-      console.log('SKIPPED (already exists)');
-      skipped++;
+      // Patch existing document if category, displayOrder, or story differ
+      const patches: Record<string, any> = {};
+
+      if (existing.category !== cat) {
+        patches.category = cat;
+      }
+      if (existing.displayOrder !== displayOrder) {
+        patches.displayOrder = displayOrder;
+      }
+      if (artwork.story && existing.story !== artwork.story) {
+        patches.story = artwork.story;
+      }
+
+      if (Object.keys(patches).length > 0) {
+        try {
+          await client.patch(existing._id).set(patches).commit();
+          const changed = Object.keys(patches).join(', ');
+          console.log(`PATCHED (${changed})`);
+          patched++;
+        } catch (err: any) {
+          console.log(`PATCH FAILED: ${err.message}`);
+          failed++;
+        }
+      } else {
+        console.log('UP TO DATE');
+        skipped++;
+      }
       continue;
     }
 
@@ -112,12 +159,14 @@ async function migrate() {
             _ref: asset._id,
           },
         },
-        category: artwork.category,
+        category: cat,
         story: artwork.story || '',
+        displayOrder,
         featured: false,
+        featuredOrder: undefined,
       });
 
-      console.log(`OK (${doc._id})`);
+      console.log(`OK (${doc._id}) — order: ${displayOrder}`);
       success++;
     } catch (err: any) {
       console.log(`FAILED: ${err.message}`);
@@ -126,10 +175,18 @@ async function migrate() {
   }
 
   console.log(`\n--- Migration Complete ---`);
-  console.log(`Success: ${success}`);
-  console.log(`Skipped: ${skipped}`);
+  console.log(`Created: ${success}`);
+  console.log(`Patched: ${patched}`);
+  console.log(`Up to date: ${skipped}`);
   console.log(`Failed:  ${failed}`);
   console.log(`Total:   ${artworkData.length}`);
+  console.log(`\nPer-category counts:`);
+  for (const [cat, count] of Object.entries(categoryCounters)) {
+    console.log(`  ${cat}: ${count}`);
+  }
+  console.log(`\nNext steps:`);
+  console.log(`  1. Open /studio and review artwork ordering`);
+  console.log(`  2. Mark homepage featured pieces: toggle "Show on Homepage" and set "Homepage Order"`);
 }
 
 migrate().catch(console.error);

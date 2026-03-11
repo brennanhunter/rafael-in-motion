@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { useArtworkByCategory } from '@/hooks/useArtwork';
+import { useFeaturedArtwork } from '@/hooks/useArtwork';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
 interface ElegantContemporaryProps {
@@ -11,7 +11,7 @@ interface ElegantContemporaryProps {
 }
 
 export default function ElegantContemporary({ className = '' }: ElegantContemporaryProps) {
-  const elegantContemporaryPieces = useArtworkByCategory('elegant-contemporary');
+  const elegantContemporaryPieces = useFeaturedArtwork();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlay, setIsAutoPlay] = useState(false);
   const [isLoading, setIsLoading] = useState(true);

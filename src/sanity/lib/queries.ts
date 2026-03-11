@@ -1,8 +1,8 @@
 import { defineQuery } from 'next-sanity'
 
-// Query all artworks by category
+// Query all artworks by category, ordered by displayOrder
 export const ARTWORKS_BY_CATEGORY_QUERY = defineQuery(`
-  *[_type == "artwork" && category == $category] | order(_createdAt desc) {
+  *[_type == "artwork" && category == $category] | order(displayOrder asc) {
     _id,
     title,
     "slug": slug.current,
@@ -24,13 +24,45 @@ export const ARTWORKS_BY_CATEGORY_QUERY = defineQuery(`
     year,
     medium,
     dimensions,
-    featured
+    featured,
+    displayOrder,
+    featuredOrder
+  }
+`)
+
+// Query featured artworks for homepage, ordered by featuredOrder
+export const FEATURED_ARTWORKS_QUERY = defineQuery(`
+  *[_type == "artwork" && featured == true] | order(featuredOrder asc) {
+    _id,
+    title,
+    "slug": slug.current,
+    mainImage {
+      asset->{
+        _id,
+        url,
+        metadata {
+          lqip,
+          dimensions { width, height }
+        }
+      },
+      alt,
+      hotspot,
+      crop
+    },
+    category,
+    story,
+    year,
+    medium,
+    dimensions,
+    featured,
+    displayOrder,
+    featuredOrder
   }
 `)
 
 // Query all artworks
 export const ALL_ARTWORKS_QUERY = defineQuery(`
-  *[_type == "artwork"] | order(_createdAt desc) {
+  *[_type == "artwork"] | order(displayOrder asc) {
     _id,
     title,
     "slug": slug.current,
@@ -52,7 +84,9 @@ export const ALL_ARTWORKS_QUERY = defineQuery(`
     year,
     medium,
     dimensions,
-    featured
+    featured,
+    displayOrder,
+    featuredOrder
   }
 `)
 
@@ -80,6 +114,8 @@ export const ARTWORK_BY_SLUG_QUERY = defineQuery(`
     year,
     medium,
     dimensions,
-    featured
+    featured,
+    displayOrder,
+    featuredOrder
   }
 `)

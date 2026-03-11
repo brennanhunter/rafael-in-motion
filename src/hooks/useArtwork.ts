@@ -2,7 +2,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Artwork, ArtworkFilters } from '@/types/artwork';
 import { client } from '@/sanity/lib/client';
-import { ARTWORKS_BY_CATEGORY_QUERY, ALL_ARTWORKS_QUERY } from '@/sanity/lib/queries';
+import { ARTWORKS_BY_CATEGORY_QUERY, ALL_ARTWORKS_QUERY, FEATURED_ARTWORKS_QUERY } from '@/sanity/lib/queries';
 
 export const useArtwork = (filters?: ArtworkFilters) => {
   const [artwork, setArtwork] = useState<Artwork[]>([]);
@@ -76,10 +76,7 @@ export const useFeaturedArtwork = () => {
     async function fetchFeaturedArtworks() {
       try {
         setLoading(true);
-        const data = await client.fetch(`*[_type == "artwork" && featured == true] | order(_createdAt desc) {
-          _id, title, "slug": slug.current, mainImage { asset->{ _id, url, metadata { lqip, dimensions { width, height } } }, alt, hotspot, crop },
-          category, story, year, medium, dimensions, featured
-        }`);
+        const data = await client.fetch(FEATURED_ARTWORKS_QUERY);
         setArtworks(data || []);
       } catch (error) {
         console.error('Error fetching featured artworks:', error);
