@@ -7,7 +7,7 @@ export const artwork = defineType({
   type: 'document',
   icon: ImageIcon,
   groups: [
-    { name: 'main', title: 'Main Info', default: true },
+    { name: 'main', title: 'Main Info' },
     { name: 'ordering', title: 'Ordering' },
     { name: 'details', title: 'Details' },
   ],
