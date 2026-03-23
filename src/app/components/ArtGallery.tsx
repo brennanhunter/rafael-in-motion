@@ -244,7 +244,7 @@ export default function ArtGallery({
                 className="relative w-full h-full flex items-center justify-center"
               >
                 {currentArtwork.mainImage?.asset?.url ? (
-                  <div className="w-full h-auto max-w-full transition-transform duration-300 group-hover:scale-105"
+                  <div className="w-full max-w-full transition-transform duration-300 group-hover:scale-105 flex items-center justify-center max-h-[80vh]"
                     style={{
                       filter: 'drop-shadow(0 0 40px rgba(0,0,0,0.5))'
                     }}>
@@ -253,7 +253,7 @@ export default function ArtGallery({
                       alt={currentArtwork.mainImage.alt || currentArtwork.title}
                       width={1200}
                       height={800}
-                      className="w-full h-auto object-contain"
+                      className="max-w-full max-h-[80vh] w-auto h-auto object-contain"
                       onLoad={handleImageLoad}
                     />
                   </div>
