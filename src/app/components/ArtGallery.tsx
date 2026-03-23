@@ -231,7 +231,7 @@ export default function ArtGallery({
 
           {/* Image Container */}
           <div 
-            className="relative bg-black/20 rounded-lg overflow-hidden cursor-pointer group min-h-[40vh] sm:min-h-[60vh]"
+            className="relative bg-black/20 rounded-lg cursor-pointer group"
             onClick={openFullscreen}
           >
             <AnimatePresence mode="wait">
@@ -244,7 +244,7 @@ export default function ArtGallery({
                 className="relative w-full h-full flex items-center justify-center"
               >
                 {currentArtwork.mainImage?.asset?.url ? (
-                  <div className="w-full h-auto max-w-full transition-transform duration-300 group-hover:scale-105 max-h-[40vh] sm:max-h-[70vh]"
+                  <div className="w-full h-auto max-w-full transition-transform duration-300 group-hover:scale-105"
                     style={{
                       filter: 'drop-shadow(0 0 40px rgba(0,0,0,0.5))'
                     }}>
